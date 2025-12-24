@@ -6,6 +6,7 @@
 
 # Ignore the .bib file, as it is generated automatically from the .tex file
 aidisclose-doc.bib
+*ERROR
 
 # Ignore all minted …
 _*

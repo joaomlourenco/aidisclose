@@ -1,385 +1,401 @@
-%% aidisclose.sty --- Utilities for Generative AI disclosure checklist and statements
-%%
-%% Copyright (C) 2025 by João M. Lourenço <joao.lourenco@fct.unl.pt>
-%%
-%% This file may be distributed and/or modified under the conditions of
-%% the LaTeX Project Public License, either version 1.3c of this license
-%% or (at your option) any later version. The latest version of this
-%% license is in:
-%%
-%%    http://www.latex-project.org/lppl.txt
-%%
-%% and version 1.3c or later is part of all distributions of LaTeX
-%% version 2006/05/20 or later.
-%%
-%%
-%% Suchikova, Y., Tsybuliak, N., Teixeira da Silva, J. A., \& Nazarovets, S. (2025).
-%% GAIDeT (Generative AI Delegation Taxonomy): A taxonomy for humans to delegate
-%% tasks to generative artificial intelligence in scientific research and publishing.
-%% Accountability in Research, 1–27. https://doi.org/10.1080/08989621.2025.2544331
-%%
-\def\gaifileversion{1.2.0}
-\def\gaifiledate   {2025/12/24}
-\edef\gaifilename  {\@currname}
+% aidisclose.sty
+% 
+% Copyright (C) 2025 by João M. Lourenço <joao.lourenco@fct.unl.pt>
+%
+% This file may be distributed and/or modified under the conditions of
+% the LaTeX Project Public License, either version 1.3c of this license
+% or (at your option) any later version.
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{\gaifilename}[%
-  \gaifiledate\  v\gaifileversion (João M. Lourenço) - Utilities for Generative AI disclosure checklist and statements.]
+\RequirePackage{xparse}
+\RequirePackage{amssymb}   % for \checkmark
+\RequirePackage{multicol}  % for two columns
+\RequirePackage{enumitem}  % for list control
+\RequirePackage{relsize}   % for reltive font size
 
-%% Suchikova, Y., Tsybuliak, N., Teixeira da Silva, J. A., \& Nazarovets, S. (2025).
-%% GAIDeT (Generative AI Delegation Taxonomy): A taxonomy for humans to delegate
-%% tasks to generative artificial intelligence in scientific research and publishing.
-%% Accountability in Research, 1–27. https://doi.org/10.1080/08989621.2025.2544331
+% Initialize the package as strictly expl3
+\ProvidesExplPackage {aidisclose} {2025/12/25} {1.2.0} 
+  {Utilities for Generative AI disclosure checklist and statements}
 
-%% Dependencies
-\RequirePackage{relsize}   %% new font size relative to current font
-\RequirePackage{amssymb}   %% \checkmark
-\RequirePackage{multicol}  %% multicols
-\RequirePackage[inline]{enumitem} %% list control
+% =========================================================
+% 1) VARIABLES & CONSTANTS
+% =========================================================
 
-%% =========================================================
-%% 1) STATIC CHECKBOX SYMBOLS (local fboxsep; no global side effects)
-%% =========================================================
-\newcommand{\CheckedBox}{% 
-  \begingroup\setlength{\fboxsep}{1.2pt}\fbox{\checkmark}\endgroup
-}
-\newcommand{\EmptyBox}{%
-  \begingroup\setlength{\fboxsep}{1.2pt}\fbox{\phantom{\checkmark}}\endgroup
-}
+% Dimensions for checkboxes
+\dim_new:N \l__gai_fboxsep_dim
+\dim_set:Nn \l__gai_fboxsep_dim { 1.2pt }
+\dim_new:N \l__gai_boxwd_dim
+\dim_new:N \l__gai_labelsep_dim
+\dim_set:Nn \l__gai_labelsep_dim { 1.2em }
 
-%% Measure checkbox width
-\newlength{\AIdiscboxwd}
-\settowidth{\AIdiscboxwd}{\CheckedBox}
+% Sequences and Token Lists
+\seq_new:N \g__gai_active_seq   % Stores activated keys
+\tl_new:N  \l__gai_temp_tl      % Scratch variable
+\tl_new:N  \g__gai_comments_tl  % Stores user comments
+\tl_new:N  \g__gai_taxonomy_tl  % Stores the full taxonomy data
 
-\newlength{\AIdisclabelsep}
-\setlength{\AIdisclabelsep}{1.2em}
+% Title and section variables
+\tl_new:N \g__gai_title_long_tl
+\tl_new:N \g__gai_title_short_tl
+\tl_new:N \g__gai_section_cmd_tl
 
-%% =========================================================
-%% 2) USER ACTIVE SET
-%% =========================================================
-\makeatletter
-\newcommand{\Activate}[1]{%
-  \expandafter\gdef\csname gai@active@#1\endcsname{1}%
-}
-\newcommand{\AIdiscloseStaticBox}[1]{%
-  \ifcsname gai@active@#1\endcsname
-    \CheckedBox
-  \else
-    \EmptyBox
-  \fi
-}
-\makeatother
-
-%% Item text: fixed width + ragged right
-\newcommand{\AIdiscloseItemText}[1]{%
-  \parbox[t]{\dimexpr\linewidth-\AIdiscboxwd-\AIdisclabelsep\relax}{%
-    \raggedright #1%
-  }%
-}
-
-%% =========================================================
-%% 3) BACKUP TAXONOMY (DATA MODEL) — NEVER EDIT
-%%    (Users may redefine \BackupTaxonomy if desired.)
-%% =========================================================
-\newcommand{\TGroup}[2]{}
-\newcommand{\TSubGroup}[2]{}
-\newcommand{\TItem}[2]{}
-\newcommand{\TSubItem}[2]{}
-
-\newcommand{\BackupTaxonomy}{%
-  \TGroup{Conceptualization}{%
-    \TItem{c:rq}{Formulating research questions and hypotheses}%
-    \TItem{c:idea}{Idea generation}%
-    \TItem{c:objective}{Defining the research objective}%
-    \TItem{c:feas}{Feasibility assessment and risk evaluation}%
-    \TItem{c:pretest}{Preliminary hypothesis testing}%
-  }%
-  \TGroup{Literature Review}{%
-    \TItem{l:patents}{Analysis of market trends and/or patent environment}%
-    \TItem{l:search}{Literature search and systematization}%
-    \TItem{l:write}{Writing the literature review}%
-    \TItem{l:gaps}{Evaluation of novelty and identification of gaps}%
-  }%
-  \TGroup{Methodology}{%
-    \TItem{m:design}{Research design}%
-    \TItem{m:methods}{Selection of research methods}%
-    \TItem{m:protocols}{Development of experimental or research protocols}%
-  }%
-  \TGroup{Software Development and Automation}{%
-    \TItem{s:codegen}{Code generation}%
-    \TItem{s:opt}{Code optimization}%
-    \TItem{s:auto}{Process automation}%
-    \TItem{s:algs}{Creation of algorithms for data analysis}%
-  }%
-  \TGroup{Data Management}{%
-    \TItem{d:collect}{Data collection}%
-    \TItem{d:validate}{Validation}%
-    \TItem{d:clean}{Data cleaning}%
-    \TItem{d:curate}{Data curation and organization}%
-    \TItem{d:analyze}{Data analysis}%
-    \TItem{d:viz}{Visualization}%
-    \TItem{d:repro}{Reproducibility testing}%
-  }%
-  \TGroup{Writing and Editing}{%
-    \TItem{w:textgen}{Text generation}%
-    \TItem{w:proof}{Proofreading and editing}%
-    \TItem{w:summarize}{Summarizing text}%
-    \TItem{w:concl}{Formulation of conclusions}%
-    \TItem{w:tone}{Adapting and adjusting emotional tone}%
-    \TItem{w:translate}{Translation}%
-    \TItem{w:reformat}{Reformatting}%
-    \TItem{w:press}{Press releases and outreach materials}%
-  }%
-  \TGroup{Ethics Review}{%
-    \TItem{e:bias}{Bias analysis and discrimination assessment}%
-    \TItem{e:risk}{Ethical risk analysis}%
-    \TItem{e:compliance}{Monitoring compliance with ethical standards}%
-    \TItem{e:conf}{Data confidentiality monitoring}%
-  }%
-  \TGroup{Supervision}{%
-    \TItem{sup:qa}{Quality assessment}%
-    \TItem{sup:trends}{Trend identification}%
-    \TItem{sup:limits}{Identification of limitations}%
-    \TItem{sup:recs}{Recommendations}%
-    \TItem{sup:pub}{Publication support}%
-  }%
-}
-
-%% =========================================================
-%% 4) RENDERER (MULTI-COLUMN PER GROUP)
-%% =========================================================
-\newcommand{\ChecklistFont}{\smaller[1]}
-
-\newcommand{\SetChecklistFont}[1]{
-  \renewcommand{\ChecklistFont}{#1}
-}
-
-\newcommand{\GroupTitle}[1]{%
-  \par\medskip\noindent\textbf{\larger #1}%
-}
-
-\newcommand{\RenderMergedChecklist}[1][3]{%
-  \begingroup
-  \ChecklistFont
-
-  %% Enumitem defaults (scoped to this rendering only)
-  \setlist[itemize]{%
-    leftmargin=*,
-    align=parleft,
-    itemsep=5pt,
-    topsep=0pt,
-    parsep=0pt,
-    labelsep=\AIdisclabelsep,
-  }%
-
-  \renewcommand{\TGroup}[2]{%
-    \setlength{\multicolsep}{5pt}%
-    \begin{multicols}{#1}[\GroupTitle{##1}]
-      \begin{itemize}
-        ##2%
-      \end{itemize}
-    \end{multicols}
-  }%
-  \renewcommand{\TSubGroup}[2]{%
-    \item[]\textbf{##1}\par\smallskip
-    \begin{itemize}
-      ##2%
-    \end{itemize}
-  }%
-  \renewcommand{\TItem}[2]{%
-    \item[\AIdiscloseStaticBox{##1}] \AIdiscloseItemText{##2}%
-  }%
-  \renewcommand{\TSubItem}[2]{%
-    \item[\AIdiscloseStaticBox{##1}] \AIdiscloseItemText{##2}%
-  }%
-  \BackupTaxonomy
-  \endgroup
-}
-
-%% --- Additional comment storage + rendering (static) ---
-\newtoks\GAICommentToks
-\GAICommentToks={} % init empty
-
-%% Append comment bodies (so multiple GAIComment blocks work)
-\NewDocumentEnvironment{GAIComment}{+b}
-  {%
-    \global\GAICommentToks=\expandafter{%
-      \the\GAICommentToks
-      \par\noindent\textbf{Additional comment: }\ignorespaces#1\unskip\par
-    }%
-  }
-  {}
-
-%% Render all collected comments (prints nothing if none were provided)
-\newcommand{\RenderComment}{%
-  \begingroup
-  \par\medskip
-  \the\GAICommentToks
-  \endgroup
-}
-
-%% =========================================================
-%% 5) \GAItoolsUsed{list,of,tools}
-%% =========================================================
-\ExplSyntaxOn
-
+% Tools processing
 \tl_new:N  \g__gai_tools_sentence_tl
 \seq_new:N \l__gai_tools_seq
 \seq_new:N \l__gai_tmp_seq
-\tl_new:N  \l__gai_last_tl
+\tl_new:N  \l__gai_last_tool_tl
 
+% Author processing
+\clist_new:N \g__gai_authors_clist
+\int_new:N   \g__gai_authors_int
+\tl_new:N    \l__gai_authors_formatted_tl
+
+% =========================================================
+% 2) INTERNAL UTILITIES
+% =========================================================
+
+% --- Checkbox Drawing ---
+% We calculate the width of the checked box once to align text later
+\hbox_set:Nn \l_tmpa_box { \fbox { \checkmark } }
+\dim_set:Nn \l__gai_boxwd_dim { \box_wd:N \l_tmpa_box }
+
+\cs_new_protected:Npn \__gai_print_checked_box:
+  {
+    \group_begin:
+    \dim_set:Nn \fboxsep { \l__gai_fboxsep_dim }
+    \fbox { \checkmark }
+    \group_end:
+  }
+
+\cs_new_protected:Npn \__gai_print_empty_box:
+  {
+    \group_begin:
+    \dim_set:Nn \fboxsep { \l__gai_fboxsep_dim }
+    \fbox { \phantom { \checkmark } }
+    \group_end:
+  }
+
+\cs_new_protected:Npn \__gai_checkbox_for:n #1
+  {
+    % We convert the input key to a string before checking
+    % This ensures "c:idea" (user) matches "c:idea" (package) regardless of catcodes
+    \seq_if_in:NxTF \g__gai_active_seq { \tl_to_str:n { #1 } }
+      { \__gai_print_checked_box: }
+      { \__gai_print_empty_box: }
+  }
+  
+% --- Item Text Formatting ---
+% Ragged right text in a parbox
+\cs_new_protected:Npn \__gai_item_text:n #1
+  {
+    \parbox [t] 
+      { \dim_eval:n { \linewidth - \l__gai_boxwd_dim - \l__gai_labelsep_dim } }
+      { \raggedright #1 }
+  }
+
+% --- Enumitem Configuration ---
+\setlist[itemize]{
+  leftmargin=*,
+  align=parleft,
+  itemsep=3pt,
+  topsep=0pt,
+  parsep=0pt,
+  labelsep=\l__gai_labelsep_dim
+}
+
+% =========================================================
+% 3) USER COMMANDS: ACTIVATION & TOOLS
+% =========================================================
+
+% \GAIactivate{key}
+\NewDocumentCommand \GAIactivate { m }
+  {
+    % 1. Store input
+    \tl_set:Nn \l__gai_temp_tl { #1 }
+    % 2. Trim spaces (e.g. " c:idea " -> "c:idea")
+    \tl_trim_spaces:N \l__gai_temp_tl
+    % 3. Convert to string and store
+    % \tl_to_str:N converts the content to a string (catcode 12)
+    \seq_gput_right:Nx \g__gai_active_seq { \tl_to_str:N \l__gai_temp_tl }
+  }
+
+% \GAItoolsUsed{tool1, tool2, ...}
 \NewDocumentCommand \GAItoolsUsed { m }
   {
     \tl_gclear:N \g__gai_tools_sentence_tl
-
-    % 1. Check if input is blank (empty or spaces only)
+    
     \tl_if_blank:nTF { #1 }
+      { \seq_clear:N \l__gai_tools_seq }
       {
-        % Case: Argument is empty -> Clear sequence (count = 0)
-        \seq_clear:N \l__gai_tools_seq
-      }
-      {
-        % Case: Argument has content -> Split, trim, and clean
         \seq_set_split:Nnn \l__gai_tools_seq { , } { #1 }
-        \seq_set_map:NNn \l__gai_tools_seq \l__gai_tools_seq { \tl_trim_spaces:n {##1} }
+        \seq_set_map:NNn \l__gai_tools_seq \l__gai_tools_seq 
+          { \tl_trim_spaces:n {##1} }
         \seq_remove_all:Nn \l__gai_tools_seq { }
       }
 
-    % 2. Generate sentence based on count
     \int_case:nnF { \seq_count:N \l__gai_tools_seq }
       {
-        {0}{ \tl_gset:Nn \g__gai_tools_sentence_tl { No~Generative~AI~tools~were~used. } }
+        {0}{ \tl_gset:Nn \g__gai_tools_sentence_tl { No\ Generative\ AI\ tools\ were\ used. } }
         {1}{ \tl_gset:Nx \g__gai_tools_sentence_tl
-              { The~Generative~AI~tool~used~was:~ \seq_item:Nn \l__gai_tools_seq {1}. } }
+              { \seq_item:Nn \l__gai_tools_seq {1}. } }
         {2}{ \tl_gset:Nx \g__gai_tools_sentence_tl
               {
-                The~Generative~AI~tools~used~were:~
-                \seq_item:Nn \l__gai_tools_seq {1},~and~
+                \seq_item:Nn \l__gai_tools_seq {1},\ and\ 
                 \seq_item:Nn \l__gai_tools_seq {2}.
               } }
       }
       {
         \seq_set_eq:NN \l__gai_tmp_seq \l__gai_tools_seq
-        \seq_pop_right:NN \l__gai_tmp_seq \l__gai_last_tl
+        \seq_pop_right:NN \l__gai_tmp_seq \l__gai_last_tool_tl
         \tl_gset:Nx \g__gai_tools_sentence_tl
           {
-            The~Generative~AI~tools~used~were:~
-            \seq_use:Nn \l__gai_tmp_seq {,~}
-            ,~and~\l__gai_last_tl.
+            \seq_use:Nn \l__gai_tmp_seq {,\ }
+            ,\ and\ \l__gai_last_tool_tl.
           }
       }
   }
 
-\NewDocumentCommand \RenderGAItoolsUsed { }
-  { \bigskip \noindent \tl_use:N \g__gai_tools_sentence_tl }
+% =========================================================
+% 4) USER COMMANDS: COMMENTS & TITLE
+% =========================================================
+% Comment counter
+\int_new:N \g__gai_comment_int
 
-\cs_new_protected:Npn \gai_render_authors_inline:n #1
+% Environment for comments (starred)
+\NewDocumentEnvironment{GAIcomment*}{ +b }
   {
-    \clist_set:Nn \g__gai_authors_clist { #1 }
-    \begin{enumerate*}[label={},afterlabel={},itemjoin={{,\ }},itemjoin*={{,\ and\ }}]
-      \clist_map_inline:Nn \g__gai_authors_clist
-        { \item \tl_trim_spaces:n { \textit{##1} } }
-    \end{enumerate*}
-    .
-  }
-
-\NewDocumentCommand{\RenderStatement}{ O{AUTHOR} }
-  {
-    \parindent=0pt
-    \bigskip
-
-    Responsibility\ for\ the\ final\ manuscript\ lies\ entirely\ with\ the\ \tl_use:N \g__gai_author_word_tl .
-
-    \par\medskip
-    Generative\ AI\ tools\ are\ not\ listed\ as\ authors\ and\ do\ not\ bear\ responsibility\ for\ the\ final\ outcomes.
-
-    \par\medskip
-    Declaration\ submitted\ by:\ \gai_render_authors_inline:n { #1 }
-  }
-
-
-\NewDocumentCommand {\RenderHeading} { O{\@gaisection} } {%
-  \csname#1\endcsname[\AIdiscloseTitleShort]{\AIdiscloseTitleLong}
-
-  The\ \tl_use:N \g__gai_author_word_tl\ \tl_use:N \g__gai_declare_word_tl\ the\ use\ of\ Generative\ AI\ in\ the\ research\ work\ and\ writing\ process\ of\ this\ document.
-  \par
-  According\ to\ the\ GAIDeT\ taxonomy\footnote{Suchikova,\ Y.,\ Tsybuliak,\ N.,\ Teixeira\ da\ Silva,\ J.\ A.,\ \&\ Nazarovets,\ S.\ (2025).\ GAIDeT\ (Generative\ AI\ Delegation\ Taxonomy):\ A\ taxonomy\ for\ humans\ to\ delegate\ tasks\ to\ generative\ artificial\ intelligence\ in\ scientific\ research\ and\ publishing.\ \emph{Accountability\ in\ Research},\ 1–27.\ https://doi.org/10.1080/08989621.2025.2544331},\ the\ following\ tasks\ were\ delegated\ to\ Generative\ AI\ tools\ under\ full\ human\ supervision:\par\medskip
-}
-
-%% =========================================================
-%% 6) \AIdiscloseTitle[short version]{long version}
-%%.   \AIdiscloseTitleShort  and  \AIdiscloseTitleLong
-%% =========================================================
-
-\clist_new:N \g__gai_authors_clist
-\int_new:N  \g__gai_authors_int
-\tl_new:N   \g__gai_author_word_tl
-
-\tl_new:N \g__gaidet_title_long_tl
-\tl_new:N \g__gaidet_title_short_tl
-% \tl_new:N \g__gaidet_title_section_tl
-
-\NewDocumentCommand{\AIdiscloseTitle}{ o m o }
-  {
-    % store long title
-    \tl_gset:Nn \g__gaidet_title_long_tl { #2 }
-
-    % store short title: optional or fallback to long
-    \IfNoValueTF{#1}
-      { \tl_gset:Nn \g__gaidet_title_short_tl { #2 } }
-      { \tl_gset:Nn \g__gaidet_title_short_tl { #1 } }
-
-    % Optional sectioning command for title
-    \IfNoValueTF{#3}
-      { 
-        \ifcsname chapter\endcsname
-          % \tl_gset:Nn \g__gaidet_title_section_tl \chapter
-          \gdef \@gaisection{ chapter }
-        \else
-          % \tl_gset:Nn \g__gaidet_title_section_tl \section
-          \gdef \@gaisection{ section }
-        \fi
+    % Starred: unnumbered, no increment
+    \tl_gput_right:Nn \g__gai_comments_tl
+      {
+        \par \bigskip \noindent
+        \textbf{Additional\ comment:}\  #1 \par
       }
-      % { \tl_gset:Nn \g__gaidet_title_section_tl { #3 } }
-      { \gdef\@gaisection{ #3 } }
   }
-\AIdiscloseTitle[Disclosure\ of\ Delegation\ to\ Generative\ AI]
-            {Disclosure\ of\ Delegation\ to\ Generative\ Artificial\ Inteligence}
+  { }
 
+% Environment for comments (unstarred)
+\NewDocumentEnvironment{GAIcomment}{ +b }
+  {
+    % Unstarred: numbered and increments
+    \tl_gput_right:Nn \g__gai_comments_tl
+      {
+        \int_gincr:N \g__gai_comment_int
+        \par \bigskip \noindent
+        \textbf{Additional\ comment\ \#\int_use:N \g__gai_comment_int}\  #1 \par
+      }
+  }
+  { }
 
-% Public accessors
-\NewDocumentCommand {\AIdiscloseTitleLong} {}%
-  { \tl_use:N \g__gaidet_title_long_tl }
+% \GAIdiscloseTitle[short]{long}[section_level]
+% Defaults: Long text, Section level auto-detected
+\NewDocumentCommand \GAIdiscloseTitle { o m O{} }
+  {
+    \tl_gset:Nn \g__gai_title_long_tl { #2 }
+    
+    % Handle optional short title
+    \IfNoValueTF { #1 }
+      { \tl_gset:Nn \g__gai_title_short_tl { #2 } }
+      { \tl_gset:Nn \g__gai_title_short_tl { #1 } }
+      
+    % Handle optional section command
+    \tl_if_blank:nTF { #3 }
+      {
+        \cs_if_exist:cTF { chapter }
+          { \tl_gset:Nn \g__gai_section_cmd_tl { \chapter } }
+          { \tl_gset:Nn \g__gai_section_cmd_tl { \section } }
+      }
+      {
+        \tl_gset:Nn \g__gai_section_cmd_tl { #3 }
+      }
+  }
 
-\NewDocumentCommand {\AIdiscloseTitleShort} {}%
-  { \tl_use:N \g__gaidet_title_short_tl }
+% Initialize default titles
+\GAIdiscloseTitle[Disclosure\ of\ Delegation\ to\ Generative\ AI]
+                {Disclosure\ of\ Delegation\ to\ Generative\ Artificial\ Intelligence}
 
+\NewDocumentCommand \GAIdiscloseTitleLong {} { \tl_use:N \g__gai_title_long_tl }
+\NewDocumentCommand \GAIdiscloseTitleShort {} { \tl_use:N \g__gai_title_short_tl }
 
-%% =========================================================
-% 7) \RenderAIDeclaration[checklist_ncolumns]{Author1 Name, Author2 Name, …}
-%% =========================================================
-\NewDocumentCommand {\RenderAIDeclaration} { O{3} m} {
-  \clist_set:Nn \g__gai_authors_clist { #2 }
-  \int_set:Nn  \g__gai_authors_int { \clist_count:N \g__gai_authors_clist }
-  \tl_set:Nx   \g__gai_author_word_tl
-    {
-      \int_compare:nNnTF { \g__gai_authors_int } = { 1 } { author } { authors }
-    }
-  \tl_set:Nx   \g__gai_declare_word_tl
-    {
-      \int_compare:nNnTF { \g__gai_authors_int } = { 1 } { declares } { declare }
-    }
-  
-  \RenderHeading
-  \RenderMergedChecklist[#1]
-  \RenderStatement[#2]
-  \RenderComment
+% =========================================================
+% 5) TAXONOMY DATA
+% =========================================================
+
+% We define the taxonomy data in a variable. 
+% We use local definitions for \TGroup, \TItem etc when processing this.
+\tl_gset:Nn \g__gai_taxonomy_tl {
+  \TGroup{Conceptualization}{
+    \TItem{c:idea}{Idea\ generation}
+    \TItem{c:objective}{Defining\ the\ research\ objective}
+    \TItem{c:rq}{Formulating\ research\ questions\ and\ hypotheses}
+    \TItem{c:feas}{Feasibility\ assessment\ and\ risk\ evaluation}
+    \TItem{c:pretest}{Preliminary\ hypothesis\ testing}
+  }
+  \TGroup{Literature\ Review}{
+    \TItem{l:search}{Literature\ search\ and\ systematization}
+    \TItem{l:write}{Writing\ the\ literature\ review}
+    \TItem{l:patents}{Analysis\ of\ market\ trends\ and/or\ patent\ environment}
+    \TItem{l:gaps}{Evaluation\ of\ novelty\ and\ identification\ of\ gaps}
+  }
+  \TGroup{Methodology}{
+    \TItem{m:design}{Research\ design}
+    \TItem{m:protocols}{Development\ of\ experimental\ or\ research\ protocols}
+    \TItem{m:methods}{Selection\ of\ research\ methods}
+  }
+  \TGroup{Software\ Development\ and\ Automation}{
+    \TItem{s:codegen}{Code\ generation}
+    \TItem{s:opt}{Code\ optimization}
+    \TItem{s:auto}{Process\ automation}
+    \TItem{s:algs}{Creation\ of\ algorithms\ for\ data\ analysis}
+  }
+  \TGroup{Data\ Management}{
+    \TItem{d:collect}{Data\ collection}
+    \TItem{d:validate}{Validation}
+    \TItem{d:clean}{Data\ cleaning}
+    \TItem{d:curate}{Data\ curation\ and\ organization}
+    \TItem{d:analyze}{Data\ analysis}
+    \TItem{d:viz}{Visualization}
+    \TItem{d:repro}{Reproducibility\ testing}
+  }
+  \TGroup{Writing\ and\ Editing}{
+    \TItem{w:textgen}{Text\ generation}
+    \TItem{w:proof}{Proofreading\ and\ editing}
+    \TItem{w:summarize}{Summarizing\ text}
+    \TItem{w:concl}{Formulation\ of\ conclusions}
+    \TItem{w:tone}{Adapting\ and\ adjusting\ emotional\ tone}
+    \TItem{w:translate}{Translation}
+    \TItem{w:reformat}{Reformatting}
+    \TItem{w:press}{Press\ releases\ and\ outreach\ materials}
+  }
+  \TGroup{Ethics\ Review}{
+    \TItem{e:bias}{Bias\ analysis\ and\ discrimination\ assessment}
+    \TItem{e:risk}{Ethical\ risk\ analysis}
+    \TItem{e:compliance}{Monitoring\ compliance\ with\ ethical\ standards}
+    \TItem{e:conf}{Data\ confidentiality\ monitoring}
+  }
+  \TGroup{Supervision}{
+    \TItem{sup:qa}{Quality\ assessment}
+    \TItem{sup:trends}{Trend\ identification}
+    \TItem{sup:limits}{Identification\ of\ limitations}
+    \TItem{sup:recs}{Recommendations}
+    \TItem{sup:pub}{Publication\ support}
+  }
 }
 
+% =========================================================
+% 6) RENDERING LOGIC
+% =========================================================
+\tl_new:N \g__gai_fontsize_tl
+% Set a default size (e.g., \small) so it isn't empty if the user doesn't set it
+\tl_gset:Nn \g__gai_fontsize_tl { \smaller }
+
+% \GAIsetChecklistFontSize{ \small } or { \footnotesize }, etc.
+\NewDocumentCommand \GAIsetChecklistFontSize { m }
+  {
+    \tl_gset:Nn \g__gai_fontsize_tl { #1 }
+  }
 
 
-\ExplSyntaxOff
+% \GAIrenderDeclaration[cols]{Authors}
+\NewDocumentCommand \GAIrenderDeclaration { O{3} m }
+  {
+    % 1. Process Authors
+    \clist_set:Nn \g__gai_authors_clist { #2 }
+    \int_set:Nn \g__gai_authors_int { \clist_count:N \g__gai_authors_clist }
+    
+    \int_case:nnF { \g__gai_authors_int }
+      {
+        % Case: 1 Author -> "Name declares"
+        {1} { \tl_set:Nn \l__gai_authors_formatted_tl { #2\ declares } }
+      }
+      { 
+        % Case: Multiple Authors -> "Name, Name, and Name declare"
+        \tl_set:Nx \l__gai_authors_formatted_tl 
+          { 
+            \clist_use:Nnnn \g__gai_authors_clist
+              { \ and\  }    % Separator for exactly 2 items
+              { ,\  }       % Separator between items (if > 2)
+              { ,\ and\  }   % Separator before the last item (Oxford comma)
+            \ declare 
+          }
+      }
 
+    % 2. Print Section Title
+    % Use the stored section command (e.g. \section*)
+    \use:c { \cs_to_str:N \g__gai_section_cmd_tl } 
+           { \g__gai_title_long_tl}
+               
+    % 3. Print Preamble Text
+    \l__gai_authors_formatted_tl \space
+    the\ use\ of\ Generative\ AI\ in\ the\ research\ work\ and\ writing\ process\ of\ this\ 
+    document.\ According\ to\ the\ GAIDeT\ taxonomy,
+    \footnote{\scriptsize Suchikova,\ Y.,\ Tsybuliak,\ N.,\ Teixeira\ da\ Silva,\ J.\ A.,\ \&\ 
+              Nazarovets,\ S.\ (2025).\ 
+              GAIDeT\ (Generative\ AI\ Delegation\ Taxonomy): A\ taxonomy\ for\ humans\ to\ 
+              delegate\ tasks\ to\ generative\ artificial\ intelligence\ in\ scientific\ 
+              research\ and\ publishing.\ 
+              \emph{Accountability\ in\ Research},\ 1–27.\ 
+              https://doi.org/10.1080/08989621.2025.2544331}\ 
+    the\ following\ tasks\ were\ delegated\ to\ Generative\ AI\ tools\ under\ full\ 
+    human\ supervision:\ 
+    
+    \par \bigskip
 
+    % 4. Render the Taxonomy (Checklist)
+    \group_begin:
+      % Define how the taxonomy items behave only inside this group
+      
+      \g__gai_fontsize_tl
+      
+      % \TGroup{Title}{Items}
+      \cs_set:Npn \TGroup ##1 ##2
+        {
+          \par \bigskip
+          \setlength { \multicolsep } { 5pt }
+          \begin { multicols } { #1 } [  \textbf { \larger ##1 } ] % #1 is the optional arg (columns)
+            \begin { itemize }
+              ##2
+            \end { itemize }
+          \end { multicols }
+        }
+
+      % \TSubGroup{Title}{Items}
+      \cs_set:Npn \TSubGroup ##1 ##2
+        {
+          \item[] \textbf { ##1 } \par \smallskip
+          \begin { itemize }
+            ##2
+          \end { itemize }
+        }
+
+      % \TItem{Key}{Text}
+      \cs_set:Npn \TItem ##1 ##2
+        {
+          \item [ \__gai_checkbox_for:n { ##1 } ] 
+          \__gai_item_text:n { ##2 }
+        }
+
+      % \TSubItem{Key}{Text}
+      \cs_set:Npn \TSubItem ##1 ##2
+        {
+          \item [ \__gai_checkbox_for:n { ##1 } ] 
+          \__gai_item_text:n { ##2 }
+        }
+
+      % EXECUTE
+      \tl_use:N \g__gai_taxonomy_tl
+    \group_end:
+
+    \par \bigskip
+    
+    % 5. Print Tools Used
+    \noindent \textbf { Generative\ AI\ tools\ used: } \  \tl_use:N \g__gai_tools_sentence_tl
+
+    % 6. Print Comments (if any)
+    \tl_if_empty:NF \g__gai_comments_tl
+      {
+        \par \bigskip
+        \tl_use:N \g__gai_comments_tl
+      }
+  }
 
 \endinput

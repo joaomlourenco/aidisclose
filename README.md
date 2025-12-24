@@ -67,21 +67,21 @@ Load the package in the preamble:
 ### Setting the Declaration Title
 
 ```tex
-\AIdiscloseTitle{Generative AI Declaration of Transparency}
+\GAIdiscloseTitle{Generative AI Declaration of Transparency}
 ```
 
 With a short title:
 
 ```tex
-\AIdiscloseTitle[GAI DeT]
+\GAIdiscloseTitle[GAI DeT]
            {Generative AI Declaration of Transparency}
 ```
 
 Stored titles can be reused later:
 
 ```tex
-\AIdiscloseTitleLong
-\AIdiscloseTitleShort
+\GAIdiscloseTitleLong
+\GAIdiscloseTitleShort
 ```
 
 ---
@@ -117,8 +117,8 @@ Optional number of columns while printing the Check Lisk.  Defaults to 3 columns
 ### Activating Checklist Items
 
 ```tex
-\Activate{c:idea}
-\Activate{l:search}
+\GAIactivate{c:idea}
+\GAIactivate{l:search}
 ```
 
 Activated items are reflected automatically in the rendered declaration.  See the documentation for the full list of Checklist Items.

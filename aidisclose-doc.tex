@@ -44,9 +44,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% MAIN DOCUMENT
 \begin{document}
-  \title{The \gaifilename\ package}
+  \title{The \texttt{aidisclose} package}
   \author{João M. Lourenço\\\url{https://github.com/joaomlourenco/aidisclose}}
-  \date{\gaifiledate\ (v\gaifileversion)}
+  \date{2025-12-25\ (v1.2.0)}
 
   \maketitle
 
@@ -54,7 +54,7 @@
 \section{Introduction}
 \label{sec:introduction}
 
-\texttt{\gaifilename} is a LaTeX package providing a standardized, transparent mechanism for declaring the use of Generative Artificial Intelligence (GAI) tools in academic, technical, and professional documents.
+\texttt{aidisclose} is a LaTeX package providing a standardized, transparent mechanism for declaring the use of Generative Artificial Intelligence (GAI) tools in academic, technical, and professional documents.
 
 The package is designed to support emerging ethical, institutional, and publisher requirements concerning AI-assisted content creation. It implements the \emph{GAIDeT (Generative AI Delegation Taxonomy)}, as proposed by \citeauthor{Suchikova:GAIDeT:2025}~\citeyear{Suchikova:GAIDeT:2025}~\cite{Suchikova:GAIDeT:2025}.
 
@@ -80,12 +80,12 @@ The declaration process consists of two steps: \textbf{Configuration} (defining 
 Configuration commands can be placed in the preamble or anywhere in the document body before the rendering command is called.
 
 \subsubsection{Activating Taxonomy Items}
-Use the \verb|\Activate{<key>}| command to check specific items in the taxonomy. A full list of available keys is provided in Section~\ref{sec:taxonomy-keys}.
+Use the \verb|\GAIactivate{<key>}| command to check specific items in the taxonomy. A full list of available keys is provided in Section~\ref{sec:taxonomy-keys}.
 
 \begin{verbatim}
 % Example: Activating "Idea generation" and "Code optimization"
-\Activate{c:idea}
-\Activate{s:opt}
+\GAIactivate{c:idea}
+\GAIactivate{s:opt}
 \end{verbatim}
 
 \subsubsection{Specifying Tools}
@@ -103,27 +103,27 @@ Use the \verb|\GAItoolsUsed{<list>}| command to list the AI tools employed. The 
 \end{verbatim}
 
 \subsubsection{Adding Comments}
-If you need to provide additional context, use the \texttt{GAIComment} environment.
+If you need to provide additional context, use the \texttt{GAIcomment} environment.
 \begin{verbatim}
-\begin{GAIComment}
+\begin{GAIcomment}
     The AI was used primarily for refining the code in Section 3, 
     but the algorithm logic was derived manually.
-\end{GAIComment}
+\end{GAIcomment}
 \end{verbatim}
 
 \subsubsection{Customizing the Title}
-You can change the default title of the declaration section using \verb|\AIdiscloseTitle|.
+You can change the default title of the declaration section using \verb|\GAIdiscloseTitle|.
 \begin{verbatim}
-\AIdiscloseTitle[Short Title]{Full Title for the Section}[section-level]
+\GAIdiscloseTitle[Short Title]{Full Title for the Section}[section-level]
 \end{verbatim}
 
 The last (optional) argument \verb|section-level| defaults to \verb|chapter| if \verb|\chapter| is defined (e.g., in book-like documents), otherwise defaults to \verb|section|.
 
 \subsection{Rendering the Declaration}
-To print the final declaration, use the \verb|\RenderAIDeclaration| command at the desired location in your document.  For papers/articles, you may consider to it before or after the references.  For thesis/dissertations, please follow your University/School rules.
+To print the final declaration, use the \verb|\GAIrenderDeclaration| command at the desired location in your document.  For papers/articles, you may consider to it before or after the references.  For thesis/dissertations, please follow your University/School rules.
 
 \begin{verbatim}
-\RenderAIDeclaration[<checklist_ncols>]{<Author Names>}
+\GAIrenderDeclaration[<checklist_ncols>]{<Author Names>}
 \end{verbatim}
 
 \begin{itemize}
@@ -133,7 +133,7 @@ To print the final declaration, use the \verb|\RenderAIDeclaration| command at t
 
 
 \begin{verbatim}
-\SetChecklistFont{<fontsize>}
+\GAIsetChecklistFontSize{<fontsize>}
 \end{verbatim}
 
 \begin{itemize}
@@ -141,15 +141,16 @@ To print the final declaration, use the \verb|\RenderAIDeclaration| command at t
 \end{itemize}
 
 
+\bigskip
 \textbf{Example:}
 \begin{verbatim}
-\RenderAIDeclaration[1]{Jane Doe, John Smith}
+\GAIrenderDeclaration[1]{Jane Doe, John Smith}
 \end{verbatim}
-\noindent prints the declaration's checkist in a single column and considers the two given authors.
+\noindent prints the declaration for thwo authors with the Generative AI Checklist in a single column.
 
 \section{Taxonomy Keys}
 \label{sec:taxonomy-keys}
-The following keys correspond to the specific tasks defined in the GAIDeT taxonomy~\cite{Suchikova:GAIDeT:2025}. Use these keys with the \verb|\Activate{}| command.
+The following keys correspond to the specific tasks defined in the GAIDeT taxonomy~\cite{Suchikova:GAIDeT:2025}. Use these keys with the \verb|\GAIactivate{}| command.
 
 \begin{center}
 \small
@@ -220,58 +221,58 @@ The following keys correspond to the specific tasks defined in the GAIDeT taxono
 %—————————————————————————————————————————————————————————————————
 
 % --- Conceptualization ---
-\Activate{c:idea}      % Idea generation
-\Activate{c:objective} % Defining the research objective
-\Activate{c:rq}        % Formulating research questions and hypotheses
-\Activate{c:feas}      % Feasibility assessment and risk evaluation
-% \Activate{c:pretest}   % Preliminary hypothesis testing
+\GAIactivate{c:idea}      % Idea generation
+\GAIactivate{c:objective} % Defining the research objective
+\GAIactivate{c:rq}        % Formulating research questions and hypotheses
+\GAIactivate{c:feas}      % Feasibility assessment and risk evaluation
+% \GAIactivate{c:pretest}   % Preliminary hypothesis testing
 
 % --- Literature Review ---
-\Activate{l:search}    % Literature search and systematization
-\Activate{l:write}     % Writing the literature review
-% \Activate{l:patents}   % Market trends / patent environment
-% \Activate{l:gaps}      % Novelty evaluation and gap identification
+\GAIactivate{l:search}    % Literature search and systematization
+\GAIactivate{l:write}     % Writing the literature review
+% \GAIactivate{l:patents}   % Market trends / patent environment
+% \GAIactivate{l:gaps}      % Novelty evaluation and gap identification
 
 % --- Methodology ---
-\Activate{m:design}    % Research design
-% \Activate{m:protocols} % Experimental / research protocols
-% \Activate{m:methods}   % Selection of research methods
+\GAIactivate{m:design}    % Research design
+% \GAIactivate{m:protocols} % Experimental / research protocols
+% \GAIactivate{m:methods}   % Selection of research methods
 
 % --- Software Development and Automation ---
-% \Activate{s:codegen}   % Code generation
-% \Activate{s:opt}       % Code optimization
-\Activate{s:auto}      % Process automation
-\Activate{s:algs}      % Algorithms for data analysis
+% \GAIactivate{s:codegen}   % Code generation
+% \GAIactivate{s:opt}       % Code optimization
+\GAIactivate{s:auto}      % Process automation
+\GAIactivate{s:algs}      % Algorithms for data analysis
 
 % --- Data Management ---
-% \Activate{d:collect}   % Data collection
-\Activate{d:validate}  % Validation
-% \Activate{d:clean}     % Data cleaning
-\Activate{d:curate}    % Data curation and organization
-\Activate{d:analyze}   % Data analysis
-% \Activate{d:viz}       % Visualization
-% \Activate{d:repro}     % Reproducibility testing
+% \GAIactivate{d:collect}   % Data collection
+\GAIactivate{d:validate}  % Validation
+% \GAIactivate{d:clean}     % Data cleaning
+\GAIactivate{d:curate}    % Data curation and organization
+\GAIactivate{d:analyze}   % Data analysis
+% \GAIactivate{d:viz}       % Visualization
+% \GAIactivate{d:repro}     % Reproducibility testing
 
 % --- Writing and Editing ---
-\Activate{w:textgen}   % Text generation
-% \Activate{w:proof}     % Proofreading and editing
-\Activate{w:summarize} % Summarizing text
-% \Activate{w:concl}     % Formulation of conclusions
-\Activate{w:tone}      % Emotional tone adjustment
-% \Activate{w:translate} % Translation
-% \Activate{w:reformat}  % Reformatting
-\Activate{w:press}     % Press releases and outreach materials
+\GAIactivate{w:textgen}   % Text generation
+% \GAIactivate{w:proof}     % Proofreading and editing
+\GAIactivate{w:summarize} % Summarizing text
+% \GAIactivate{w:concl}     % Formulation of conclusions
+\GAIactivate{w:tone}      % Emotional tone adjustment
+% \GAIactivate{w:translate} % Translation
+% \GAIactivate{w:reformat}  % Reformatting
+\GAIactivate{w:press}     % Press releases and outreach materials
 
 % --- Ethics Review / Supervision ---
-\Activate{e:bias}      % Bias analysis / discrimination assessment
-\Activate{e:risk}      % Ethical risk analysis
-\Activate{e:compliance}% Compliance monitoring
-% \Activate{e:conf}      % Data confidentiality monitoring
-% \Activate{sup:qa}      % Quality assessment
-% \Activate{sup:trends}  % Trend identification
-\Activate{sup:limits}  % Identification of limitations
-% \Activate{sup:recs}    % Recommendations
-% \Activate{sup:pub}     % Publication support
+\GAIactivate{e:bias}      % Bias analysis / discrimination assessment
+\GAIactivate{e:risk}      % Ethical risk analysis
+\GAIactivate{e:compliance}% Compliance monitoring
+% \GAIactivate{e:conf}      % Data confidentiality monitoring
+% \GAIactivate{sup:qa}      % Quality assessment
+% \GAIactivate{sup:trends}  % Trend identification
+\GAIactivate{sup:limits}  % Identification of limitations
+% \GAIactivate{sup:recs}    % Recommendations
+% \GAIactivate{sup:pub}     % Publication support
 
 
 % --- GAI tools used ---
@@ -280,12 +281,24 @@ The following keys correspond to the specific tasks defined in the GAIDeT taxono
 \GAItoolsUsed{ChatGPT-5.2, Gemini 3 Pro, Claude 4.5 Opus, Perplexity 12.12.25}
 
 % --- Optional extra note/comment ---
-\begin{GAIComment}
+\begin{GAIcomment}
   The AI was used primarily for refining the code in Section 3, but the algorithm logic was derived manually.
-\end{GAIComment}
+\end{GAIcomment}
+
+\begin{GAIcomment}
+  This is a second additional comment!
+\end{GAIcomment}
+
+\begin{GAIcomment*}
+  This is a third additional comment!   It is straed and, thus, not get a number. also, this comment is longer and, hopefully, will spill to the next line!
+\end{GAIcomment*}
+
+\begin{GAIcomment}
+  This is the third non-stared additional comment!
+\end{GAIcomment}
 
 % --- Optional customization of title ---
-% \AIdiscloseTitle[Disclosure of Generative AI]
+% \GAIdiscloseTitle[Disclosure of Generative AI]
 %             {Disclosure of Generative Artificial Inteligence}%[subsection]
 
 %—————————————————————————————————————————————————————————————————
@@ -293,9 +306,9 @@ The following keys correspond to the specific tasks defined in the GAIDeT taxono
 %—————————————————————————————————————————————————————————————————
 
 
-% Syntax: \RenderAIDeclaration[checklist_ncolumns]{Author1 Name, Author2 Name, …}
-\RenderAIDeclaration[2]{Jane Doe, John Doe, Mary Doe}
-% \RenderAIDeclaration[2]{Jane Doe}
+% Syntax: \GAIrenderDeclaration[checklist_ncolumns]{Author1 Name, Author2 Name, …}
+\GAIrenderDeclaration[2]{Jane Doe, John Doe, Mary Doe}
+% \GAIrenderDeclaration[2]{Jane Doe}
 
 
 \printbibliography
