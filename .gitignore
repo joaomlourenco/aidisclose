@@ -1,7 +1,11 @@
 # Created by https://www.toptal.com/developers/gitignore/api/latex,windows,linux,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=latex,windows,linux,macos
 
-### stocksize ###
+
+### aidisclose ###
+
+# Ignore the .bib file, as it is generated automatically from the .tex file
+aidisclose-doc.bib
 
 # Ignore all minted …
 _*
