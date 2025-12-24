@@ -1,6 +1,6 @@
-%% This is file `GAIDeT.sty',
+%% GAIDeT.sty --- Utilities for a Generative AI disclosure checklist and statements
 %%
-%% Copyright (C) 2025 by João Lourenço <joao.lourenco@fct.unl.pt>
+%% Copyright (C) 2025 by João M. Lourenço <joao.lourenco@fct.unl.pt>
 %%
 %% This file may be distributed and/or modified under the conditions of
 %% the LaTeX Project Public License, either version 1.3c of this license
@@ -12,8 +12,14 @@
 %% and version 1.3c or later is part of all distributions of LaTeX
 %% version 2006/05/20 or later.
 %%
-\def\gaidetfileversion{1.0.0}
-\def\gaidetfiledate   {2025/12/23}
+%%
+%% Suchikova, Y., Tsybuliak, N., Teixeira da Silva, J. A., \& Nazarovets, S. (2025).
+%% GAIDeT (Generative AI Delegation Taxonomy): A taxonomy for humans to delegate
+%% tasks to generative artificial intelligence in scientific research and publishing.
+%% Accountability in Research, 1–27. https://doi.org/10.1080/08989621.2025.2544331
+%%
+\def\gaidetfileversion{1.1.0}
+\def\gaidetfiledate   {2025/12/24}
 \edef\gaidetfilename  {\@currname}
 
 \NeedsTeXFormat{LaTeX2e}
@@ -144,13 +150,19 @@
 %% =========================================================
 %% 4) RENDERER (MULTI-COLUMN PER GROUP)
 %% =========================================================
+\newcommand{\ChecklistFont}{\smaller[1]}
+
+\newcommand{\SetChecklistFont}[1]{
+  \renewcommand{\ChecklistFont}{#1}
+}
+
 \newcommand{\GroupTitle}[1]{%
   \par\medskip\noindent\textbf{\larger #1}%
 }
 
-\newcommand{\RenderMergedChecklist}[1][\smaller]{%
+\newcommand{\RenderMergedChecklist}[1][3]{%
   \begingroup
-  \smaller[#1]
+  \ChecklistFont
 
   %% Enumitem defaults (scoped to this rendering only)
   \setlist[itemize]{%
@@ -164,7 +176,7 @@
 
   \renewcommand{\TGroup}[2]{%
     \setlength{\multicolsep}{5pt}%
-    \begin{multicols}{3}[\GroupTitle{##1}]
+    \begin{multicols}{#1}[\GroupTitle{##1}]
       \begin{itemize}
         ##2%
       \end{itemize}
@@ -263,19 +275,11 @@
 \NewDocumentCommand \RenderGAItoolsUsed { }
   { \bigskip \noindent \tl_use:N \g__gai_tools_sentence_tl }
 
-\ExplSyntaxOff
-
-
-\ExplSyntaxOn
-\clist_new:N \l__gai_authors_clist
-\int_new:N  \l__gai_authors_int
-\tl_new:N   \l__gai_author_word_tl
-
 \cs_new_protected:Npn \gai_render_authors_inline:n #1
   {
-    \clist_set:Nn \l__gai_authors_clist { #1 }
+    \clist_set:Nn \g__gai_authors_clist { #1 }
     \begin{enumerate*}[label={},afterlabel={},itemjoin={{,\ }},itemjoin*={{,\ and\ }}]
-      \clist_map_inline:Nn \l__gai_authors_clist
+      \clist_map_inline:Nn \g__gai_authors_clist
         { \item \tl_trim_spaces:n { \textit{##1} } }
     \end{enumerate*}
     .
@@ -286,14 +290,7 @@
     \parindent=0pt
     \bigskip
 
-    \clist_set:Nn \l__gai_authors_clist { #1 }
-    \int_set:Nn  \l__gai_authors_int { \clist_count:N \l__gai_authors_clist }
-    \tl_set:Nx   \l__gai_author_word_tl
-      {
-        \int_compare:nNnTF { \l__gai_authors_int } = { 1 } { author } { authors }
-      }
-
-    Responsibility\ for\ the\ final\ manuscript\ lies\ entirely\ with\ the\ \tl_use:N \l__gai_author_word_tl .
+    Responsibility\ for\ the\ final\ manuscript\ lies\ entirely\ with\ the\ \tl_use:N \g__gai_author_word_tl .
 
     \par\medskip
     Generative\ AI\ tools\ are\ not\ listed\ as\ authors\ and\ do\ not\ bear\ responsibility\ for\ the\ final\ outcomes.
@@ -301,25 +298,24 @@
     \par\medskip
     Declaration\ submitted\ by:\ \gai_render_authors_inline:n { #1 }
   }
-\ExplSyntaxOff
 
 
-\newcommand{\RenderHeading}[1][\@gaidetsection]{%
+\NewDocumentCommand {\RenderHeading} { O{\@gaidetsection} } {%
   \csname#1\endcsname[\GAIDeTtitleShort]{\GAIDeTtitleLong}
 
-  The author declares the use of Generative AI in the research work and writing process of this document.
-  
-  According to the GAIDeT taxonomy\footnote{Suchikova, Y., Tsybuliak, N., Teixeira da Silva, J. A., \& Nazarovets, S. (2025). GAIDeT (Generative AI Delegation Taxonomy): A taxonomy for humans to delegate tasks to generative artificial intelligence in scientific research and publishing. \emph{Accountability in Research}, 1–27. https://doi.org/10.1080/08989621.2025.2544331}, the following tasks were delegated to Generative AI tools under full human supervision:\par\medskip
+  The\ \tl_use:N \g__gai_author_word_tl\ \tl_use:N \g__gai_declare_word_tl\ the\ use\ of\ Generative\ AI\ in\ the\ research\ work\ and\ writing\ process\ of\ this\ document.
+  \par
+  According\ to\ the\ GAIDeT\ taxonomy\footnote{Suchikova,\ Y.,\ Tsybuliak,\ N.,\ Teixeira\ da\ Silva,\ J.\ A.,\ \&\ Nazarovets,\ S.\ (2025).\ GAIDeT\ (Generative\ AI\ Delegation\ Taxonomy):\ A\ taxonomy\ for\ humans\ to\ delegate\ tasks\ to\ generative\ artificial\ intelligence\ in\ scientific\ research\ and\ publishing.\ \emph{Accountability\ in\ Research},\ 1–27.\ https://doi.org/10.1080/08989621.2025.2544331},\ the\ following\ tasks\ were\ delegated\ to\ Generative\ AI\ tools\ under\ full\ human\ supervision:\par\medskip
 }
-
 
 %% =========================================================
 %% 6) \GAIDeTtitle[short version]{long version}
 %%.   \GAIDeTtitleShort  and  \GAIDeTtitleLong
 %% =========================================================
 
-
-\ExplSyntaxOn
+\clist_new:N \g__gai_authors_clist
+\int_new:N  \g__gai_authors_int
+\tl_new:N   \g__gai_author_word_tl
 
 \tl_new:N \g__gaidet_title_long_tl
 \tl_new:N \g__gaidet_title_short_tl
@@ -354,27 +350,38 @@
 
 
 % Public accessors
-\NewDocumentCommand{\GAIDeTtitleLong}{}%
+\NewDocumentCommand {\GAIDeTtitleLong} {}%
   { \tl_use:N \g__gaidet_title_long_tl }
 
-\NewDocumentCommand{\GAIDeTtitleShort}{}%
+\NewDocumentCommand {\GAIDeTtitleShort} {}%
   { \tl_use:N \g__gaidet_title_short_tl }
 
-\ExplSyntaxOff
-
-
-
-
 
 %% =========================================================
-% 7) \RenderGAIDeTDeclaration[smaller_checklist_font]{Author Name}
+% 7) \RenderGAIDeTDeclaration[checklist_ncolumns]{Author1 Name, Author2 Name, …}
 %% =========================================================
-\newcommand{\RenderGAIDeTDeclaration}[2][1]{
+\NewDocumentCommand {\RenderGAIDeTDeclaration} { O{3} m} {
+  \clist_set:Nn \g__gai_authors_clist { #2 }
+  \int_set:Nn  \g__gai_authors_int { \clist_count:N \g__gai_authors_clist }
+  \tl_set:Nx   \g__gai_author_word_tl
+    {
+      \int_compare:nNnTF { \g__gai_authors_int } = { 1 } { author } { authors }
+    }
+  \tl_set:Nx   \g__gai_declare_word_tl
+    {
+      \int_compare:nNnTF { \g__gai_authors_int } = { 1 } { declares } { declare }
+    }
+  
   \RenderHeading
   \RenderMergedChecklist[#1]
   \RenderStatement[#2]
   \RenderComment
 }
+
+
+
+\ExplSyntaxOff
+
 
 
 \endinput

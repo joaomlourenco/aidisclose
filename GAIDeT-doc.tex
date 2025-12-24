@@ -1,6 +1,6 @@
-%% This is file `GAIDeT-doc.text',
+%% GAIDeT-doc.tex --- Utilities for a Generative AI disclosure checklist and statements
 %%
-%% Copyright (C) 20225 by João M. Lourenço <joao.lourenco@fct.unl.pt>
+%% Copyright (C) 2025 by João M. Lourenço <joao.lourenco@fct.unl.pt>
 %%
 %% This file may be distributed and/or modified under the conditions of
 %% the LaTeX Project Public License, either version 1.3c of this license
@@ -112,18 +112,29 @@ The last (optional) argument \verb|section-level| defaults to \verb|chapter| if 
 To print the final declaration, use the \verb|\RenderGAIDeTDeclaration| command at the desired location in your document.  For papers/articles, you may consider to it before or after the references.  For thesis/dissertations, please follow your University/School rules.
 
 \begin{verbatim}
-\RenderGAIDeTDeclaration[<font_scale>]{<Author Names>}
+\RenderGAIDeTDeclaration[<checklist_ncols>]{<Author Names>}
 \end{verbatim}
 
 \begin{itemize}
-    \item \textbf{Optional Argument} (\texttt{[1]}): A scaling factor for the checklist font size relative to the document text. The default is \texttt{1} (slightly smaller).
+    \item \textbf{Optional Argument} (\verb|[<checklist_ncols>]|): The number of columns used while printing the checklist. The default is \texttt{3} columns.
     \item \textbf{Mandatory Argument}: A comma-separated list of author names submitting the declaration.
 \end{itemize}
+
+
+\begin{verbatim}
+\SetChecklistFont{<fontsize>}
+\end{verbatim}
+
+\begin{itemize}
+    \item \textbf{Mandatory Argument}: The font size to use while printing the checklist. The default is \verb|\smaller[1]|, which means “\emph{slightly smaller}”.
+\end{itemize}
+
 
 \textbf{Example:}
 \begin{verbatim}
 \RenderGAIDeTDeclaration[1]{Jane Doe, John Smith}
 \end{verbatim}
+\noindent prints the declaration's checkist in a single column and considers the two given authors.
 
 \section{Taxonomy Keys}
 \label{sec:taxonomy-keys}
@@ -263,17 +274,17 @@ The following keys correspond to the specific tasks defined in the GAIDeT taxono
 \end{GAIComment}
 
 % --- Optional customization of title ---
-\GAIDeTtitle[Disclosure of Generative AI]
-            {Disclosure of Generative Artificial Inteligence}%[subsection]
+% \GAIDeTtitle[Disclosure of Generative AI]
+%             {Disclosure of Generative Artificial Inteligence}%[subsection]
 
 %—————————————————————————————————————————————————————————————————
 % End-of GAIDeT Disclosure Customization
 %—————————————————————————————————————————————————————————————————
 
 
-% Syntax: \RenderGAIDeTDeclaration[how_smaller_checklist]{Author Name}
-\RenderGAIDeTDeclaration[1]{Jane Doe, John Doe, Mary Doe}
-% \RenderGAIDeTDeclaration[1]{Jane Doe}
+% Syntax: \RenderGAIDeTDeclaration[checklist_ncolumns]{Author1 Name, Author2 Name, …}
+\RenderGAIDeTDeclaration[2]{Jane Doe, John Doe, Mary Doe}
+% \RenderGAIDeTDeclaration[2]{Jane Doe}
 
 
 \printbibliography
