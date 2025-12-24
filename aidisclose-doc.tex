@@ -1,4 +1,4 @@
-%% GAIDeT-doc.tex --- Utilities for a Generative AI disclosure checklist and statements
+%% aidisclose-doc.tex --- Utilities for Generative AI disclosure checklist and statements
 %%
 %% Copyright (C) 2025 by João M. Lourenço <joao.lourenco@fct.unl.pt>
 %%
@@ -14,11 +14,23 @@
 %%
 \documentclass[11pt]{article}
 
+\begin{filecontents}{aidisclose-doc.bib}
+@article{Suchikova:GAIDeT:2025,
+	title        = {{GAIDeT (Generative AI Delegation Taxonomy)}: A Taxonomy for Humans to Delegate Tasks to Generative Artificial Intelligence in Scientific Research and Publishing},
+	author       = {Yana Suchikova and Natalia Tsybuliak and Jaime A. Teixeira da Silva and Serhii Nazarovets},
+	year         = 2025,
+	journal      = {Accountability in Research},
+	publisher    = {Taylor \& Francis},
+	pages        = {1--27},
+	doi          = {10.1080/08989621.2025.2544331}
+}  
+\end{filecontents}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% GAIDeT stuff
-\usepackage{GAIDeT}
+%% AI disclose stuff
+\usepackage{aidisclose}
 \usepackage{biblatex}
-\addbibresource{GAIDeT-doc.bib}
+\addbibresource{aidisclose-doc.bib}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -29,13 +41,12 @@
 \usepackage{booktabs}
 \usepackage[colorlinks,linkcolor=blue!80,citecolor=blue!80]{hyperref}
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% MAIN DOCUMENT
 \begin{document}
-  \title{The \gaidetfilename\ package}
-  \author{João M. Lourenço\\\url{https://github.com/joaomlourenco/GAIDeT}}
-  \date{\gaidetfiledate\ (v\gaidetfileversion)}
+  \title{The \gaifilename\ package}
+  \author{João M. Lourenço\\\url{https://github.com/joaomlourenco/aidisclose}}
+  \date{\gaifiledate\ (v\gaifileversion)}
 
   \maketitle
 
@@ -43,7 +54,7 @@
 \section{Introduction}
 \label{sec:introduction}
 
-\texttt{GAIDeT} is a LaTeX package providing a standardized, transparent mechanism for declaring the use of Generative Artificial Intelligence (GAI) tools in academic, technical, and professional documents.
+\texttt{\gaifilename} is a LaTeX package providing a standardized, transparent mechanism for declaring the use of Generative Artificial Intelligence (GAI) tools in academic, technical, and professional documents.
 
 The package is designed to support emerging ethical, institutional, and publisher requirements concerning AI-assisted content creation. It implements the \emph{GAIDeT (Generative AI Delegation Taxonomy)}, as proposed by \citeauthor{Suchikova:GAIDeT:2025}~\citeyear{Suchikova:GAIDeT:2025}~\cite{Suchikova:GAIDeT:2025}.
 
@@ -60,7 +71,7 @@ This package allows authors to:
 
 To use the package, load it in your document preamble:
 \begin{verbatim}
-\usepackage{GAIDeT}
+\usepackage{aidisclose}
 \end{verbatim}
 
 The declaration process consists of two steps: \textbf{Configuration} (defining what was done) and \textbf{Rendering} (printing the declaration).
@@ -101,18 +112,18 @@ If you need to provide additional context, use the \texttt{GAIComment} environme
 \end{verbatim}
 
 \subsubsection{Customizing the Title}
-You can change the default title of the declaration section using \verb|\GAIDeTtitle|.
+You can change the default title of the declaration section using \verb|\AIdiscloseTitle|.
 \begin{verbatim}
-\GAIDeTtitle[Short Title]{Full Title for the Section}[section-level]
+\AIdiscloseTitle[Short Title]{Full Title for the Section}[section-level]
 \end{verbatim}
 
 The last (optional) argument \verb|section-level| defaults to \verb|chapter| if \verb|\chapter| is defined (e.g., in book-like documents), otherwise defaults to \verb|section|.
 
 \subsection{Rendering the Declaration}
-To print the final declaration, use the \verb|\RenderGAIDeTDeclaration| command at the desired location in your document.  For papers/articles, you may consider to it before or after the references.  For thesis/dissertations, please follow your University/School rules.
+To print the final declaration, use the \verb|\RenderAIDeclaration| command at the desired location in your document.  For papers/articles, you may consider to it before or after the references.  For thesis/dissertations, please follow your University/School rules.
 
 \begin{verbatim}
-\RenderGAIDeTDeclaration[<checklist_ncols>]{<Author Names>}
+\RenderAIDeclaration[<checklist_ncols>]{<Author Names>}
 \end{verbatim}
 
 \begin{itemize}
@@ -132,13 +143,13 @@ To print the final declaration, use the \verb|\RenderGAIDeTDeclaration| command 
 
 \textbf{Example:}
 \begin{verbatim}
-\RenderGAIDeTDeclaration[1]{Jane Doe, John Smith}
+\RenderAIDeclaration[1]{Jane Doe, John Smith}
 \end{verbatim}
 \noindent prints the declaration's checkist in a single column and considers the two given authors.
 
 \section{Taxonomy Keys}
 \label{sec:taxonomy-keys}
-The following keys correspond to the specific tasks defined in the GAIDeT taxonomy. Use these keys with the \verb|\Activate{}| command.
+The following keys correspond to the specific tasks defined in the GAIDeT taxonomy~\cite{Suchikova:GAIDeT:2025}. Use these keys with the \verb|\Activate{}| command.
 
 \begin{center}
 \small
@@ -205,7 +216,7 @@ The following keys correspond to the specific tasks defined in the GAIDeT taxono
 
 
 %—————————————————————————————————————————————————————————————————
-% GAIDeT Disclosure Customization
+% AI Disclosure Customization
 %—————————————————————————————————————————————————————————————————
 
 % --- Conceptualization ---
@@ -274,17 +285,17 @@ The following keys correspond to the specific tasks defined in the GAIDeT taxono
 \end{GAIComment}
 
 % --- Optional customization of title ---
-% \GAIDeTtitle[Disclosure of Generative AI]
+% \AIdiscloseTitle[Disclosure of Generative AI]
 %             {Disclosure of Generative Artificial Inteligence}%[subsection]
 
 %—————————————————————————————————————————————————————————————————
-% End-of GAIDeT Disclosure Customization
+% End-of AI Disclosure Customization
 %—————————————————————————————————————————————————————————————————
 
 
-% Syntax: \RenderGAIDeTDeclaration[checklist_ncolumns]{Author1 Name, Author2 Name, …}
-\RenderGAIDeTDeclaration[2]{Jane Doe, John Doe, Mary Doe}
-% \RenderGAIDeTDeclaration[2]{Jane Doe}
+% Syntax: \RenderAIDeclaration[checklist_ncolumns]{Author1 Name, Author2 Name, …}
+\RenderAIDeclaration[2]{Jane Doe, John Doe, Mary Doe}
+% \RenderAIDeclaration[2]{Jane Doe}
 
 
 \printbibliography

@@ -1,4 +1,4 @@
-%% GAIDeT.sty --- Utilities for a Generative AI disclosure checklist and statements
+%% aidisclose.sty --- Utilities for Generative AI disclosure checklist and statements
 %%
 %% Copyright (C) 2025 by João M. Lourenço <joao.lourenco@fct.unl.pt>
 %%
@@ -18,13 +18,13 @@
 %% tasks to generative artificial intelligence in scientific research and publishing.
 %% Accountability in Research, 1–27. https://doi.org/10.1080/08989621.2025.2544331
 %%
-\def\gaidetfileversion{1.1.0}
-\def\gaidetfiledate   {2025/12/24}
-\edef\gaidetfilename  {\@currname}
+\def\gaifileversion{1.2.0}
+\def\gaifiledate   {2025/12/24}
+\edef\gaifilename  {\@currname}
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{GAIDeT}[%
-  \gaidetfiledate\  v\gaidetfileversion (João M. Lourenço) - Utilities for a GAIDeT-style Generative AI disclosure checklist and statements.]
+\ProvidesPackage{\gaifilename}[%
+  \gaifiledate\  v\gaifileversion (João M. Lourenço) - Utilities for Generative AI disclosure checklist and statements.]
 
 %% Suchikova, Y., Tsybuliak, N., Teixeira da Silva, J. A., \& Nazarovets, S. (2025).
 %% GAIDeT (Generative AI Delegation Taxonomy): A taxonomy for humans to delegate
@@ -36,8 +36,6 @@
 \RequirePackage{amssymb}   %% \checkmark
 \RequirePackage{multicol}  %% multicols
 \RequirePackage[inline]{enumitem} %% list control
-\RequirePackage{xparse}    %% \NewDocumentEnvironment, \NewDocumentCommand
-\RequirePackage{expl3}     %% expl3 layer
 
 %% =========================================================
 %% 1) STATIC CHECKBOX SYMBOLS (local fboxsep; no global side effects)
@@ -50,21 +48,21 @@
 }
 
 %% Measure checkbox width
-\newlength{\GAIDeTboxwd}
-\settowidth{\GAIDeTboxwd}{\CheckedBox}
+\newlength{\AIdiscboxwd}
+\settowidth{\AIdiscboxwd}{\CheckedBox}
 
-\newlength{\GAIDeTlabelsep}
-\setlength{\GAIDeTlabelsep}{1.2em}
+\newlength{\AIdisclabelsep}
+\setlength{\AIdisclabelsep}{1.2em}
 
 %% =========================================================
 %% 2) USER ACTIVE SET
 %% =========================================================
 \makeatletter
 \newcommand{\Activate}[1]{%
-  \expandafter\gdef\csname GAIDeT@active@#1\endcsname{1}%
+  \expandafter\gdef\csname gai@active@#1\endcsname{1}%
 }
-\newcommand{\GAIDeTStaticBox}[1]{%
-  \ifcsname GAIDeT@active@#1\endcsname
+\newcommand{\AIdiscloseStaticBox}[1]{%
+  \ifcsname gai@active@#1\endcsname
     \CheckedBox
   \else
     \EmptyBox
@@ -73,8 +71,8 @@
 \makeatother
 
 %% Item text: fixed width + ragged right
-\newcommand{\GAIDeTItemText}[1]{%
-  \parbox[t]{\dimexpr\linewidth-\GAIDeTboxwd-\GAIDeTlabelsep\relax}{%
+\newcommand{\AIdiscloseItemText}[1]{%
+  \parbox[t]{\dimexpr\linewidth-\AIdiscboxwd-\AIdisclabelsep\relax}{%
     \raggedright #1%
   }%
 }
@@ -171,7 +169,7 @@
     itemsep=5pt,
     topsep=0pt,
     parsep=0pt,
-    labelsep=\GAIDeTlabelsep,
+    labelsep=\AIdisclabelsep,
   }%
 
   \renewcommand{\TGroup}[2]{%
@@ -189,10 +187,10 @@
     \end{itemize}
   }%
   \renewcommand{\TItem}[2]{%
-    \item[\GAIDeTStaticBox{##1}] \GAIDeTItemText{##2}%
+    \item[\AIdiscloseStaticBox{##1}] \AIdiscloseItemText{##2}%
   }%
   \renewcommand{\TSubItem}[2]{%
-    \item[\GAIDeTStaticBox{##1}] \GAIDeTItemText{##2}%
+    \item[\AIdiscloseStaticBox{##1}] \AIdiscloseItemText{##2}%
   }%
   \BackupTaxonomy
   \endgroup
@@ -300,8 +298,8 @@
   }
 
 
-\NewDocumentCommand {\RenderHeading} { O{\@gaidetsection} } {%
-  \csname#1\endcsname[\GAIDeTtitleShort]{\GAIDeTtitleLong}
+\NewDocumentCommand {\RenderHeading} { O{\@gaisection} } {%
+  \csname#1\endcsname[\AIdiscloseTitleShort]{\AIdiscloseTitleLong}
 
   The\ \tl_use:N \g__gai_author_word_tl\ \tl_use:N \g__gai_declare_word_tl\ the\ use\ of\ Generative\ AI\ in\ the\ research\ work\ and\ writing\ process\ of\ this\ document.
   \par
@@ -309,8 +307,8 @@
 }
 
 %% =========================================================
-%% 6) \GAIDeTtitle[short version]{long version}
-%%.   \GAIDeTtitleShort  and  \GAIDeTtitleLong
+%% 6) \AIdiscloseTitle[short version]{long version}
+%%.   \AIdiscloseTitleShort  and  \AIdiscloseTitleLong
 %% =========================================================
 
 \clist_new:N \g__gai_authors_clist
@@ -321,7 +319,7 @@
 \tl_new:N \g__gaidet_title_short_tl
 % \tl_new:N \g__gaidet_title_section_tl
 
-\NewDocumentCommand{\GAIDeTtitle}{ o m o }
+\NewDocumentCommand{\AIdiscloseTitle}{ o m o }
   {
     % store long title
     \tl_gset:Nn \g__gaidet_title_long_tl { #2 }
@@ -336,31 +334,31 @@
       { 
         \ifcsname chapter\endcsname
           % \tl_gset:Nn \g__gaidet_title_section_tl \chapter
-          \gdef \@gaidetsection{ chapter }
+          \gdef \@gaisection{ chapter }
         \else
           % \tl_gset:Nn \g__gaidet_title_section_tl \section
-          \gdef \@gaidetsection{ section }
+          \gdef \@gaisection{ section }
         \fi
       }
       % { \tl_gset:Nn \g__gaidet_title_section_tl { #3 } }
-      { \gdef\@gaidetsection{ #3 } }
+      { \gdef\@gaisection{ #3 } }
   }
-\GAIDeTtitle[Disclosure\ of\ Delegation\ to\ Generative\ AI]
+\AIdiscloseTitle[Disclosure\ of\ Delegation\ to\ Generative\ AI]
             {Disclosure\ of\ Delegation\ to\ Generative\ Artificial\ Inteligence}
 
 
 % Public accessors
-\NewDocumentCommand {\GAIDeTtitleLong} {}%
+\NewDocumentCommand {\AIdiscloseTitleLong} {}%
   { \tl_use:N \g__gaidet_title_long_tl }
 
-\NewDocumentCommand {\GAIDeTtitleShort} {}%
+\NewDocumentCommand {\AIdiscloseTitleShort} {}%
   { \tl_use:N \g__gaidet_title_short_tl }
 
 
 %% =========================================================
-% 7) \RenderGAIDeTDeclaration[checklist_ncolumns]{Author1 Name, Author2 Name, …}
+% 7) \RenderAIDeclaration[checklist_ncolumns]{Author1 Name, Author2 Name, …}
 %% =========================================================
-\NewDocumentCommand {\RenderGAIDeTDeclaration} { O{3} m} {
+\NewDocumentCommand {\RenderAIDeclaration} { O{3} m} {
   \clist_set:Nn \g__gai_authors_clist { #2 }
   \int_set:Nn  \g__gai_authors_int { \clist_count:N \g__gai_authors_clist }
   \tl_set:Nx   \g__gai_author_word_tl

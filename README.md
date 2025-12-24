@@ -67,21 +67,21 @@ Load the package in the preamble:
 ### Setting the Declaration Title
 
 ```tex
-\GAIDeTtitle{Generative AI Declaration of Transparency}
+\AIdiscloseTitle{Generative AI Declaration of Transparency}
 ```
 
 With a short title:
 
 ```tex
-\GAIDeTtitle[GAI DeT]
+\AIdiscloseTitle[GAI DeT]
            {Generative AI Declaration of Transparency}
 ```
 
 Stored titles can be reused later:
 
 ```tex
-\GAIDeTtitleLong
-\GAIDeTtitleShort
+\AIdiscloseTitleLong
+\AIdiscloseTitleShort
 ```
 
 ---
