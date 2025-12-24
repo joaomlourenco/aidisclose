@@ -1,0 +1,281 @@
+%% This is file `GAIDeT-doc.text',
+%%
+%% Copyright (C) 20225 by João M. Lourenço <joao.lourenco@fct.unl.pt>
+%%
+%% This file may be distributed and/or modified under the conditions of
+%% the LaTeX Project Public License, either version 1.3c of this license
+%% or (at your option) any later version. The latest version of this
+%% license is in:
+%%
+%%    http://www.latex-project.org/lppl.txt
+%%
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2006/05/20 or later.
+%%
+\documentclass[11pt]{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% GAIDeT stuff
+\usepackage{GAIDeT}
+\usepackage{biblatex}
+\addbibresource{GAIDeT-doc.bib}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Other dependencies for this file
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage{xltabular}
+\usepackage{booktabs}
+\usepackage[colorlinks,linkcolor=blue!80,citecolor=blue!80]{hyperref}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% MAIN DOCUMENT
+\begin{document}
+  \title{The \gaidetfilename\ package}
+  \author{João M. Lourenço\\\url{https://github.com/joaomlourenco/GAIDeT}}
+  \date{\gaidetfiledate\ (v\gaidetfileversion)}
+
+  \maketitle
+
+
+\section{Introduction}
+\label{sec:introduction}
+
+\texttt{GAIDeT} is a LaTeX package providing a standardized, transparent mechanism for declaring the use of Generative Artificial Intelligence (GAI) tools in academic, technical, and professional documents.
+
+The package is designed to support emerging ethical, institutional, and publisher requirements concerning AI-assisted content creation. It implements the \emph{GAIDeT (Generative AI Delegation Taxonomy)}, as proposed by \citeauthor{Suchikova:GAIDeT:2025}~\citeyear{Suchikova:GAIDeT:2025}~\cite{Suchikova:GAIDeT:2025}.
+
+This package allows authors to:
+\begin{itemize}
+    \item Select specific tasks delegated to AI from the predefined taxonomy (e.g., idea generation, data cleaning, text summarization).
+    \item List the specific GAI tools used (e.g., ChatGPT, Gemini, Claude).
+    \item Add optional explanatory comments.
+    \item Automatically generate a formatted “Disclosure of Delegation to Generative AI” section, including the necessary responsibility statements.
+\end{itemize}
+
+\section{Usage}
+\label{sec:usage}
+
+To use the package, load it in your document preamble:
+\begin{verbatim}
+\usepackage{GAIDeT}
+\end{verbatim}
+
+The declaration process consists of two steps: \textbf{Configuration} (defining what was done) and \textbf{Rendering} (printing the declaration).
+
+\subsection{Configuration}
+Configuration commands can be placed in the preamble or anywhere in the document body before the rendering command is called.
+
+\subsubsection{Activating Taxonomy Items}
+Use the \verb|\Activate{<key>}| command to check specific items in the taxonomy. A full list of available keys is provided in Section~\ref{sec:taxonomy-keys}.
+
+\begin{verbatim}
+% Example: Activating "Idea generation" and "Code optimization"
+\Activate{c:idea}
+\Activate{s:opt}
+\end{verbatim}
+
+\subsubsection{Specifying Tools}
+Use the \verb|\GAItoolsUsed{<list>}| command to list the AI tools employed. The package automatically formats the output sentence based on the number of tools provided (handling singular/plural forms and commas).
+
+\begin{verbatim}
+% Example 1: No tools used
+\GAItoolsUsed{}
+
+% Example 2: One tool
+\GAItoolsUsed{ChatGPT-4}
+
+% Example 3: Multiple tools
+\GAItoolsUsed{ChatGPT-4, Gemini Advanced, Claude 3}
+\end{verbatim}
+
+\subsubsection{Adding Comments}
+If you need to provide additional context, use the \texttt{GAIComment} environment.
+\begin{verbatim}
+\begin{GAIComment}
+    The AI was used primarily for refining the code in Section 3, 
+    but the algorithm logic was derived manually.
+\end{GAIComment}
+\end{verbatim}
+
+\subsubsection{Customizing the Title}
+You can change the default title of the declaration section using \verb|\GAIDeTtitle|.
+\begin{verbatim}
+\GAIDeTtitle[Short Title]{Full Title for the Section}[section-level]
+\end{verbatim}
+
+The last (optional) argument \verb|section-level| defaults to \verb|chapter| if \verb|\chapter| is defined (e.g., in book-like documents), otherwise defaults to \verb|section|.
+
+\subsection{Rendering the Declaration}
+To print the final declaration, use the \verb|\RenderGAIDeTDeclaration| command at the desired location in your document.  For papers/articles, you may consider to it before or after the references.  For thesis/dissertations, please follow your University/School rules.
+
+\begin{verbatim}
+\RenderGAIDeTDeclaration[<font_scale>]{<Author Names>}
+\end{verbatim}
+
+\begin{itemize}
+    \item \textbf{Optional Argument} (\texttt{[1]}): A scaling factor for the checklist font size relative to the document text. The default is \texttt{1} (slightly smaller).
+    \item \textbf{Mandatory Argument}: A comma-separated list of author names submitting the declaration.
+\end{itemize}
+
+\textbf{Example:}
+\begin{verbatim}
+\RenderGAIDeTDeclaration[1]{Jane Doe, John Smith}
+\end{verbatim}
+
+\section{Taxonomy Keys}
+\label{sec:taxonomy-keys}
+The following keys correspond to the specific tasks defined in the GAIDeT taxonomy. Use these keys with the \verb|\Activate{}| command.
+
+\begin{center}
+\small
+\begin{xltabular}{\textwidth}{ll}
+\toprule
+\textbf{Key} & \textbf{Description} \\
+\midrule
+\multicolumn{2}{c}{\textbf{Conceptualization}} \\
+\texttt{c:idea} & Idea generation \\
+\texttt{c:objective} & Defining the research objective \\
+\texttt{c:rq} & Formulating research questions and hypotheses \\
+\texttt{c:feas} & Feasibility assessment and risk evaluation \\
+\texttt{c:pretest} & Preliminary hypothesis testing \\
+\midrule
+\multicolumn{2}{c}{\textbf{Literature Review}} \\
+\texttt{l:search} & Literature search and systematization \\
+\texttt{l:write} & Writing the literature review \\
+\texttt{l:patents} & Analysis of market trends/patent environment \\
+\texttt{l:gaps} & Novelty evaluation and gap identification \\
+\midrule
+\multicolumn{2}{c}{\textbf{Methodology}} \\
+\texttt{m:design} & Research design \\
+\texttt{m:protocols} & Experimental or research protocols \\
+\texttt{m:methods} & Selection of research methods \\
+\midrule
+\multicolumn{2}{c}{\textbf{Software Development}} \\
+\texttt{s:codegen} & Code generation \\
+\texttt{s:opt} & Code optimization \\
+\texttt{s:auto} & Process automation \\
+\texttt{s:algs} & Algorithms for data analysis \\
+\midrule
+\multicolumn{2}{c}{\textbf{Data Management}} \\
+\texttt{d:collect} & Data collection \\
+\texttt{d:validate} & Validation \\
+\texttt{d:clean} & Data cleaning \\
+\texttt{d:curate} & Data curation and organization \\
+\texttt{d:analyze} & Data analysis \\
+\texttt{d:viz} & Visualization \\
+\texttt{d:repro} & Reproducibility testing \\
+\midrule
+\multicolumn{2}{c}{\textbf{Writing and Editing}} \\
+\texttt{w:textgen} & Text generation \\
+\texttt{w:proof} & Proofreading and editing \\
+\texttt{w:summarize} & Summarizing text \\
+\texttt{w:concl} & Formulation of conclusions \\
+\texttt{w:tone} & Adapting and adjusting emotional tone \\
+\texttt{w:translate} & Translation \\
+\texttt{w:reformat} & Reformatting \\
+\texttt{w:press} & Press releases and outreach materials \\
+\midrule
+\multicolumn{2}{c}{\textbf{Ethics \& Supervision}} \\
+\texttt{e:bias} & Bias analysis and discrimination assessment \\
+\texttt{e:risk} & Ethical risk analysis \\
+\texttt{e:compliance} & Compliance monitoring \\
+\texttt{e:conf} & Data confidentiality monitoring \\
+\texttt{sup:qa} & Quality assessment \\
+\texttt{sup:trends} & Trend identification \\
+\texttt{sup:limits} & Identification of limitations \\
+\texttt{sup:recs} & Recommendations \\
+\texttt{sup:pub} & Publication support \\
+\bottomrule
+\end{xltabular}
+\end{center}
+
+
+%—————————————————————————————————————————————————————————————————
+% GAIDeT Disclosure Customization
+%—————————————————————————————————————————————————————————————————
+
+% --- Conceptualization ---
+\Activate{c:idea}      % Idea generation
+\Activate{c:objective} % Defining the research objective
+\Activate{c:rq}        % Formulating research questions and hypotheses
+\Activate{c:feas}      % Feasibility assessment and risk evaluation
+% \Activate{c:pretest}   % Preliminary hypothesis testing
+
+% --- Literature Review ---
+\Activate{l:search}    % Literature search and systematization
+\Activate{l:write}     % Writing the literature review
+% \Activate{l:patents}   % Market trends / patent environment
+% \Activate{l:gaps}      % Novelty evaluation and gap identification
+
+% --- Methodology ---
+\Activate{m:design}    % Research design
+% \Activate{m:protocols} % Experimental / research protocols
+% \Activate{m:methods}   % Selection of research methods
+
+% --- Software Development and Automation ---
+% \Activate{s:codegen}   % Code generation
+% \Activate{s:opt}       % Code optimization
+\Activate{s:auto}      % Process automation
+\Activate{s:algs}      % Algorithms for data analysis
+
+% --- Data Management ---
+% \Activate{d:collect}   % Data collection
+\Activate{d:validate}  % Validation
+% \Activate{d:clean}     % Data cleaning
+\Activate{d:curate}    % Data curation and organization
+\Activate{d:analyze}   % Data analysis
+% \Activate{d:viz}       % Visualization
+% \Activate{d:repro}     % Reproducibility testing
+
+% --- Writing and Editing ---
+\Activate{w:textgen}   % Text generation
+% \Activate{w:proof}     % Proofreading and editing
+\Activate{w:summarize} % Summarizing text
+% \Activate{w:concl}     % Formulation of conclusions
+\Activate{w:tone}      % Emotional tone adjustment
+% \Activate{w:translate} % Translation
+% \Activate{w:reformat}  % Reformatting
+\Activate{w:press}     % Press releases and outreach materials
+
+% --- Ethics Review / Supervision ---
+\Activate{e:bias}      % Bias analysis / discrimination assessment
+\Activate{e:risk}      % Ethical risk analysis
+\Activate{e:compliance}% Compliance monitoring
+% \Activate{e:conf}      % Data confidentiality monitoring
+% \Activate{sup:qa}      % Quality assessment
+% \Activate{sup:trends}  % Trend identification
+\Activate{sup:limits}  % Identification of limitations
+% \Activate{sup:recs}    % Recommendations
+% \Activate{sup:pub}     % Publication support
+
+
+% --- GAI tools used ---
+% \GAItoolsUsed{}
+% \GAItoolsUsed{ChatGPT-5.2}
+\GAItoolsUsed{ChatGPT-5.2, Gemini 3 Pro, Claude 4.5 Opus, Perplexity 12.12.25}
+
+% --- Optional extra note/comment ---
+\begin{GAIComment}
+  The AI was used primarily for refining the code in Section 3, but the algorithm logic was derived manually.
+\end{GAIComment}
+
+% --- Optional customization of title ---
+\GAIDeTtitle[Disclosure of Generative AI]
+            {Disclosure of Generative Artificial Inteligence}%[subsection]
+
+%—————————————————————————————————————————————————————————————————
+% End-of GAIDeT Disclosure Customization
+%—————————————————————————————————————————————————————————————————
+
+
+% Syntax: \RenderGAIDeTDeclaration[how_smaller_checklist]{Author Name}
+\RenderGAIDeTDeclaration[1]{Jane Doe, John Doe, Mary Doe}
+% \RenderGAIDeTDeclaration[1]{Jane Doe}
+
+
+\printbibliography
+
+\end{document}
