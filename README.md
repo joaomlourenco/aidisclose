@@ -127,7 +127,8 @@ The documentation includes:
 
 ## Taxonomy Reference
 
-The package supports the complete GAIDeT taxonomy with 50+ task identifiers across 8 categories:
+The package supports the complete GAIDeT taxonomy with 50+ task identifiers across 8 categories.  The list below is incomplete and for illustrative purposes.
+***Full list**: See [aidisclose-doc.pdf](aidisclose-doc.pdf), Section 3.
 
 | Category                 | Example Keys                          | Tasks                                                        |
 | ------------------------ | ------------------------------------- | ------------------------------------------------------------ |
@@ -139,8 +140,6 @@ The package supports the complete GAIDeT taxonomy with 50+ task identifiers acro
 | **Writing & Editing**    | `w:textgen`, `w:proof`, `w:translate` | Text generation, proofreading, translation                   |
 | **Ethics Review**        | `e:bias`, `e:risk`, `e:compliance`    | Bias analysis, risk assessment, compliance                   |
 | **Supervision**          | `sup:qa`, `sup:limits`                | Quality assessment, limitation identification                |
-
-**Full list**: See [aidisclose-doc.pdf](aidisclose-doc.pdf), Section 3.
 
 ## Public Interface
 
@@ -263,7 +262,6 @@ Change the symbol used inside the framed checkbox (optional):
 
 (The default is `√`)
 This also updates the internal width so checked/unchecked boxes align.
-
 
 ## Dependencies
 

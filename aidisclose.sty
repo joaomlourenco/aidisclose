@@ -5,9 +5,10 @@
 % This file may be distributed and/or modified under the conditions of
 % the LaTeX Project Public License, either version 1.3c of this license
 % or (at your option) any later version.
-
+\def\gaiversion{1.4.0}
+%
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesExplPackage {aidisclose} {2025/12/25} {1.4.0} 
+\ProvidesExplPackage {aidisclose} {2025/12/26} {\gaiversion} 
   {Utilities for Generative AI disclosure checklist and statements}
 
 % =========================================================
@@ -99,18 +100,18 @@
 % Internal: Prints the standard legal/explanation preamble
 \cs_new_protected:Npn \__gai_print_preamble:
   {
-    \tl_use:N \l__gai_authors_decl_tl \space
-    the~use~of~Generative~AI~in~the~research~work~and~writing~process~of~this~
-    document.~According~to~the~GAIDeT~taxonomy,
+    \tl_use:N \l__gai_authors_decl_tl
     \footnote{
-      \scriptsize Suchikova,~Y.,~Tsybuliak,~N.,~Teixeira~da~Silva,~J.~A.,~\&~
-      Nazarovets,~S.~(2025).~
-      GAIDeT~(Generative~AI~Delegation~Taxonomy):~A~taxonomy~for~humans~to~
-      delegate~tasks~to~generative~artificial~intelligence~in~scientific~
-      research~and~publishing.~
-      \emph{Accountability~in~Research},~1–27.~
-      https://doi.org/10.1080/08989621.2025.2544331
-    }~
+      This~declaration~was~generated~using~the~\LaTeX \space
+      {\hypersetup{allcolors=black}
+        \href{https://ctan.org/pkg/aidisclose}
+             {\texttt{aidisclose}~package}
+      }\space
+      \cite{Lourenco:2025:aidisclose}.
+    }
+    \space
+    the~use~of~Generative~AI~in~the~research~work~and~writing~process~of~this~
+    document.~According~to~the~GAIDeT~taxonomy,~
     the~following~tasks~were~delegated~to~Generative~AI~tools~under~full~
     human~supervision:
   }
@@ -321,12 +322,23 @@
       \cs_set:Npn \TGroup ##1 ##2
         {
           \par \bigskip
-          \setlength { \multicolsep } { 5pt }
-          \begin { multicols } { #2 } [ \textbf { \larger ##1 } ]
-            \begin { itemize }
-              ##2
-            \end { itemize }
-          \end { multicols }
+          \int_compare:nNnTF { #2 } < { 2 }
+            {
+              \textbf{\larger ##1}\par\nopagebreak[4]
+              % 1 column: no multicols
+              \begin{itemize}
+                ##2
+              \end{itemize}
+            }
+            {
+              % 2+ columns: use multicols
+              \setlength { \multicolsep } { 5pt }
+              \begin { multicols } { #2 } [ \textbf { \larger ##1 } ]
+                \begin { itemize }
+                  ##2
+                \end { itemize }
+              \end { multicols }
+            }
         }
 
       % \TSubGroup{Title}{Items}
@@ -361,5 +373,95 @@
         \tl_use:N \g__gai_comments_tl
       }
   }
+
+\AddToHook{begindocument/before}{
+  \@ifpackageloaded{biblatex}{
+    \addbibresource{aidisclose.bib}
+  }
+}
+
+
+
+
+%=========================================================
+% Create aidisclose.bib file if it doesn't exist
+%=========================================================
+
+% Define the warning message
+\msg_new:nnn { aidisclose } { file-exists }
+  { File~'#1'~already~exists.~Skipping~creation. }
+
+% Create the macro
+\cs_new_protected:Nn \__aidisclose_write_bib_file:n
+  {
+    \file_if_exist:nTF { #1 }
+      { % File exists - show warning
+        \msg_warning:nnn { aidisclose } { file-exists } { #1 }
+      }
+      { % File doesn't exist - create it
+        \iow_new:N \l__aidisclose_bib_iow
+        \iow_open:Nn \l__aidisclose_bib_iow { #1 }
+        \iow_now:Nn \l__aidisclose_bib_iow 
+          {
+@article{Suchikova:2025:GAIDeT,^^J
+~~title~~~~~=~{{GAIDeT~(Generative~AI~Delegation~Taxonomy)}:~A~Taxonomy~for~Humans~to~Delegate~Tasks~to~Generative~Artificial~Intelligence~in~Scientific~Research~and~Publishing},^^J
+~~author~~~~=~{Yana~Suchikova~and~Natalia~Tsybuliak~and~Jaime~A.~Teixeira~da~Silva~and~Serhii~Nazarovets},^^J
+~~year~~~~~~=~2025,^^J
+~~journal~~~=~{Accountability~in~Research},^^J
+~~publisher~=~{Taylor~\&~Francis},^^J
+~~pages~~~~~=~{1--27},^^J
+~~doi~~~~~~~=~{10.1080/08989621.2025.2544331}^^J
+}^^J
+^^J
+@manual{Lourenco:2025:aidisclose,^^J
+~~author~~~~=~{Lourenço,~João~M.},^^J
+~~title~~~~~=~{The~\texttt{aidisclose}~package:~Generative~AI~disclosure~checklist~and~statements},^^J
+~~year~~~~~~=~{2025},^^J
+~~note~~~~~~=~{Version~\gaiversion},^^J
+~~url~~~~~~~=~{https://ctan.org/pkg/aidisclose}^^J
+}^^J
+          }
+        \iow_close:N \l__aidisclose_bib_iow
+      }
+  }
+  
+
+% User-facing command
+\NewDocumentCommand \GAIcreateBibFile { m }
+  {
+    \__aidisclose_write_bib_file:n { #1 }
+  }
+
+
+%=========================================================
+% Detect and handle biblatex vs BibTeX
+%=========================================================
+
+\AddToHook{begindocument/before}{
+
+  \ExplSyntaxOn
+
+\GAIcreateBibFile { aidisclose.bib }
+
+\@ifpackageloaded { biblatex }
+  { 
+    % ===== BIBLATEX/BIBER MODE =====
+    % Add our bib file using biblatex command
+    \addbibresource { aidisclose.bib }
+  }
+  { 
+    % ===== BIBTEX MODE =====
+    % Save original \bibliography command
+    \cs_set_eq:NN \__aidisclose_orig_bibliography:n \bibliography
+    
+    % Redefine \bibliography to prepend our bib file
+    \RenewDocumentCommand \bibliography { m }
+      {
+        \__aidisclose_orig_bibliography:n { aidisclose , #1 }
+      }
+  }
+
+  \ExplSyntaxOff
+}
 
 \endinput

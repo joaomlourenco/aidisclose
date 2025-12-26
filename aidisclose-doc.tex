@@ -14,23 +14,10 @@
 %%
 \documentclass[11pt]{article}
 
-\begin{filecontents}{aidisclose-doc.bib}
-@article{Suchikova:GAIDeT:2025,
-  title = {{GAIDeT (Generative AI Delegation Taxonomy)}: A Taxonomy for Humans to Delegate Tasks to Generative Artificial Intelligence in Scientific Research and Publishing},
-  author = {Yana Suchikova and Natalia Tsybuliak and Jaime A. Teixeira da Silva and Serhii Nazarovets},
-  year = 2025,
-  journal = {Accountability in Research},
-  publisher = {Taylor \& Francis},
-  pages = {1--27},
-  doi = {10.1080/08989621.2025.2544331}
-}
-\end{filecontents}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% AI disclose stuff
 \usepackage{aidisclose}
 \usepackage{biblatex}
-\addbibresource{aidisclose-doc.bib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Other dependencies for this file
@@ -38,7 +25,7 @@
 \usepackage{xcolor}
 \usepackage{xltabular}
 \usepackage{booktabs}
-\usepackage[colorlinks,linkcolor=blue!80,citecolor=blue!80]{hyperref}
+\usepackage[colorlinks,allcolors=blue!80]{hyperref}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% MAIN DOCUMENT
@@ -46,15 +33,15 @@
 
 \title{The \texttt{aidisclose} package}
 \author{João M. Lourenço\\\url{https://github.com/joaomlourenco/aidisclose}}
-\date{2025-12-25\ (v1.4.0)}
+\date{2025-12-26~(\gaiversion)}
 \maketitle
 
 \section{Introduction}
 \label{sec:introduction}
 
-\texttt{aidisclose} is a LaTeX package providing a standardized, transparent mechanism for declaring the use of Generative Artificial Intelligence (GAI) tools in academic, technical, and professional documents.
+\texttt{aidisclose} is a \LaTeX\ package providing a standardized, transparent mechanism for declaring the use of Generative Artificial Intelligence (GAI) tools in academic, technical, and professional documents.
 
-The package is designed to support emerging ethical, institutional, and publisher requirements concerning AI-assisted content creation. It implements the \emph{GAIDeT (Generative AI Delegation Taxonomy)}, as proposed by \citeauthor{Suchikova:GAIDeT:2025}~\citeyear{Suchikova:GAIDeT:2025}~\cite{Suchikova:GAIDeT:2025}.
+The package is designed to support emerging ethical, institutional, and publisher requirements concerning AI-assisted content creation. It implements the \emph{GAIDeT (Generative AI Delegation Taxonomy)}, as proposed by \citeauthor{Suchikova:2025:GAIDeT}~\citeyear{Suchikova:2025:GAIDeT}~\cite{Suchikova:2025:GAIDeT}.
 
 This package allows authors to:
 
@@ -195,7 +182,7 @@ To print the final declaration, use the \verb|\GAIrenderDeclaration| command at 
 \section{Taxonomy Keys}
 \label{sec:taxonomy-keys}
 
-The following keys correspond to the specific tasks defined in the GAIDeT taxonomy~\cite{Suchikova:GAIDeT:2025}. Use these keys with the \verb|\GAIactivate{}| command.
+The following keys correspond to the specific tasks defined in the GAIDeT taxonomy~\cite{Suchikova:2025:GAIDeT}. Use these keys with the \verb|\GAIactivate{}| command.
 
 \begin{center}
 \small
