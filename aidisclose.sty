@@ -286,14 +286,14 @@
 % =========================================================
 % 6) MAIN RENDERING ENGINE
 % =========================================================
-\NewDocumentCommand \GAIrenderDeclaration { O{3} m }
+\NewDocumentCommand \GAIrenderDeclaration { s O{3} m }
   {
     % --- 1. Process Authors string ---
-    \clist_set:Nn \g__gai_authors_clist { #2 }
+    \clist_set:Nn \g__gai_authors_clist { #3 }
     \int_set:Nn \g__gai_authors_int { \clist_count:N \g__gai_authors_clist }
     
     \int_compare:nNnTF { \g__gai_authors_int } = { 1 }
-      { \tl_set:Nn \l__gai_authors_decl_tl { #2~declares } }
+      { \tl_set:Nn \l__gai_authors_decl_tl { #3~declares } }
       { 
         \tl_set:Nx \l__gai_authors_decl_tl 
           { 
@@ -302,9 +302,12 @@
           }
       }
 
-    % --- 2. Print Section Title ---
-    \use:c { \cs_to_str:N \g__gai_section_cmd_tl } 
-           { \g__gai_title_long_tl}
+    % --- 2. Print Section Title (conditionally) ---
+    \IfBooleanF { #1 }
+    { % Only render title in non-starred version
+      \use:c { \cs_to_str:N \g__gai_section_cmd_tl } 
+             { \g__gai_title_long_tl }
+    }
                
     % --- 3. Print Preamble ---
     \__gai_print_preamble:
@@ -319,7 +322,7 @@
         {
           \par \bigskip
           \setlength { \multicolsep } { 5pt }
-          \begin { multicols } { #1 } [ \textbf { \larger ##1 } ]
+          \begin { multicols } { #2 } [ \textbf { \larger ##1 } ]
             \begin { itemize }
               ##2
             \end { itemize }
