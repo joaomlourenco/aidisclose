@@ -15,7 +15,9 @@
 % 0) DEPENDENCIES
 % =========================================================
 \RequirePackage{xparse}    % Interface for document commands
+\ifcsname  checkmark\endcsname\else
 \RequirePackage{amssymb}   % for \checkmark
+\fi
 \RequirePackage{multicol}  % for multi-column layout
 \RequirePackage{enumitem}  % for list customization
 \RequirePackage{relsize}   % for relative font sizing (\smaller, \larger)
