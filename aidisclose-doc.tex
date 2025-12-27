@@ -1,53 +1,78 @@
 %% aidisclose-doc.tex --- Utilities for Generative AI disclosure checklist and statements
 %%
-%% Copyright (C) 2025 by João M. Lourenço
+%% Copyright (C) 2025 by João M. Lourenço <joao.lourenco@fct.unl.pt>
 %%
 %% This file may be distributed and/or modified under the conditions of
 %% the LaTeX Project Public License, either version 1.3c of this license
-%% or (at your option) any later version. The latest version of this
-%% license is in:
+%% or (at your option) any later version.
 %%
+%% The latest version of this license is in:
 %%    http://www.latex-project.org/lppl.txt
-%%
 %% and version 1.3c or later is part of all distributions of LaTeX
 %% version 2006/05/20 or later.
 %%
 \documentclass[11pt]{article}
 
-
-% \usepackage[portuguese]{babel}
+% \usepackage[portuguese]{babel} % Example: Uncomment to test language support
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% 1. Basic Utilities & Formatting
 \usepackage[T1]{fontenc}
-\usepackage{xcolor}      % Must be before hyperref (for colors)
+\usepackage{xcolor}
 \usepackage{url}
 \usepackage{booktabs}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% 4. Bibliography 
-%% Patches tabularx/xltabular, so it must come AFTER them
-\usepackage{tabularx}
-\usepackage{biblatex}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{minted}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% 2. Tables 
 %% MUST load before biblatex to avoid "Patching 'tabularx' failed" error
+\usepackage{tabularx}
 \usepackage{xltabular} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% 3. This Package
-\usepackage{aidisclose}
+%% 3. Bibliography 
+\usepackage{biblatex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 4. This Package
+%% Options: [autobib=true|false] (default: true)
+\usepackage[autobib=true]{aidisclose}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% 5. Hyperlinks
-%% Almost always goes LAST
 \usepackage[colorlinks,allcolors=blue!70!black]{hyperref}
 
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% MAIN DOCUMENT
+%% 6. Customization for LaTeX pretty print
+\definecolor{latexbg}{HTML}{F5F5EE}
+\newminted{latex}{
+  bgcolor=latexbg,
+  fontsize=\small,
+  breaklines,
+  tabsize=2,
+  autogobble,
+  % frame=single,
+  % framesep=3mm,
+  % rulecolor=black!20,
+}
+\newmintinline{latex}{}
+\newenvironment{ltx}
+  {\VerbatimEnvironment
+   \begin{minted}[
+    bgcolor=latexbg,
+    fontsize=\small,
+    breaklines,
+    tabsize=2,
+    autogobble,
+    % frame=single,
+    % framesep=3mm,
+    % rulecolor=black!20,
+   ]{latex}}
+  {\end{minted}}
+
+
 \begin{document}
 
 \title{The \texttt{aidisclose} package}
@@ -55,153 +80,159 @@
 \date{2025-12-26~(\gaiversion)}
 \maketitle
 
+\begin{abstract}
+    The \texttt{aidisclose} package provides a standardized, transparent mechanism for declaring the use of Generative Artificial Intelligence (GAI) tools in academic, technical, and professional documents. It implements the \emph{GAIDeT (Generative AI Delegation Taxonomy)}~\cite{Suchikova:2025:GAIDeT} and automates the creation of disclosure statements and checklists.
+\end{abstract}
+
+
+\tableofcontents
+
 \section{Introduction}
 \label{sec:introduction}
 
-\texttt{aidisclose} is a \LaTeX\ package providing a standardized, transparent mechanism for declaring the use of Generative Artificial Intelligence (GAI) tools in academic, technical, and professional documents.
-
-The package is designed to support emerging ethical, institutional, and publisher requirements concerning AI-assisted content creation. It implements the \emph{GAIDeT (Generative AI Delegation Taxonomy)}, as proposed by \citeauthor{Suchikova:2025:GAIDeT}~\citeyear{Suchikova:2025:GAIDeT}~\cite{Suchikova:2025:GAIDeT}.
-
-This package allows authors to:
+\texttt{aidisclose} is designed to support emerging ethical, institutional, and publisher requirements concerning AI-assisted content creation. It allows authors to:
 
 \begin{itemize}
-\item Select specific tasks delegated to AI from the predefined taxonomy (e.g., idea generation, data cleaning, text summarization).
-\item List the specific GAI tools used (e.g., ChatGPT, Gemini, Claude).
-\item Add optional explanatory comments (numbered or unnumbered).
-\item Automatically generate a formatted "Disclosure of Delegation to Generative AI" section, including the necessary responsibility statements.
-\item Optionally skip automatic section title generation for custom document structures.
+    \item Select specific tasks delegated to Generative ~AI (GAI) from the GAIDeT taxonomy~\cite{Suchikova:2025:GAIDeT} (e.g., idea generation, data cleaning, text summarization).
+    \item List the specific GAI tools used (e.g., ChatGPT, Gemini, Claude).
+    \item Add optional explanatory comments (numbered or unnumbered).
+    \item Automatically generate a formatted “\emph{Disclosure of Delegation to Generative AI}” section/chapter.
+    \item Automatically handle citations for the taxonomy and the package itself.
 \end{itemize}
+
+\section{Package Loading and Options}
+\label{sec:loading}
+
+Load the package in your document preamble:
+
+\begin{ltx}
+\usepackage[<options>]{aidisclose}
+\end{ltx}
+
+\subsection{Options}
+The package currently supports the following key-value option:
+
+\begin{description}
+    \item[\texttt{autobib=true|false}] (Default: \texttt{true})\\
+    When enabled, the package automatically:
+    \begin{enumerate}
+        \item Writes a \texttt{aidisclose.bib} file containing the references for GAIDeT~\cite{Suchikova:2025:GAIDeT} and this package~\cite{Lourenco:2025:aidisclose}.
+        \item Loads this bibliography resource (compatible with \texttt{biblatex} and standard \texttt{BibTeX}).
+    \end{enumerate}
+    Set this to \texttt{false} if you wish to manage these citations manually in your own \texttt{.bib} file.
+\end{description}
+
+\section{Internationalization}
+\label{sec:i18n}
+
+The package automatically detects the document language (via \texttt{babel} or \texttt{polyglossia}) and loads the corresponding translation file (\texttt{.ldf}).
+
+\paragraph{Currently (v\gaiversion) Supported Languages:}~
+
+\begin{itemize}[
+    itemsep = 1\itemsep,
+    parsep = 1\parsep,
+    before = \raggedcolumns\begin{multicols}{3}\raggedright,
+    after = \end{multicols}
+  ]
+    \item English (\texttt{en}) \\— Default
+    \item Portuguese (\texttt{pt})
+    \item Spanish (\texttt{es})
+    \item French (\texttt{fr})
+    \item German (\texttt{de})
+    \item Italian (\texttt{it})
+    \item Dutch (\texttt{nl})
+    \item Danish (\texttt{dk})
+    \item Greek (\texttt{gr})
+    \item Czech (\texttt{cz})
+    \item Polish (\texttt{pl})
+    \item Slovak (\texttt{sk})
+    \item Ukrainian (\texttt{uk})
+    \item Catalan (\texttt{cat})
+\end{itemize}
+
+If the detected language is not supported, the package falls back to English.
 
 \section{Usage}
 \label{sec:usage}
-
-To use the package, load it in your document preamble:
-
-\begin{verbatim}
-\usepackage{aidisclose}
-\end{verbatim}
 
 The declaration process consists of two steps: \textbf{Configuration} (defining what was done) and \textbf{Rendering} (printing the declaration).
 
 \subsection{Configuration}
 
-Configuration commands can be placed in the preamble or anywhere in the document body before the rendering command is called.
+Configuration commands can be placed in the preamble or in the document body before the rendering command is called.
 
 \subsubsection{Activating Taxonomy Items}
+Use \latexinline|\GAIactivate{}| to check specific items in the taxonomy. See Section~\ref{sec:taxonomy-keys} for all available keys.
 
-Use the \verb|\GAIactivate{}| command to check specific items in the taxonomy. A full list of available keys is provided in Section~\ref{sec:taxonomy-keys}.
-
-\begin{verbatim}
+\begin{ltx}
 % Example: Activating "Idea generation" and "Code optimization"
 \GAIactivate{c:idea}
 \GAIactivate{s:opt}
-\end{verbatim}
+\end{ltx}
 
 \subsubsection{Specifying Tools}
+Use \latexinline|\GAItoolsUsed{}| to list the AI tools employed. The package handles formatting (singular/plural) automatically.
 
-Use the \verb|\GAItoolsUsed{}| command to list the AI tools employed. The package automatically formats the output sentence based on the number of tools provided (handling singular/plural forms and commas).
-
-\begin{verbatim}
+\begin{ltx}
 % Example 1: No tools used
 \GAItoolsUsed{}
 
-% Example 2: One tool
-\GAItoolsUsed{ChatGPT-4}
-
-% Example 3: Multiple tools
+% Example 2: Multiple tools
 \GAItoolsUsed{ChatGPT-4, Gemini Advanced, Claude 3}
-\end{verbatim}
+\end{ltx}
 
 \subsubsection{Adding Comments}
+Use the \texttt{GAIcomment} (numbered) and \texttt{GAIcomment*} (unnumbered) environments for details.
+Comments may contain multiple paragraphs.
 
-The package provides two comment environments: \texttt{GAIcomment} (numbered) and \texttt{GAIcomment*} (unnumbered).
-
-\begin{verbatim}
-% Numbered comment
+\begin{ltx}
 \begin{GAIcomment}
-The AI was used primarily for refining the code in Section 3,
-but the algorithm logic was derived manually.
+The AI was used primarily for refining the code in Section 3.
 \end{GAIcomment}
 
-% Unnumbered comment
 \begin{GAIcomment*}
 No GAI tools were used for data analysis.
 \end{GAIcomment*}
-\end{verbatim}
+\end{ltx}
 
 \subsubsection{Customizing the Title}
+Change the default section title and hierarchy level using \latexinline|\GAIdiscloseTitle|.
 
-You can change the default title of the declaration section using \verb|\GAIdiscloseTitle|.
+\begin{ltx}
+\GAIdiscloseTitle[Short Title]{Full Title}[section-level]
+\end{ltx}
 
-\begin{verbatim}
-\GAIdiscloseTitle[Short Title]{Full Title for the Section}[section-level]
-\end{verbatim}
+\begin{itemize}
+    \item \textbf{section-level}: Defaults to \latexinline|\chapter| if defined, otherwise \latexinline|\section|.
+\end{itemize}
 
-The last (optional) argument \verb|section-level| defaults to \verb|\chapter| if \verb|\chapter| is defined (e.g., in book-like documents), otherwise defaults to \verb|\section|.
+\subsubsection{Visual Customization}
 
-You can retrieve the stored titles using:
-
-\begin{verbatim}
-\GAIdiscloseTitleLong   % Full title
-\GAIdiscloseTitleShort  % Short title
-\end{verbatim}
-
-\subsubsection{Customizing the Checkbox Symbol}
-
-You can change the symbol used inside checkboxes with \verb|\GAIsetCheckmarkSymbol{}|. The package automatically recalculates box width to ensure proper alignment.
-
-\begin{verbatim}
-\GAIsetCheckmarkSymbol{\checkmark}  % Default
-\GAIsetCheckmarkSymbol{\texttimes}  % Use × instead
-\end{verbatim}
-
-\subsubsection{Customizing the Font Size}
-
-Change the font size used for the checklist:
-
-\begin{verbatim}
-\GAIsetChecklistFontSize{\small}
-\end{verbatim}
-
-The default is \verb|\smaller|, which means ``slightly smaller than current font size''.
+\begin{itemize}
+    \item \textbf{Checkmark Symbol:} \latexinline|\GAIsetCheckmarkSymbol{\texttimes}| (default is \latexinline|\checkmark|).
+    \item \textbf{Font Size:} \latexinline|\GAIsetChecklistFontSize{\small}| (default is \latexinline|\smaller|, meaning: \emph{slightly smaller than the current font size}).
+\end{itemize}
 
 \subsection{Rendering the Declaration}
 
-To print the final declaration, use the \verb|\GAIrenderDeclaration| command at the desired location in your document. For papers/articles, you may place it before or after the references. For theses/dissertations, please follow your institution's guidelines.
+Place the \latexinline|\GAIrenderDeclaration| command where you want the disclosure to appear (e.g., after the Conclusion or before References).
 
-\begin{verbatim}
+\begin{ltx}
 \GAIrenderDeclaration[<columns>]{<authors>}
 \GAIrenderDeclaration*[<columns>]{<authors>}
-\end{verbatim}
+\end{ltx}
 
 \begin{itemize}
-\item \textbf{Star variant} (\verb|\GAIrenderDeclaration*|): Renders the disclosure \textbf{without} the automatic section title. Use this when you want to manage the heading yourself.
-
-\item \textbf{Optional Argument} (\verb|[<columns>]|): The number of columns used for the checklist. The default is \texttt{3}.
-
-\item \textbf{Mandatory Argument} (\verb|{<authors>}|): A comma-separated list of author names submitting the declaration.
+    \item \textbf{Star variant (*):} Renders the checklist \emph{without} the section heading.
+    \item \textbf{<columns>:} Number of columns for the checklist (default: 3).
+    \item \textbf{<authors>:} Comma-separated list of (document) authors declaring the use of AI.
 \end{itemize}
-
-\bigskip
-\textbf{Examples:}
-
-\begin{verbatim}
-% Standard form with automatic title
-\GAIrenderDeclaration[3]{Jane Doe, John Smith}
-
-% Starred form without title (custom section)
-\section*{AI Disclosure Statement}
-\label{sec:ai-disclosure}
-\GAIrenderDeclaration*[2]{Jane Doe, John Smith}
-
-% Single column layout
-\GAIrenderDeclaration[1]{Mary Johnson}
-\end{verbatim}
 
 \section{Taxonomy Keys}
 \label{sec:taxonomy-keys}
 
-The following keys correspond to the specific tasks defined in the GAIDeT taxonomy~\cite{Suchikova:2025:GAIDeT}. Use these keys with the \verb|\GAIactivate{}| command.
+Use these keys with \latexinline|\GAIactivate{}|. Derived from the GAIDeT taxonomy~\cite{Suchikova:2025:GAIDeT}.
 
 \begin{center}
 \small
@@ -267,105 +298,92 @@ The following keys correspond to the specific tasks defined in the GAIDeT taxono
 \end{center}
 
 %—————————————————————————————————————————————————————————————————
-% AI Disclosure Customization
+% Example Usage
 %—————————————————————————————————————————————————————————————————
+
+\section{Example Output}
+
+Below is an example of a rendered declaration. The configuration used is:
+
+\begin{ltx}
+% Configuration
+\GAIactivate{c:idea}
+\GAIactivate{c:rq}
+\GAIactivate{l:search}
+\GAIactivate{l:write}
+\GAIactivate{s:auto}
+\GAIactivate{d:analyze}
+\GAIactivate{w:summarize}
+\GAIactivate{w:reformat}
+
+\GAItoolsUsed{ChatGPT-4o, Gemini 1.5 Pro, GitHub Copilot}
+
+\begin{GAIcomment}
+AI was used for refining code structure in Section~4.
+\end{GAIcomment}
+\end{ltx}
 
 % --- Conceptualization ---
 \GAIactivate{c:idea}        % Idea generation
-\GAIactivate{c:objective}   % Defining the research objective
+% \GAIactivate{c:objective}   % Defining the research objective
 \GAIactivate{c:rq}          % Formulating research questions and hypotheses
-\GAIactivate{c:feas}        % Feasibility assessment and risk evaluation
-% \GAIactivate{c:pretest}   % Preliminary hypothesis testing
+% \GAIactivate{c:feas}        % Feasibility assessment and risk evaluation
+% \GAIactivate{c:pretest}     % Preliminary hypothesis testing
 
 % --- Literature Review ---
 \GAIactivate{l:search}      % Literature search and systematization
 \GAIactivate{l:write}       % Writing the literature review
-% \GAIactivate{l:patents}   % Market trends / patent environment
-% \GAIactivate{l:gaps}      % Novelty evaluation and gap identification
+% \GAIactivate{l:patents}     % Market trends / patent environment
+% \GAIactivate{l:gaps}        % Novelty evaluation and gap identification
 
 % --- Methodology ---
-\GAIactivate{m:design}      % Research design
-% \GAIactivate{m:protocols} % Experimental / research protocols
-% \GAIactivate{m:methods}   % Selection of research methods
+% \GAIactivate{m:design}      % Research design
+% \GAIactivate{m:protocols}   % Experimental / research protocols
+% \GAIactivate{m:methods}     % Selection of research methods
 
 % --- Software Development and Automation ---
-% \GAIactivate{s:codegen}   % Code generation
-% \GAIactivate{s:opt}       % Code optimization
+% \GAIactivate{s:codegen}     % Code generation
+% \GAIactivate{s:opt}         % Code optimization
 \GAIactivate{s:auto}        % Process automation
-\GAIactivate{s:algs}        % Algorithms for data analysis
+% \GAIactivate{s:algs}        % Algorithms for data analysis
 
 % --- Data Management ---
-% \GAIactivate{d:collect}   % Data collection
-\GAIactivate{d:validate}    % Validation
-% \GAIactivate{d:clean}     % Data cleaning
-\GAIactivate{d:curate}      % Data curation and organization
+% \GAIactivate{d:collect}     % Data collection
+% \GAIactivate{d:validate}    % Validation
+% \GAIactivate{d:clean}       % Data cleaning
+% \GAIactivate{d:curate}      % Data curation and organization
 \GAIactivate{d:analyze}     % Data analysis
-% \GAIactivate{d:viz}       % Visualization
-% \GAIactivate{d:repro}     % Reproducibility testing
+% \GAIactivate{d:viz}         % Visualization
+% \GAIactivate{d:repro}       % Reproducibility testing
 
 % --- Writing and Editing ---
-\GAIactivate{w:textgen}     % Text generation
-% \GAIactivate{w:proof}     % Proofreading and editing
+% \GAIactivate{w:textgen}     % Text generation
+% \GAIactivate{w:proof}       % Proofreading and editing
 \GAIactivate{w:summarize}   % Summarizing text
-% \GAIactivate{w:concl}     % Formulation of conclusions
-\GAIactivate{w:tone}        % Emotional tone adjustment
-% \GAIactivate{w:translate} % Translation
-% \GAIactivate{w:reformat}  % Reformatting
-\GAIactivate{w:press}       % Press releases and outreach materials
+% \GAIactivate{w:concl}       % Formulation of conclusions
+% \GAIactivate{w:tone}        % Emotional tone adjustment
+% \GAIactivate{w:translate}   % Translation
+\GAIactivate{w:reformat}    % Reformatting
+% \GAIactivate{w:press}       % Press releases and outreach materials
 
 % --- Ethics Review / Supervision ---
-\GAIactivate{e:bias}        % Bias analysis / discrimination assessment
-\GAIactivate{e:risk}        % Ethical risk analysis
-\GAIactivate{e:compliance}  % Compliance monitoring
-% \GAIactivate{e:conf}      % Data confidentiality monitoring
-% \GAIactivate{sup:qa}      % Quality assessment
-% \GAIactivate{sup:trends}  % Trend identification
-\GAIactivate{sup:limits}    % Identification of limitations
-% \GAIactivate{sup:recs}    % Recommendations
-% \GAIactivate{sup:pub}     % Publication support
+% \GAIactivate{e:bias}        % Bias analysis / discrimination assessment
+% \GAIactivate{e:risk}        % Ethical risk analysis
+% \GAIactivate{e:compliance}  % Compliance monitoring
+% \GAIactivate{e:conf}        % Data confidentiality monitoring
+% \GAIactivate{sup:qa}        % Quality assessment
+% \GAIactivate{sup:trends}    % Trend identification
+% \GAIactivate{sup:limits}    % Identification of limitations
+% \GAIactivate{sup:recs}      % Recommendations
+% \GAIactivate{sup:pub}       % Publication support
 
-% --- GAI tools used ---
-% \GAItoolsUsed{}
-% \GAItoolsUsed{ChatGPT-5.2}
-\GAItoolsUsed{ChatGPT-5.2, Gemini 3 Pro, Claude 4.5 Opus, Perplexity 12.12.25}
-
-% --- Optional extra note/comment ---
-\begin{GAIcomment}
-The AI was used primarily for refining the code in Section 3, but the algorithm logic was derived manually.
-\end{GAIcomment}
 
 \begin{GAIcomment}
-This is a second additional comment!
+AI was used for refining code structure in Section~4.
 \end{GAIcomment}
 
-\begin{GAIcomment*}
-This is a third additional comment! It is starred and, thus, does not get a number. Also, this comment is longer and, hopefully, will span to the next line!
-\end{GAIcomment*}
-
-\begin{GAIcomment}
-This is the third non-starred additional comment!
-\end{GAIcomment}
-
-% --- Optional customization of title ---
-% \GAIdiscloseTitle[Disclosure of Generative AI]
-%                  {Disclosure of Generative Artificial Intelligence}[subsection]
-
-%—————————————————————————————————————————————————————————————————
-% End-of AI Disclosure Customization
-%—————————————————————————————————————————————————————————————————
-
-% Syntax: \GAIrenderDeclaration[checklist_ncolumns]{Author1 Name, Author2 Name, …}
-
-% Example: Custom checkmark symbol
-% \GAIsetCheckmarkSymbol{%
-%   \rule{0pt}{1.6ex}%
-%   \hspace{0.4ex}%
-%   \raisebox{0.1ex}{\large \texttimes}%
-%   \hspace{0.4ex}%
-% }
-
-\GAIrenderDeclaration[3]{Jane Doe, John Doe, Mary Doe}
-% \GAIrenderDeclaration[2]{Jane Doe}
+% Rendering
+\GAIrenderDeclaration[3]{Jane Doe, John Smith}
 
 \printbibliography
 
