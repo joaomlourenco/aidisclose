@@ -214,17 +214,50 @@
     newzealand = en,
     UKenglish  = en,
     USenglish  = en,
+    
     portuguese = pt,
     brazilian  = pt,
-    portuges   = pt
+    portuges   = pt,
+    
+    catalan    = cat,
+    czech      = cz,
+    german     = de,
+    ngerman    = de,
+    austrian   = de,
+    naustrian  = de,
+    danish     = dk,
+    spanish    = es,
+    french     = fr,
+    acadian    = fr,
+    canadien   = fr,
+    greek      = gr,
+    polutonikogreek = gr,
+    italian    = it,
+    dutch      = nl,
+    polish     = pl,
+    slovak     = sk,
+    ukrainian  = uk
   }
 
 \cs_new_protected:Nn \__gai_load_lang_file:n
   {
-    % Updated to look for .ldf files
-    \file_if_exist:nTF { aidisclose-#1.ldf }
-      { \file_input:n { aidisclose-#1.ldf } }
-      { \file_input:n { aidisclose-en.ldf } }
+    % 1. Try specific language in 'langdef/' folder
+    \file_if_exist:nTF { langdef/aidisclose-#1.ldf }
+      { \file_input:n { langdef/aidisclose-#1.ldf } }
+      {
+        % 2. Try specific language in current/root directory
+        \file_if_exist:nTF { aidisclose-#1.ldf }
+          { \file_input:n { aidisclose-#1.ldf } }
+          {
+            % 3. Fallback: English in 'langdef/'
+            \file_if_exist:nTF { langdef/aidisclose-en.ldf }
+              { \file_input:n { langdef/aidisclose-en.ldf } }
+              { 
+                % 4. Fallback: English in current/root directory
+                \file_input:n { aidisclose-en.ldf } 
+              }
+          }
+      }
   }
 
 \cs_new_protected:Nn \__gai_detect_and_load_language:

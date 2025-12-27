@@ -1,4 +1,4 @@
-% aidisclose-pt.ldf
+% aidisclose-pt.ldf - Portuguese
 \GAIsetStrings{
   tools_used    = {Ferramentas\ de\ IA\ Generativa\ utilizadas:},
   none_used     = {Não\ foram\ utilizadas\ ferramentas\ de\ IA\ Generativa.},
