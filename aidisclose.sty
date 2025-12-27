@@ -500,7 +500,7 @@
       {
         \int_gincr:N \g__gai_comment_int
         \par \bigskip \noindent
-        \textbf{\tl_use:N \g__gai_str_comment_label_tl\ \#\int_use:N \g__gai_comment_int}\  #1 \par
+        \textbf{\tl_use:N \g__gai_str_comment_label_tl\ \#\int_use:N \g__gai_comment_int :}\  #1 \par
       }
   } { }
 
@@ -509,7 +509,7 @@
     \tl_gput_right:Nn \g__gai_comments_tl
       {
         \par \bigskip \noindent
-        \textbf{\tl_use:N \g__gai_str_comment_star_label_tl}\  #1 \par
+        \textbf{\tl_use:N \g__gai_str_comment_star_label_tl :}\  #1 \par
       }
   } { }
 
@@ -552,14 +552,14 @@
           \par \bigskip
           \int_compare:nNnTF { #2 } < { 2 }
             {
-              \textbf{\larger ##1}\par\nopagebreak[4]
+              \textbf{ \larger ##1 \  \hrulefill}\par\nopagebreak[4]
               \begin{gailist}
                 ##2
               \end{gailist}
             }
             {
               \setlength { \multicolsep } { 4pt } 
-              \begin { multicols } { #2 } [ \textbf { \larger \mbox{}\!##1 } ]
+              \begin { multicols } { #2 } [ \noindent \textbf { \larger ##1 \  \hrulefill } ]
                 \begin { gailist }
                   ##2
                 \end { gailist }
