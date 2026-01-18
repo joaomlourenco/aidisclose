@@ -1,14 +1,14 @@
 # aidisclose — Generative AI disclosure checklist and statements
 
 [![CTAN](https://img.shields.io/ctan/v/aidisclose)](https://ctan.org/pkg/aidisclose)
-[![Version](https://img.shields.io/badge/version-1.4.0-blue)](https://github.com/joaomlourenco/aidisclose)
-[![Date](https://img.shields.io/badge/date-2025--12--25-orange)](https://github.com/joaomlourenco/aidisclose)
+[![Version](https://img.shields.io/badge/version-1.7.0-blue)](https://github.com/joaomlourenco/aidisclose)
+[![Date](https://img.shields.io/badge/date-2026--01--18-orange)](https://github.com/joaomlourenco/aidisclose)
 [![License: LPPL 1.3c](https://img.shields.io/badge/license-LPPL%201.3c-blue)](https://www.latex-project.org/lppl/lppl-1-3c/)
 [![LaTeX](https://img.shields.io/badge/LaTeX-LaTeX2e%202020%2F10%2F01%2B-brightgreen)](https://www.latex-project.org/)
 
 **aidisclose** is a LaTeX package that provides a standardized and transparent mechanism for declaring the use of **Generative Artificial Intelligence (GAI)** tools in academic, technical, and professional documents.
 
-The package implements the **GAIDeT (Generative AI Delegation Taxonomy)** and automates the creation of disclosure statements and task-based checklists, aligned with emerging publisher and institutional requirements.
+The package implements an extension of the **GAIDeT (Generative AI Delegation Taxonomy)** and automates the creation of disclosure statements and task-based checklists, aligned with emerging publisher and institutional requirements.
 
 For the complete manual, full taxonomy, and visual examples, see **[aidisclose-doc.pdf](aidisclose-doc.pdf)**.
 
@@ -70,9 +70,9 @@ Set this option to `false` if you prefer to manage citations manually.
 
 The package automatically detects the document language via `babel` or `polyglossia` and loads the appropriate translation file.
 
-### Supported languages (v1.6.3)
+### Supported languages (v1.7.0)
 
-English (default), Catalan, Czech, Danish, Dutch, French, German, Greek, Italian, Polish, Portuguese, Slovak, Spanish, and Ukrainian.
+English **(default)**, Catalan, Czech, Danish, Dutch, French, German, Greek, Italian, Polish, Portuguese, Slovak, Spanish, and Ukrainian (*there were automatic translations, please contribute with fixes*).
 
 If the detected language is not supported, the package falls back to English.
 
@@ -85,11 +85,12 @@ Tasks are activated using short identifiers derived from the GAIDeT taxonomy, gr
 - Conceptualization
 - Literature Review
 - Methodology
-- Software Development
+- Software Development and Automation
 - Data Management
+- Visuals and Multimedia
 - Writing and Editing
 - Ethics Review
-- Supervision
+- Quality Assurance
 
 The complete list of keys and descriptions is provided in **[aidisclose-doc.pdf](aidisclose-doc.pdf)**.
 
@@ -107,8 +108,8 @@ The disclosure process consists of two steps:
 Use `\GAIactivate{}` to mark specific tasks as delegated to Generative AI.
 
 ```tex
-\GAIactivate{c:idea}
-\GAIactivate{s:opt}
+\GAIactivate{c_idea}
+\GAIactivate{s_opt}
 ```
 
 ### Specifying tools
@@ -179,14 +180,14 @@ Place the rendering command where you want the disclosure to appear:
 ## Minimal example
 
 ```tex
-\GAIactivate{c:idea}
-\GAIactivate{c:rq}
-\GAIactivate{l:search}
-\GAIactivate{l:write}
-\GAIactivate{s:auto}
-\GAIactivate{d:analyze}
-\GAIactivate{w:summarize}
-\GAIactivate{w:reformat}
+\GAIactivate{c_idea}
+\GAIactivate{c_rq}
+\GAIactivate{l_srch}
+\GAIactivate{l_sum}
+\GAIactivate{s_auto}
+\GAIactivate{d_anl}
+\GAIactivate{w_sum}
+\GAIactivate{w_poly}
 
 \GAItoolsUsed{ChatGPT-4o, Gemini 1.5 Pro, GitHub Copilot}
 
@@ -209,6 +210,9 @@ The rendered declaration includes:
 - Optional additional comments
 
 See **[aidisclose-doc.pdf](aidisclose-doc.pdf)** for the full rendered example.
+
+<img height="400" alt="example-pg-1" src=".resources/example-pg1.svg" />
+<img height="400" alt="example-pg-1" src=".resources/example-pg2.svg" />
 
 ---
 
