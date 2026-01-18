@@ -7,6 +7,7 @@
 # Ignore the .bib file, as it is generated automatically from the .tex file
 aidisclose.bib
 *ERROR
+AUXDIR/
 
 # Ignore all minted …
 _*
