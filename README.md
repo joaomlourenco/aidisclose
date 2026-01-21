@@ -149,18 +149,30 @@ Change the default title and sectioning level:
 To retrieve these values later, you can use `\AIDdiscloseTitleLong` and `\AIDdiscloseTitleShort`.
 
 ### Visual customization
-
+   
 * Checkmark symbol:
-  
-  ```tex
-  \AIDsetCheckmarkSymbol{\texttimes}
-  ```
+ ```tex
+ \AIDcheckmarkSymbol{\texttimes}
+
+ ```
 
 * Checklist font size:
-  
-  ```tex
-  \AIDsetChecklistFontSize{\small}
-  ```
+
+ ```tex
+ \AIDchecklistFontSize{\small}
+
+ ```
+
+* Colors:
+
+ ```tex
+ \AIDusedColor{black}        % Active items text color
+ \AIDunusedColor{black!50}   % Inactive items text color
+ \AIDcheckmarkColor{black}   % Checkmark symbol color
+ \AIDboxColor{black}         % Box outline color
+
+ ```
+ 
 
 ---
 

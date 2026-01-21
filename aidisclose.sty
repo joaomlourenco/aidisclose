@@ -6,10 +6,10 @@
 % This file may be distributed and/or modified under the conditions of
 % the LaTeX Project Public License, either version 1.3c of this license
 % or (at your option) any later version.
-\def\aidversion{1.8.1}
+\def\aidversion{1.8.2}
 %
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesExplPackage {aidisclose} {2026/01/20} {\aidversion} 
+\ProvidesExplPackage {aidisclose} {2026/01/21} {\aidversion} 
   {Utilities for Generative AI disclosure checklist and statements}
 
 % =========================================================
@@ -34,6 +34,7 @@
 \fi
 \RequirePackage{multicol}    % for multi-column layout
 \RequirePackage{relsize}     % for relative font sizing
+\RequirePackage{xcolor}      % for color customization
 
 % =========================================================
 % 1) VARIABLE DEFINITIONS (Strings)
@@ -193,6 +194,13 @@
 \tl_new:N \l__aid_declares_verb_tl
 \tl_new:N \l__aid_acknowledges_verb_tl
 \tl_new:N \l__aid_working_preamble_tl
+
+% Color Variables
+\tl_new:N \g__aid_color_used_tl
+\tl_new:N \g__aid_color_unused_tl
+\tl_new:N \g__aid_color_checkmark_tl
+\tl_new:N \g__aid_color_box_used_tl
+\tl_new:N \g__aid_color_box_unused_tl
 
 \str_set:Nn \g__aid_bibfile_str { aidisclose.bib }
 
@@ -466,7 +474,11 @@
   {
     \group_begin:
     \dim_set:Nn \fboxsep { \l__aid_fboxsep_dim }
-    \fbox { \tl_use:N \g__aid_checkmark_symbol_tl }
+    \color{ \g__aid_color_box_used_tl }
+    \fbox { 
+      \color{ \g__aid_color_checkmark_tl }
+      \tl_use:N \g__aid_checkmark_symbol_tl 
+    }
     \group_end:
   }
 
@@ -474,6 +486,7 @@
   {
     \group_begin:
     \dim_set:Nn \fboxsep { \l__aid_fboxsep_dim }
+    \color{ \g__aid_color_box_unused_tl }
     \fbox { \phantom { \tl_use:N \g__aid_checkmark_symbol_tl } }
     \group_end:
   }
@@ -737,6 +750,20 @@
     \seq_set_from_clist:Nn \g__aid_order_seq { #1 }
   }
 
+% --- Color Configuration Commands ---
+\NewDocumentCommand \AIDusedColor { m }
+  { \tl_gset:Nn \g__aid_color_used_tl { #1 } }
+\NewDocumentCommand \AIDunusedColor { m }
+  { \tl_gset:Nn \g__aid_color_unused_tl { #1 } }
+\NewDocumentCommand \AIDcheckmarkColor { m }
+  { \tl_gset:Nn \g__aid_color_checkmark_tl { #1 } }
+
+% NEW: Separate box color commands
+\NewDocumentCommand \AIDboxUsedColor { m }
+  { \tl_gset:Nn \g__aid_color_box_used_tl { #1 } }
+\NewDocumentCommand \AIDboxUnusedColor { m }
+  { \tl_gset:Nn \g__aid_color_box_unused_tl { #1 } }
+
 % Default Configuration
 \cs_if_exist:cTF { chapter }
   { \tl_gset:Nn \g__aid_section_cmd_tl { \chapter } }
@@ -747,6 +774,12 @@
 % Set Default Order
 \AIDorder { preamble, tools, taxonomy, comments }
 
+% Set Default Colors
+\AIDusedColor { black }
+\AIDunusedColor { black!50 }
+\AIDcheckmarkColor { black }
+\AIDboxUsedColor { black }
+\AIDboxUnusedColor { black!50 }
 
 % =========================================================
 % 6) COMMENT ENVIRONMENTS
@@ -868,8 +901,22 @@
                     }
                   \cs_set:Npn \TItem ####1 ####2
                     {
-                      \item [ \__aid_checkbox_for:n { ####1 } ]
-                      \parbox[t]{\linewidth}{ \raggedright ####2 }
+                      % Check if key is active to determine box type AND text color
+                      \seq_if_in:NxTF \g__aid_active_keys_seq { \tl_to_str:n { ####1 } }
+                        {
+                           \item [ \__aid_print_checked_box: ]
+                           \group_begin:
+                           \color{ \g__aid_color_used_tl }
+                           \parbox[t]{\linewidth}{ \raggedright ####2 }
+                           \group_end:
+                        }
+                        {
+                           \item [ \__aid_print_empty_box: ]
+                           \group_begin:
+                           \color{ \g__aid_color_unused_tl }
+                           \parbox[t]{\linewidth}{ \raggedright ####2 }
+                           \group_end:
+                        }
                     }
                   \cs_set_eq:NN \TSubItem \TItem
                   \tl_use:N \g__aid_taxonomy_tl

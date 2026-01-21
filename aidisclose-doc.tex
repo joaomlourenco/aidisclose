@@ -243,10 +243,32 @@ You can verify the current titles using \latexinline|\AIDdiscloseTitleLong| and 
 \subsubsection{Visual Customization}
 
 \begin{itemize}
-    \item \textbf{Checkmark Symbol:} \latexinline|\AIDsetCheckmarkSymbol{\texttimes}| (default is \latexinline|\checkmark|).
-    \item \textbf{Font Size:} \latexinline|\AIDsetChecklistFontSize{\small}|
+    \item \textbf{Checkmark Symbol:} \latexinline|\AIDcheckmarkSymbol{\texttimes}| (default is \latexinline|\checkmark|).
+    \item \textbf{Font Size:} \latexinline|\AIDchecklistFontSize{\small}|
     (default is \latexinline|\smaller|, meaning: \emph{slightly smaller than the current font size}).
+\item \textbf{Font Size:} \latexinline|\AIDchecklistFontSize{\small}|
+    (default is \latexinline|\smaller|, meaning: \emph{slightly smaller than the current font size}).
+    
+    \item \textbf{Colors:} You can configure the colors for various elements using standard \texttt{xcolor} names:
+    \begin{ltx}
+% Set text color for selected (active) items
+% Default: black
+\AIDusedColor{blue!60!black}
+
+% Set text color for unselected (inactive) items
+% Default: black!50
+\AIDunusedColor{gray!40}
+
+% Set the color of the checkmark symbol
+% Default: black
+\AIDcheckmarkColor{red}
+
+% Set the color of the square box lines
+% Default: black
+\AIDboxColor{blue}
+    \end{ltx}
 \end{itemize}
+
 
 \subsection{Advanced Configuration}
 
@@ -849,14 +871,14 @@ To retrieve these values later, you can use `\AIDdiscloseTitleLong` and `\AIDdis
 
 * Checkmark symbol:
 ```tex
-\AIDsetCheckmarkSymbol{\texttimes}
+\AIDcheckmarkSymbol{\texttimes}
 
 ```
 
 
 * Checklist font size:
 ```tex
-\AIDsetChecklistFontSize{\small}
+\AIDchecklistFontSize{\small}
 
 ```
 
