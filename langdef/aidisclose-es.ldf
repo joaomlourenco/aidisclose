@@ -1,12 +1,23 @@
 % aidisclose-es.ldf - Es
-\GAIsetStrings{
+\AIDstrings{
   tools_used    = {Herramientas\ de\ IA\ generativa\ utilizadas:},
   none_used     = {No\ se\ declararon\ herramientas\ de\ IA\ generativa.},
   declares      = {declara},
   declare       = {declaran},
+  acknowledges  = {reconoce},
+  acknowledge   = {reconocen},
   and           = {y},
-  preamble      = {el\ uso\ de\ IA\ Generativa\ en\ el\ trabajo\ de\ investigación\ y\ proceso\ de\ redacción\ de\ este\ documento.\ Las\ siguientes\ tareas\footnote{Esta\ declaración\ extiende\ la\ taxonomía\ GAIDeT~\cite{Suchikova:2025:GAIDeT}.}\ fueron\ parcialmente\ delegadas\ a\ herramientas\ de\ IA\ Generativa\ bajo\ total\ supervisión\ humana:},
-  footnote      = {Esta\ declaración\ se\ generó\ utilizando\ \GAIengineName{}\ y\ el\ paquete\ \LaTeX\ \GAIpackageName{}},
+  preamble      = {El\ autor,\ <AUTHOR>,\ <ACKNOWLEDGES>\ el\ uso\ de\ las\ siguientes\ herramientas\ de\ inteligencia\ artificial\ generativa\ en\ el\ desarrollo\ de\ esta\ tesis.\ Estas\ tecnologías\ se\ utilizaron\ bajo\ estricta\ supervisión,\ y\ todos\ los\ resultados\ generados\ por\ IA\ fueron\ revisados\ críticamente\ y\ verificados\ en\ cuanto\ a\ su\ exactitud.\ El\ autor\ asume\ plena\ responsabilidad\ por\ la\ validez\ y\ originalidad\ del\ contenido,\ confirmando\ que\ el\ uso\ de\ estas\ herramientas\ se\ alinea\ con\ todas\ las\ políticas\ institucionales\ y\ estándares\ de\ integridad\ académica.},
+  
+  % Pre/Post Parts
+  pre_tools     = {},
+  post_tools    = {},
+  pre_taxonomy  = {\noindent\bfseries Actividades\ apoyadas\ por\ Herramientas\ de\ Inteligencia\ Artificial\ Generativa:\footnote{Esta\ lista\ amplía\ la\ taxonomía\ AIDDeT\CiteAIDDeT}},
+  post_taxonomy = {},
+  pre_comments  = {},
+  post_comments = {},
+  
+  footnote      = {Esta\ declaración\ se\ generó\ utilizando\ \AIDengineName{}\ y\ el\ paquete\ \LaTeX\ \AIDpackageName{}},
   comment_label = {Comentario\ adicional},
   comment_star  = {Comentario\ adicional},
   title_long    = {Declaración\ de\ Delegación\ a\ Inteligencia\ Artificial\ Generativa},
@@ -17,7 +28,7 @@
   grp_meth      = {Metodología},
   grp_soft      = {Desarrollo\ de\ Software\ y\ Automatización},
   grp_data      = {Gestión\ de\ Datos},
-  grp_vis       = {Visuales\ y\ Multimedia},
+  grp_vis       = {Visuals\ y\ Multimedia},
   grp_write     = {Redacción\ y\ Edición},
   grp_eth       = {Revisión\ Ética},
   grp_sup       = {Garantía\ de\ Calidad},

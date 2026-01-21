@@ -72,7 +72,7 @@
     breaklines,
     tabsize=2,
     autogobble,
-    % frame=single,
+    % frame=single,  
     % framesep=3mm,
     % rulecolor=black!20,
    ]{latex}}
@@ -83,12 +83,11 @@
 
 \title{The \texttt{aidisclose} package}
 \author{João M. Lourenço\\\url{https://github.com/joaomlourenco/aidisclose}}
-\date{2026-01-01~(\gaiversion)}
+\date{2026-01-20~(\aidversion)}
 \maketitle
 
 \begin{abstract}
-    The \texttt{aidisclose} package implements the \emph{GAIDeT (Generative AI Delegation Taxonomy)}~\cite{Suchikova:2025:GAIDeT} to automate Generative AI disclosure statements and checklists. 
-    
+    The \texttt{aidisclose} package implements the \emph{AIDDeT (Generative AI Delegation Taxonomy)}~\cite{Suchikova:2025:AIDDeT} to automate Generative AI disclosure statements and checklists.
     The package is supported by a companion website at \url{https://aidisclose.org}, which allows interactive generation of the LaTeX code to add to your document.
 \end{abstract}
 
@@ -104,8 +103,8 @@ The \texttt{aidisclose} is designed to support emerging ethical, institutional, 
 It allows \LaTeX\ authors to:
 
 \begin{itemize}
-    \item Select specific tasks delegated to Generative ~AI (GAI) from the GAIDeT taxonomy~\cite{Suchikova:2025:GAIDeT} (e.g., idea generation, data cleaning, text summarization).
-    \item List the specific GAI tools used (e.g., ChatGPT, Gemini, Claude).
+    \item Select specific tasks delegated to Generative~AI (AID) from an extension to the GAIDeT taxonomy~\cite{Suchikova:2025:AIDDeT} (e.g., idea generation, data cleaning, text summarization).
+    \item List the specific AID tools used (e.g., ChatGPT, Gemini, Claude).
     \item Add optional explanatory comments (numbered or unnumbered).
     \item Automatically generate a formatted “\emph{Disclosure of Delegation to Generative AI}” section/chapter.
     \item Automatically handle citations for the taxonomy and the package itself.
@@ -115,10 +114,9 @@ It allows \LaTeX\ authors to:
 
 \begingroup
 \slshape
-A companion web interface is available at \url{https://aidisclose.org}. It provides an interactive
-generator for \texttt{aidisclose}-based Generative AI disclosure statements, following the GAIDeT taxonomy~\cite{Suchikova:2025:GAIDeT}.
-
-The website can be used to (i) select delegated tasks, (ii) declare GAI tools (or explicitly declare none),
+A companion web interface is available at \url{https://aidisclose.org}.
+It provides an interactive generator for \texttt{aidisclose}-based Generative AI disclosure statements, following the AIDDeT taxonomy~\cite{Suchikova:2025:AIDDeT}.
+The website can be used to (i) select delegated tasks, (ii) declare AID tools (or explicitly declare none),
 (iii) add multiple numbered or unnumbered comments (with reordering and numbering preview),
 and (iv) generate either a complete minimal \LaTeX{} document or a ready-to-paste configuration snippet.
 The generated code can be copied to the clipboard and incorporated into your manuscript.
@@ -140,14 +138,14 @@ The package currently supports the following \textbf{key-value options}:
     \item[\texttt{autobib\,=\,true\,|\,false}] (Default: \texttt{true})\\
     When enabled, the package automatically:
     \begin{enumerate}
-        \item Writes a \texttt{aidisclose.bib} file containing the references for GAIDeT~\cite{Suchikova:2025:GAIDeT} and this package~\cite{Lourenco:2025:aidisclose}.
+        \item Writes a \texttt{aidisclose.bib} file containing the references for AIDDeT~\cite{Suchikova:2025:AIDDeT} and this package~\cite{Lourenco:2025:aidisclose}.
         \item Loads this bibliography resource (compatible with \texttt{biblatex} and standard \texttt{BibTeX}).
     \end{enumerate}
     Set this to \texttt{false} if you wish to manage these citations manually in your own \texttt{.bib} file.
     \item[\texttt{nocite=true|false}] (Default: \texttt{true})\\
     This option only affects the Generative AI disclosure statement: When disabled, the package automatically:
     \begin{enumerate}
-        \item Add citations to the GAIDeT taxonomy paper~\cite{Suchikova:2025:GAIDeT} and the aidisclose manual~\cite{Lourenco:2025:aidisclose}.
+        \item Add citations to the AIDDeT taxonomy paper~\cite{Suchikova:2025:AIDDeT} and the aidisclose manual~\cite{Lourenco:2025:aidisclose}.
     \end{enumerate}
     Set this to \texttt{false} if you are willing to give credit to the authors.
 \end{description}
@@ -156,7 +154,7 @@ The package currently supports the following \textbf{key-value options}:
 \label{sec:i18n}
 
 The package automatically detects the document language (via \texttt{babel} or \texttt{polyglossia}) and loads the corresponding translation file (\texttt{.ldf}).
-\paragraph{Currently (v\gaiversion) Supported Languages:}~
+\paragraph{Currently (v\aidversion) Supported Languages:}~
 
 \begin{itemize}[
     itemsep = 1\itemsep,
@@ -191,70 +189,115 @@ The declaration process consists of two steps: \textbf{Configuration} (defining 
 
 Configuration commands can be placed in the preamble or in the document body before the rendering command is called.
 
-\textbf{Tip (Interactive Generator):} You can use the companion website \url{https://aidisclose.org} to visually select tasks and tools. The website will automatically generate the configuration code (the \latexinline|\GAIactivate| and \latexinline|\GAItoolsUsed| commands) which you can simply copy and paste into your document.
+\textbf{Tip (Interactive Generator):} You can use the companion website \url{https://aidisclose.org} to visually select tasks and tools.
+The website will automatically generate the configuration code (the \latexinline|\AIDactivate| and \latexinline|\AIDtoolsUsed| commands) which you can simply copy and paste into your document.
 
 \subsubsection{Activating Taxonomy Items}
-Use \latexinline|\GAIactivate{}| to check specific items in the taxonomy. See Section~\ref{sec:taxonomy-keys} for all available keys.
+Use \latexinline|\AIDactivate{}| to check specific items in the taxonomy. See Section~\ref{sec:taxonomy-keys} for all available keys.
+\textbf{Note:} The keys use a colon (\texttt{:}) to separate the category prefix from the specific item.
 
 \begin{ltx}
 % Example: Activating "Idea generation" and "Code optimization"
-\GAIactivate{c:idea}
-\GAIactivate{s:opt}
+\AIDactivate{c:idea}
+\AIDactivate{s:opt}
 \end{ltx}
 
 \subsubsection{Specifying Tools}
-Use \latexinline|\GAItoolsUsed{}| to list the AI tools employed.
+Use \latexinline|\AIDtoolsUsed{}| to list the AI tools employed.
 The package handles formatting (singular/plural) automatically.
 
 \begin{ltx}
 % Example 1: No tools used
-\GAItoolsUsed{}
+\AIDtoolsUsed{}
 
 % Example 2: Multiple tools
-\GAItoolsUsed{ChatGPT-4, Gemini Advanced, Claude 3}
+\AIDtoolsUsed{ChatGPT-4, Gemini Advanced, Claude 3}
 \end{ltx}
 
 \subsubsection{Adding Comments}
-Use the \texttt{GAIcomment} (numbered) and \texttt{GAIcomment*} (unnumbered) environments for details.
+Use the \texttt{AIDcomment} (numbered) and \texttt{AIDcomment*} (unnumbered) environments for details.
 Comments may contain multiple paragraphs.
 
 \begin{ltx}
-\begin{GAIcomment}
+\begin{AIDcomment}
 The AI was used primarily for refining the code in Section 3.
-\end{GAIcomment}
+\end{AIDcomment}
 
-\begin{GAIcomment*}
-No GAI tools were used for data analysis.
-\end{GAIcomment*}
+\begin{AIDcomment*}
+No AID tools were used for data analysis.
+\end{AIDcomment*}
 \end{ltx}
 
 \subsubsection{Customizing the Title}
-Change the default section title and hierarchy level using \latexinline|\GAIdiscloseTitle|.
+Change the default section title and hierarchy level using \latexinline|\AIDdiscloseTitle|.
 
 \begin{ltx}
-\GAIdiscloseTitle[Short Title]{Full Title}[section-level]
+\AIDdiscloseTitle[Short Title]{Full Title}[section-level]
 \end{ltx}
 
 \begin{itemize}
     \item \textbf{section-level}: Defaults to \latexinline|\chapter| if defined, otherwise \latexinline|\section|.
 \end{itemize}
+You can verify the current titles using \latexinline|\AIDdiscloseTitleLong| and \latexinline|\AIDdiscloseTitleShort|.
 
 \subsubsection{Visual Customization}
 
 \begin{itemize}
-    \item \textbf{Checkmark Symbol:} \latexinline|\GAIsetCheckmarkSymbol{\texttimes}| (default is \latexinline|\checkmark|).
-    \item \textbf{Font Size:} \latexinline|\GAIsetChecklistFontSize{\small}|
-(default is \latexinline|\smaller|, meaning: \emph{slightly smaller than the current font size}).
+    \item \textbf{Checkmark Symbol:} \latexinline|\AIDsetCheckmarkSymbol{\texttimes}| (default is \latexinline|\checkmark|).
+    \item \textbf{Font Size:} \latexinline|\AIDsetChecklistFontSize{\small}|
+    (default is \latexinline|\smaller|, meaning: \emph{slightly smaller than the current font size}).
 \end{itemize}
+
+\subsection{Advanced Configuration}
+
+The package provides several commands to control the order and content of the disclosure sections.
+
+\subsubsection{Reordering Sections}
+Use \latexinline|\AIDorder| to define the sequence of the disclosure components.
+The available components are: \texttt{preamble}, \texttt{tools}, \texttt{taxonomy}, and \texttt{comments}.
+
+\begin{ltx}
+% Default order
+\AIDorder{preamble, tools, taxonomy, comments}
+\end{ltx}
+
+\subsubsection{Inserting Custom Text}
+You can insert arbitrary text or commands before or after specific sections using the following macros:
+
+\begin{ltx}
+\AIDpreTools{Text appearing before the tools list.}
+\AIDpostTools{Text appearing after the tools list.}
+
+\AIDpreTaxonomy{Text appearing before the checklist.}
+\AIDpostTaxonomy{Text appearing after the checklist.}
+
+\AIDpreComments{Text appearing before the comments section.}
+\AIDpostComments{Text appearing after the comments section.}
+\end{ltx}
+
+\subsubsection{Customizing Strings and Preamble}
+You can modify internal strings using \latexinline|\AIDstrings| and the main preamble paragraph using \latexinline|\AIDpreamble|.
+
+\begin{ltx}
+\AIDstrings{
+  tools_used = {Generative AI Tools employed:},
+  none_used  = {No generative AI tools were used.}
+}
+
+% Replaces the default preamble text.
+% Use <AUTHOR>, <DECLARES>, and <ACKNOWLEDGES> as placeholders.
+\AIDpreamble{The authors (<AUTHOR>) <DECLARES> the use of...}
+\end{ltx}
+
 
 \subsection{Rendering the Declaration}
 
-Place the \latexinline|\GAIrenderDeclaration|
+Place the \latexinline|\AIDrenderDeclaration|
 command where you want the disclosure to appear (e.g., after the Conclusion or before References).
 
 \begin{ltx}
-\GAIrenderDeclaration[<columns>]{<authors>}
-\GAIrenderDeclaration*[<columns>]{<authors>}
+\AIDrenderDeclaration[<columns>]{<authors>}
+\AIDrenderDeclaration*[<columns>]{<authors>}
 \end{ltx}
 
 \begin{itemize}
@@ -266,8 +309,9 @@ command where you want the disclosure to appear (e.g., after the Conclusion or b
 \section{Taxonomy Keys}
 \label{sec:taxonomy-keys}
 
-Use these keys with \latexinline|\GAIactivate{}|. The keys are derived from our extension to the GAIDeT taxonomy~\cite{Suchikova:2025:GAIDeT} and organized by research phase.
-
+Use these keys with \latexinline|\AIDactivate{}|.
+The keys are derived from our extension to the AIDDeT taxonomy~\cite{Suchikova:2025:AIDDeT} and organized by research phase.
+\textbf{Note:} Keys use colons (\texttt{:}) as separators.
 
 \newenvironment{gaikeys}
   {%
@@ -388,7 +432,8 @@ Use these keys with \latexinline|\GAIactivate{}|. The keys are derived from our 
 \section{Appendix: Detailed Taxonomy Descriptions}
 \label{app:taxonomy}
 
-This appendix provides a detailed breakdown of the \texttt{aidisclose} taxonomy. For each category, we define the \textbf{Objective} (the high-level goal of using AI in this phase) and the \textbf{Scope} (what is generally included or excluded).
+This appendix provides a detailed breakdown of the \texttt{aidisclose} taxonomy.
+For each category, we define the \textbf{Objective} (the high-level goal of using AI in this phase) and the \textbf{Scope} (what is generally included or excluded).
 
 \subsection*{1. Conceptualization}
 \paragraph{Objective:} To use AI as a thought partner for brainstorming, refining the research direction, and establishing the theoretical foundation before empirical work begins.
@@ -405,7 +450,8 @@ This appendix provides a detailed breakdown of the \texttt{aidisclose} taxonomy.
 
 \subsection*{2. Literature Review}
 \paragraph{Objective:} To accelerate the discovery, synthesis, and organization of existing knowledge.
-\paragraph{Scope:} Includes searching, summarizing, and translating papers. Excludes the final critical argumentation (which remains the author's responsibility).
+\paragraph{Scope:} Includes searching, summarizing, and translating papers.
+Excludes the final critical argumentation (which remains the author's responsibility).
 \paragraph{Keys:}
 \begin{description}
     \item[Search \& Discovery:] Using AI tools (e.g., semantic search) to find relevant papers that keyword searches might miss.
@@ -418,7 +464,8 @@ This appendix provides a detailed breakdown of the \texttt{aidisclose} taxonomy.
 
 \subsection*{3. Methodology}
 \paragraph{Objective:} To assist in the structural design of the research study.
-\paragraph{Scope:} Includes experimental design and instrument creation. Excludes the physical conduct of experiments.
+\paragraph{Scope:} Includes experimental design and instrument creation.
+Excludes the physical conduct of experiments.
 \paragraph{Keys:}
 \begin{description}
     \item[Experimental design:] Designing the logic, control groups, and variables of the study.
@@ -441,7 +488,8 @@ This appendix provides a detailed breakdown of the \texttt{aidisclose} taxonomy.
 
 \subsection*{5. Data Management}
 \paragraph{Objective:} To handle the data lifecycle from collection to reporting.
-\paragraph{Scope:} Includes cleaning, analysis, and synthetic generation. Excludes the fabrication of results (which is ethical misconduct, distinct from declared synthetic data).
+\paragraph{Scope:} Includes cleaning, analysis, and synthetic generation.
+Excludes the fabrication of results (which is ethical misconduct, distinct from declared synthetic data).
 \paragraph{Keys:}
 \begin{description}
     \item[Collection:] Writing scrapers or using AI agents to gather public data.
@@ -459,7 +507,8 @@ This appendix provides a detailed breakdown of the \texttt{aidisclose} taxonomy.
 
 \subsection*{6. Visuals and Multimedia}
 \paragraph{Objective:} To create or enhance non-data visual elements.
-\paragraph{Scope:} Includes illustrative diagrams and image editing. Excludes scientific data plots (covered in Data Management).
+\paragraph{Scope:} Includes illustrative diagrams and image editing.
+Excludes scientific data plots (covered in Data Management).
 \paragraph{Keys:}
 \begin{description}
     \item[Generation:] Creating conceptual images, illustrations, or diagrams from scratch.
@@ -469,7 +518,8 @@ This appendix provides a detailed breakdown of the \texttt{aidisclose} taxonomy.
 
 \subsection*{7. Writing and Editing}
 \paragraph{Objective:} To assist in the textual articulation of the research.
-\paragraph{Scope:} Includes drafting, polishing, and translation. Note: Authors remain accountable for accuracy.
+\paragraph{Scope:} Includes drafting, polishing, and translation.
+Note: Authors remain accountable for accuracy.
 \paragraph{Keys:}
 \begin{description}
     \item[Drafting:] Generating initial text for sections based on bullet points or notes.
@@ -516,113 +566,426 @@ This appendix provides a detailed breakdown of the \texttt{aidisclose} taxonomy.
 Appendix~\ref{sec:gaidet_declaration} depicts a rendered declaration.
 It was generated with the command
 \begin{ltx}
-\GAIrenderDeclaration[3]{Jane Doe, John Smith}
+\AIDrenderDeclaration[3]{Jane Doe, John Smith}
 \end{ltx}
 
 And the used configuration was:
 
 \begin{ltx}
+\AIDtoolsUsed{ChatGPT-4o, Gemini 1.5 Pro, GitHub Copilot}
 
 % 1 — Conceptualization  
-\GAIactivate{c_obj}         % Defining the research objective
-\GAIactivate{c_feas}        % Feasibility assessment and risk evaluation
+\AIDactivate{c:obj}         % Defining the research objective
+\AIDactivate{c:feas}        % Feasibility assessment and risk evaluation
 % 2 — Literature Review
-\GAIactivate{l_map}         % Concept Mapping and Systematization
+\AIDactivate{l:map}         % Concept Mapping and Systematization
 % 3 — Methodology
-\GAIactivate{m_meth}        % Methodological Instrument Selection
+\AIDactivate{m:meth}        % Methodological Instrument Selection
 % 4 — Software Development and Automation
-\GAIactivate{s_debug}       % Debugging and Repair
-\GAIactivate{s_auto}        % Process automation
+\AIDactivate{s:debug}       % Debugging and Repair
+\AIDactivate{s:auto}        % Process automation
 % 5 — Data Management
-\GAIactivate{d_cur}         % Data curation and organization
-\GAIactivate{d_viz}         % Quantitative Plotting and Charting
-\GAIactivate{d_trans}       % Audio-to-text transcription and diarization
+\AIDactivate{d:cur}         % Data curation and organization
+\AIDactivate{d:viz}         % Quantitative Plotting and Charting
+\AIDactivate{d:trans}       % Audio-to-text transcription and diarization
 % 6 — Visuals and Multimedia
-\GAIactivate{v_edit}        % Image Enhancement and Editing
+\AIDactivate{v:edit}        % Image Enhancement and Editing
 % 7 — Writing and Editing
-\GAIactivate{w_prs}         % Press releases and outreach materials
+\AIDactivate{w:prs}         % Press releases and outreach materials
 % 8 — Ethics Review
-\GAIactivate{e_bias}        % Bias analysis and discrimination assessment
+\AIDactivate{e:bias}        % Bias analysis and discrimination assessment
 % 9 — Quality Assurance
-\GAIactivate{sup_qa}        % Simulated Peer Review
-\GAIactivate{sup_rec}       % Publication strategy and journal selection
+\AIDactivate{sup:qa}        % Simulated Peer Review
+\AIDactivate{sup:rec}       % Publication strategy and journal selection
 
-\GAItoolsUsed{ChatGPT-4o, Gemini 1.5 Pro, GitHub Copilot}
-
-\begin{GAIcomment}
+\begin{AIDcomment}
 AI was used for refining code structure in Section~4.
-\end{GAIcomment}
+\end{AIDcomment}
 \end{ltx}
 
+
+
+\clearpage
+
+\AIDtoolsUsed{ChatGPT-4o, Gemini 1.5 Pro, GitHub Copilot}
+
 % 1 — Conceptualization  
-% \GAIactivate{c_idea}        % Idea generation
-\GAIactivate{c_obj}         % Defining the research objective
-% \GAIactivate{c_rq}          % Formulating research questions and hypotheses
-\GAIactivate{c_feas}        % Feasibility assessment and risk evaluation
-% \GAIactivate{c_pre}         % Hypothesis viability assessment
-% \GAIactivate{c_sim}         % Simulated debate and argument testing
+% \AIDactivate{c:idea}        % Idea generation
+\AIDactivate{c:obj}         % Defining the research objective
+% \AIDactivate{c:rq}          % Formulating research questions and hypotheses
+\AIDactivate{c:feas}        % Feasibility assessment and risk evaluation
+% \AIDactivate{c:pre}         % Hypothesis viability assessment
+% \AIDactivate{c:sim}         % Simulated debate and argument testing
 % 2 — Literature Review
-% \GAIactivate{l_srch}        % Search and Discovery
-% \GAIactivate{l_sum}         % Literature summarization and synthesis
-\GAIactivate{l_map}         % Concept Mapping and Systematization
-% \GAIactivate{l_pat}         % Market/patent landscape analysis
-% \GAIactivate{l_gaps}        % Gap Identification and Novelty Evaluation
-% \GAIactivate{l_trans}       % Cross-lingual literature comprehension
+% \AIDactivate{l:srch}        % Search and Discovery
+% \AIDactivate{l:sum}         % Literature summarization and synthesis
+\AIDactivate{l:map}         % Concept Mapping and Systematization
+% \AIDactivate{l:pat}         % Market/patent landscape analysis
+% \AIDactivate{l:gaps}        % Gap Identification and Novelty Evaluation
+% \AIDactivate{l:trans}       % Cross-lingual literature comprehension
 % 3 — Methodology
-% \GAIactivate{m_des}         % Experimental Design Optimization
-% \GAIactivate{m_proto}       % Development of experimental or research protocols
-\GAIactivate{m_meth}        % Methodological Instrument Selection
+% \AIDactivate{m:des}         % Experimental Design Optimization
+% \AIDactivate{m:proto}       % Development of experimental or research protocols
+\AIDactivate{m:meth}        % Methodological Instrument Selection
 % 4 — Software Development and Automation
-% \GAIactivate{s_gen}         % Code Generation
-% \GAIactivate{s_opt}         % Refactoring and Optimization
-\GAIactivate{s_debug}       % Debugging and Repair
-\GAIactivate{s_auto}        % Process automation
-% \GAIactivate{s_algs}        % Algorithm design
-% \GAIactivate{s_doc}         % Code documentation and comment generation
+% \AIDactivate{s:gen}         % Code Generation
+% \AIDactivate{s:opt}         % Refactoring and Optimization
+\AIDactivate{s:debug}       % Debugging and Repair
+\AIDactivate{s:auto}        % Process automation
+% \AIDactivate{s:algs}        % Algorithm design
+% \AIDactivate{s:doc}         % Code documentation and comment generation
 % 5 — Data Management
-% \GAIactivate{d_coll}        % Data collection
-% \GAIactivate{d_val}         % Validation
-% \GAIactivate{d_cln}         % Data cleaning
-\GAIactivate{d_cur}         % Data curation and organization
-% \GAIactivate{d_anl}         % Data analysis
-\GAIactivate{d_viz}         % Quantitative Plotting and Charting
-% \GAIactivate{d_rep}         % Reproducibility and rerun checks
-% \GAIactivate{d_lbl}         % Data labeling and annotation assistance
-% \GAIactivate{d_syn}         % Synthetic data generation
-% \GAIactivate{d_anon}        % De-identification and anonymization support
-\GAIactivate{d_trans}       % Audio-to-text transcription and diarization
+% \AIDactivate{d:coll}        % Data collection
+% \AIDactivate{d:val}         % Validation
+% \AIDactivate{d:cln}         % Data cleaning
+\AIDactivate{d:cur}         % Data curation and organization
+% \AIDactivate{d:anl}         % Data analysis
+\AIDactivate{d:viz}         % Quantitative Plotting and Charting
+% \AIDactivate{d:rep}         % Reproducibility and rerun checks
+% \AIDactivate{d:lbl}         % Data labeling and annotation assistance
+% \AIDactivate{d:syn}         % Synthetic data generation
+% \AIDactivate{d:anon}        % De-identification and anonymization support
+\AIDactivate{d:trans}       % Audio-to-text transcription and diarization
 % 6 — Visuals and Multimedia
-% \GAIactivate{v_gen}         % Synthetic Asset Generation
-\GAIactivate{v_edit}        % Image Enhancement and Editing
-% \GAIactivate{v_chart}       % Diagrammatic and Schematic Design
+% \AIDactivate{v:gen}         % Synthetic Asset Generation
+\AIDactivate{v:edit}        % Image Enhancement and Editing
+% \AIDactivate{v:chart}       % Diagrammatic and Schematic Design
 % 7 — Writing and Editing
-% \GAIactivate{w_draft}       % Drafting Text
-% \GAIactivate{w_poly}        % Polishing and Editing
-% \GAIactivate{w_sum}         % Abstract and Executive Summary Generation
-% \GAIactivate{w_con}         % Formulation of conclusions
-% \GAIactivate{w_tone}        % Tone Adjustment
-% \GAIactivate{w_tra}         % Translation
-% \GAIactivate{w_ref}         % Citation formatting and bibliography management
-\GAIactivate{w_prs}         % Press releases and outreach materials
-% \GAIactivate{w_title}       % Title Generation
+% \AIDactivate{w:draft}       % Drafting Text
+% \AIDactivate{w:poly}        % Polishing and Editing
+% \AIDactivate{w:sum}         % Abstract and Executive Summary Generation
+% \AIDactivate{w:con}         % Formulation of conclusions
+% \AIDactivate{w:tone}        % Tone Adjustment
+% \AIDactivate{w:tra}         % Translation
+% \AIDactivate{w:ref}         % Citation formatting and bibliography management
+\AIDactivate{w:prs}         % Press releases and outreach materials
+% \AIDactivate{w:title}       % Title Generation
 % 8 — Ethics Review
-\GAIactivate{e_bias}        % Bias analysis and discrimination assessment
-% \GAIactivate{e_risk}        % Ethical risk analysis
-% \GAIactivate{e_comp}        % Monitoring compliance with ethical standards
-% \GAIactivate{e_conf}        % Data confidentiality monitoring
+\AIDactivate{e:bias}        % Bias analysis and discrimination assessment
+% \AIDactivate{e:risk}        % Ethical risk analysis
+% \AIDactivate{e:comp}        % Monitoring compliance with ethical standards
+% \AIDactivate{e:conf}        % Data confidentiality monitoring
 % 9 — Quality Assurance
-\GAIactivate{sup_qa}        % Simulated Peer Review
-% \GAIactivate{sup_trd}       % Consistency checking against field trends
-% \GAIactivate{sup_lim}       % Identification of limitations
-\GAIactivate{sup_rec}       % Publication strategy and journal selection
-% \GAIactivate{sup_pub}       % Publication support
+\AIDactivate{sup:qa}        % Simulated Peer Review
+% \AIDactivate{sup:trd}       % Consistency checking against field trends
+% \AIDactivate{sup:lim}       % Identification of limitations
+\AIDactivate{sup:rec}       % Publication strategy and journal selection
+% \AIDactivate{sup:pub}       % Publication support
 
 
 
-\begin{GAIcomment}
+\begin{AIDcomment}
 The keys for this example were selected randomly.
-\end{GAIcomment}
+\end{AIDcomment}
 
-\GAIrenderDeclaration[3]{Jane Doe, John Smith\label{sec:gaidet_declaration}}
+\AIDrenderDeclaration[3]{Jane Doe, John Smith\label{sec:gaidet_declaration}}
 
 \end{document}
+
+
+
+
+Here are the updated documentation files (`README.md` and `aidisclose-doc.tex`) reflecting the changes in version 1.8.1, including the colon-based syntax for keys and the new customization commands found in the `.sty` file.
+
+### 1. README.md
+
+```markdown
+# aidisclose — Generative AI disclosure checklist and statements
+
+[![CTAN](https://img.shields.io/ctan/v/aidisclose)](https://ctan.org/pkg/aidisclose)
+[![Version](https://img.shields.io/badge/version-1.8.1-blue)](https://github.com/joaomlourenco/aidisclose)
+[![Date](https://img.shields.io/badge/date-2026--01--20-orange)](https://github.com/joaomlourenco/aidisclose)
+[![License: LPPL 1.3c](https://img.shields.io/badge/license-LPPL%201.3c-blue)](https://www.latex-project.org/lppl/lppl-1-3c/)
+[![LaTeX](https://img.shields.io/badge/LaTeX-LaTeX2e%202020%2F10%2F01%2B-brightgreen)](https://www.latex-project.org/)
+
+**aidisclose** is a LaTeX package that provides a standardized and transparent mechanism for declaring the use of **Generative Artificial Intelligence (AID)** tools in academic, technical, and professional documents.
+
+The package implements an extension of the **AIDDeT (Generative AI Delegation Taxonomy)** and automates the creation of disclosure statements and task-based checklists, aligned with emerging publisher and institutional requirements.
+
+For the complete manual, full taxonomy, and visual examples, see **[aidisclose-doc.pdf](aidisclose-doc.pdf)**.
+
+---
+
+## Introduction
+
+The package allows authors to:
+
+- Select specific tasks delegated to Generative AI from the AIDDeT taxonomy
+- Declare the Generative AI tools used (or explicitly state that none were used)
+- Add optional explanatory comments (numbered or unnumbered)
+- Automatically generate a formatted *Disclosure of Delegation to Generative AI* section or chapter
+- Automatically manage citations for both the taxonomy and the package itself
+
+---
+
+## Companion Website (generator)
+
+The package is supported by the companion website **[aidisclose.org](https://aidisclose.org)**.
+
+The website provides an interactive interface where authors can:
+
+- **Fill in authors** and (optionally) the AID tools used
+- **Browse the AIDDeT taxonomy** visually and **Select delegated tasks**.
+- **Select delegated tasks** from the AIDDeT taxonomy
+- Add multiple comments (numbered or unnumbered), reorder them by drag-and-drop, and preview numbering
+- Generate either a **full minimal LaTeX document** or just a **configuration snippet**
+- Copy the generated code to the clipboard
+
+If you generate a full document, the website also points you to download `aidisclose.sty` and compile the resulting `.tex` file.
+
+---
+
+## Package loading and options
+
+Load the package in the document preamble:
+
+```tex
+\usepackage[<options>]{aidisclose}
+
+```
+
+### Options
+
+* **`autobib = true | false`** (default: `true`)
+
+When enabled, the package will automatically:
+
+1. Writes an `aidisclose.bib` file containing references for the AIDDeT taxonomy and this package
+2. Loads this bibliography resource (compatible with `biblatex` and standard BibTeX)
+
+Set this option to `false` if you prefer to manage citations manually.
+
+**NOTE:** if you use the package, please give credit to both the author of this package and the authors of the DAIDeT taxonomy.
+
+---
+
+## Internationalization
+
+The package automatically detects the document language via `babel` or `polyglossia` and loads the appropriate translation file.
+
+### Supported languages (v1.8.1)
+
+English **(default)**, Catalan, Czech, Danish, Dutch, French, German, Greek, Italian, Polish, Portuguese, Slovak, Spanish, and Ukrainian (*there were automatic translations, please contribute with fixes*).
+
+If the detected language is not supported, the package falls back to English.
+
+---
+
+## Taxonomy overview
+
+Tasks are activated using short identifiers derived from the AIDDeT taxonomy, grouped into the following categories:
+
+* Conceptualization
+* Literature Review
+* Methodology
+* Software Development and Automation
+* Data Management
+* Visuals and Multimedia
+* Writing and Editing
+* Ethics Review
+* Quality Assurance
+
+The complete list of keys and descriptions is provided in **[aidisclose-doc.pdf](https://www.google.com/search?q=aidisclose-doc.pdf)**.
+
+---
+
+## Usage
+
+The disclosure process consists of two steps:
+
+1. **Configuration** — defining what was done
+2. **Rendering** — printing the declaration
+
+### Activating taxonomy items
+
+Use `\AIDactivate{}` to mark specific tasks as delegated to Generative AI. The keys use colons (:) to separate the category from the task.
+
+```tex
+\AIDactivate{c:idea}
+\AIDactivate{s:opt}
+
+```
+
+### Specifying tools
+
+Use `\AIDtoolsUsed{}` to list the Generative AI tools employed.
+
+```tex
+% No tools used
+\AIDtoolsUsed{}
+
+% Multiple tools
+\AIDtoolsUsed{ChatGPT-4, Gemini Advanced, Claude 3}
+
+```
+
+### Adding comments
+
+Use the `AIDcomment` (numbered) and `AIDcomment*` (unnumbered) environments.
+
+```tex
+\begin{AIDcomment}
+The AI was used primarily for refining the code in Section 3.
+\end{AIDcomment}
+
+\begin{AIDcomment*}
+No AID tools were used for data analysis.
+\end{AIDcomment*}
+
+```
+
+### Customizing the title
+
+Change the default title and sectioning level:
+
+```tex
+\AIDdiscloseTitle[Short Title]{Full Title}[section]
+
+```
+
+To retrieve these values later, you can use `\AIDdiscloseTitleLong` and `\AIDdiscloseTitleShort`.
+
+### Visual customization
+
+* Checkmark symbol:
+```tex
+\AIDsetCheckmarkSymbol{\texttimes}
+
+```
+
+
+* Checklist font size:
+```tex
+\AIDsetChecklistFontSize{\small}
+
+```
+
+
+
+---
+
+## Advanced Customization (New in v1.8.1)
+
+### Layout Ordering
+
+You can customize the order in which the disclosure components appear using `\AIDorder`. The valid components are `preamble`, `tools`, `taxonomy`, and `comments`.
+
+```tex
+% Default order
+\AIDorder{preamble, tools, taxonomy, comments}
+
+```
+
+### Inserting Text
+
+You can inject custom text before or after specific sections:
+
+```tex
+\AIDpreTools{Text before the tools list.}
+\AIDpostTools{Text after the tools list.}
+
+\AIDpreTaxonomy{Text before the checklist.}
+\AIDpostTaxonomy{Text after the checklist.}
+
+\AIDpreComments{Text before comments.}
+\AIDpostComments{Text after comments.}
+
+```
+
+### Custom Strings and Preamble
+
+To modify specific strings or the main preamble text:
+
+```tex
+% Modify internal strings
+\AIDstrings{
+  tools_used = {AI Tools employed:},
+  none_used  = {No AI tools used.}
+}
+
+% Set the main preamble (using placeholders <AUTHOR>, <DECLARES>, <ACKNOWLEDGES>)
+\AIDpreamble{The authors (<AUTHOR>) <DECLARES> the use of...}
+
+```
+
+---
+
+## Rendering the declaration
+
+Place the rendering command where you want the disclosure to appear:
+
+```tex
+\AIDrenderDeclaration[<columns>]{<authors>}
+\AIDrenderDeclaration*[<columns>]{<authors>}
+
+```
+
+* Starred form omits the section heading
+* `<columns>` defaults to `3`
+* `<authors>` is a comma-separated list of authors
+
+---
+
+## Minimal example
+
+```tex
+\AIDactivate{c:idea}
+\AIDactivate{c:rq}
+\AIDactivate{l:srch}
+\AIDactivate{l:sum}
+\AIDactivate{s:auto}
+\AIDactivate{d:anl}
+\AIDactivate{w:sum}
+\AIDactivate{w:poly}
+
+\AIDtoolsUsed{ChatGPT-4o, Gemini 1.5 Pro, GitHub Copilot}
+
+\begin{AIDcomment}
+AI was used for refining code structure in Section 4.
+\end{AIDcomment}
+
+\AIDrenderDeclaration[2]{Mary Doe, John Doe, Jane Doe}
+
+```
+
+---
+
+## Example output (summary)
+
+The rendered declaration includes:
+
+* A responsibility statement naming the authors
+* A checklist of delegated tasks organized by taxonomy category
+* A declaration of Generative AI tools used (or an explicit statement that none were declared)
+* Optional additional comments
+
+See **[aidisclose-doc.pdf](https://www.google.com/search?q=aidisclose-doc.pdf)** for the full rendered example.
+
+<img height="400" alt="example-pg-1" src=".resources/example-pg1.svg" />
+<img height="400" alt="example-pg-1" src=".resources/example-pg2.svg" />
+
+---
+
+## Documentation
+
+* **[aidisclose-doc.pdf](https://www.google.com/search?q=aidisclose-doc.pdf)** — complete documentation and examples
+* [`aidisclose-doc.tex`](https://www.google.com/search?q=aidisclose-doc.tex) — documentation source
+* https://ctan.org/pkg/aidisclose
+
+---
+
+## License
+
+This package is distributed under the **LaTeX Project Public License (LPPL) 1.3c** or later.
+
+---
+
+Copyright © 2025-26 João M. Lourenço.
+
+Crafted with 🧡 for reproducible scientific writing.
+
+```
+
+### 2. aidisclose-doc.tex
+
+```latex
