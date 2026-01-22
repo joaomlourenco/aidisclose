@@ -166,10 +166,11 @@ To retrieve these values later, you can use `\AIDdiscloseTitleLong` and `\AIDdis
 * Colors:
 
  ```tex
- \AIDusedColor{black}        % Active items text color
- \AIDunusedColor{black!50}   % Inactive items text color
- \AIDcheckmarkColor{black}   % Checkmark symbol color
- \AIDboxColor{black}         % Box outline color
+ \AIDusedColor{black}         % Active items text color
+ \AIDboxUsedColor{black}      % Box outline color
+ \AIDunusedColor{black!50}    % Inactive items text color
+ \AIDboxUnusedColor{black!50} % Box outline color
+ \AIDcheckmarkColor{black}    % Checkmark symbol color
 
  ```
  
