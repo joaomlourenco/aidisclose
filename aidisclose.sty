@@ -806,10 +806,12 @@
 % =========================================================
 % 7) MAIN RENDERING ENGINE
 % =========================================================
-\NewDocumentCommand \AIDrenderDeclaration { s O{3} m }
+
+% 1. Header / Title Rendering
+\cs_new_protected:Nn \__aid_render_header:n
   {
-    % 1. Print Title (Header) First
-    \IfBooleanF { #1 }
+    % Argument #1 is the star boolean (true if starred)
+    \bool_if:nF { #1 }
       { 
         \use:c { \cs_to_str:N \g__aid_section_cmd_tl } 
                { 
@@ -818,131 +820,163 @@
                    { \tl_use:N \g__aid_title_long_tl }
                }
       }
+  }
 
-    % 2. Calculate Author Name List
-        \clist_set:Nn \g__aid_authors_clist { #3 }
-        \int_set:Nn \g__aid_authors_int { \clist_count:N \g__aid_authors_clist }
-    
-        \int_compare:nNnTF { \g__aid_authors_int } = { 1 }
-          { 
-            \tl_set:Nx \l__aid_author_names_tl { #3 }
-            % Singular forms
-            \tl_set_eq:NN \l__aid_declares_verb_tl \g__aid_str_declares_tl 
-            \tl_set_eq:NN \l__aid_acknowledges_verb_tl \g__aid_str_acknowledges_tl 
-          }
-          { 
-            \tl_set:Nx \l__aid_author_names_tl 
-              { 
-                \clist_use:Nnnn \g__aid_authors_clist
-                  { \ \tl_use:N \g__aid_str_and_tl \space } { ,\space} { ,\ \tl_use:N \g__aid_str_and_tl \space } 
-              }
-            % Plural forms
-            \tl_set_eq:NN \l__aid_declares_verb_tl \g__aid_str_declare_tl 
-            \tl_set_eq:NN \l__aid_acknowledges_verb_tl \g__aid_str_acknowledge_tl 
-          }
-    
-        % 3. Prepare Substituted Preamble String
-        \tl_set_eq:NN \l__aid_working_preamble_tl \g__aid_str_preamble_tl
-    
-        % Perform replacements
-        \tl_replace_all:Nnn \l__aid_working_preamble_tl { <AUTHOR> } { \l__aid_author_names_tl }
-        \tl_replace_all:Nnn \l__aid_working_preamble_tl { <DECLARES> } { \l__aid_declares_verb_tl }
-        % --- NEW: Replacement for Acknowledges ---
-        \tl_replace_all:Nnn \l__aid_working_preamble_tl { <ACKNOWLEDGES> } { \l__aid_acknowledges_verb_tl }
+% 2. Author List and Verb Calculation
+\cs_new_protected:Nn \__aid_calc_author_context:n
+  {
+    \clist_set:Nn \g__aid_authors_clist { #1 }
+    \int_set:Nn \g__aid_authors_int { \clist_count:N \g__aid_authors_clist }
 
-    % 4. Rendering Loop based on Order
+    \int_compare:nNnTF { \g__aid_authors_int } = { 1 }
+      { 
+        \tl_set:Nx \l__aid_author_names_tl { #1 }
+        % Singular forms
+        \tl_set_eq:NN \l__aid_declares_verb_tl \g__aid_str_declares_tl 
+        \tl_set_eq:NN \l__aid_acknowledges_verb_tl \g__aid_str_acknowledges_tl 
+      }
+      { 
+        \tl_set:Nx \l__aid_author_names_tl 
+          { 
+            \clist_use:Nnnn \g__aid_authors_clist
+              { \ \tl_use:N \g__aid_str_and_tl \space } { ,\space} { ,\ \tl_use:N \g__aid_str_and_tl \space } 
+          }
+        % Plural forms
+        \tl_set_eq:NN \l__aid_declares_verb_tl \g__aid_str_declare_tl 
+        \tl_set_eq:NN \l__aid_acknowledges_verb_tl \g__aid_str_acknowledge_tl 
+      }
+  }
+
+% 3. Preamble String Substitution
+\cs_new_protected:Nn \__aid_prepare_preamble_string:
+  {
+    \tl_set_eq:NN \l__aid_working_preamble_tl \g__aid_str_preamble_tl
+    \tl_replace_all:Nnn \l__aid_working_preamble_tl { <AUTHOR> } { \l__aid_author_names_tl }
+    \tl_replace_all:Nnn \l__aid_working_preamble_tl { <DECLARES> } { \l__aid_declares_verb_tl }
+    \tl_replace_all:Nnn \l__aid_working_preamble_tl { <ACKNOWLEDGES> } { \l__aid_acknowledges_verb_tl }
+  }
+
+% 4. Section: Tools
+\cs_new_protected:Nn \__aid_render_section_tools:
+  {
+    \par \bigskip
+    \tl_if_empty:NF \g__aid_str_pre_tools_tl
+      { \noindent \tl_use:N \g__aid_str_pre_tools_tl \par \bigskip }
+    
+    \noindent \textbf { \tl_use:N \g__aid_str_tools_used_tl } \  \tl_use:N \g__aid_tools_sentence_tl
+    
+    \tl_if_empty:NF \g__aid_str_post_tools_tl
+      { \par \bigskip \noindent \tl_use:N \g__aid_str_post_tools_tl }
+  }
+
+% 5. Section: Taxonomy
+\cs_new_protected:Nn \__aid_render_section_taxonomy:n
+  {
+    % Argument #1 is the number of columns (from the optional arg of the main command)
+    \par \bigskip
+    \tl_if_empty:NF \g__aid_str_pre_taxonomy_tl
+      { \tl_use:N \g__aid_str_pre_taxonomy_tl }
+    
+    \group_begin:
+      \cs_set:Npn \baselinestretch { 1.1 }
+      \selectfont
+      \tl_use:N \g__aid_fontsize_tl
+      
+      % Define internal helper for Group Headers
+      \cs_set:Npn \TGroup ##1 ##2
+        {
+          \par \bigskip
+          \int_compare:nNnTF { #1 } < { 2 }
+            {
+              \textbf{ \larger ##1 \  \hrulefill}\par\nopagebreak[4]
+              \begin{ aidlist }
+                ##2
+              \end{ aidlist }
+            }
+            {
+              \setlength { \multicolsep } { 4pt } 
+              \begin { multicols } { #1 } [ \noindent \textbf { \larger ##1 \  \hrulefill } ]
+                \begin { aidlist }
+                  ##2
+                \end { aidlist }
+              \end { multicols }
+            }
+        }
+        
+      % Define internal helper for Items
+      \cs_set:Npn \TItem ##1 ##2
+        {
+          % Check if key is active to determine box type AND text color
+          \seq_if_in:NxTF \g__aid_active_keys_seq { \tl_to_str:n { ##1 } }
+            {
+               \item [ \__aid_print_checked_box: ]
+               \group_begin:
+               \color{ \g__aid_color_used_tl }
+               \parbox[t]{\linewidth}{ \raggedright ##2 }
+               \group_end:
+            }
+            {
+               \item [ \__aid_print_empty_box: ]
+               \group_begin:
+               \color{ \g__aid_color_unused_tl }
+               \parbox[t]{\linewidth}{ \raggedright ##2 }
+               \group_end:
+            }
+        }
+      \cs_set_eq:NN \TSubItem \TItem
+      
+      % Output the actual taxonomy tree
+      \tl_use:N \g__aid_taxonomy_tl
+    \group_end:
+    
+    \tl_if_empty:NF \g__aid_str_post_taxonomy_tl
+      { \par \bigskip \noindent \tl_use:N \g__aid_str_post_taxonomy_tl }
+  }
+
+% 6. Section: Comments
+\cs_new_protected:Nn \__aid_render_section_comments:
+  {
+    \tl_if_empty:NF \g__aid_comments_tl
+      {
+        \par \bigskip
+        \tl_if_empty:NF \g__aid_str_pre_comments_tl
+          { \noindent \tl_use:N \g__aid_str_pre_comments_tl \par \bigskip }
+          
+        \tl_use:N \g__aid_comments_tl
+        
+        \tl_if_empty:NF \g__aid_str_post_comments_tl
+          { \par \bigskip \noindent \tl_use:N \g__aid_str_post_comments_tl }
+      }
+  }
+
+% ---------------------------------------------------------
+% MAIN COMMAND
+% ---------------------------------------------------------
+\NewDocumentCommand \AIDrenderDeclaration { s O{3} m }
+  {
+    % 1. Print Header
+    \__aid_render_header:n { #1 }
+
+    % 2. Setup Context (Authors & Verbs)
+    \__aid_calc_author_context:n { #3 }
+
+    % 3. Prepare Substituted Preamble
+    \__aid_prepare_preamble_string:
+
+    % 4. Rendering Loop
     \seq_map_inline:Nn \g__aid_order_seq
       {
         \str_case:nn { ##1 }
           {
-            { preamble }
-              {
-                \__aid_print_preamble:
-              }
-            { tools }
-              {
-                \par \bigskip
-                \tl_if_empty:NF \g__aid_str_pre_tools_tl
-                  { \noindent \tl_use:N \g__aid_str_pre_tools_tl \par \bigskip }
-                
-                \noindent \textbf { \tl_use:N \g__aid_str_tools_used_tl } \  \tl_use:N \g__aid_tools_sentence_tl
-                
-                \tl_if_empty:NF \g__aid_str_post_tools_tl
-                  { \par \bigskip \noindent \tl_use:N \g__aid_str_post_tools_tl }
-              }
-            { taxonomy }
-              {
-                \par \bigskip
-                \tl_if_empty:NF \g__aid_str_pre_taxonomy_tl
-                  { \tl_use:N \g__aid_str_pre_taxonomy_tl }
-                
-                \group_begin:
-                  \cs_set:Npn \baselinestretch { 1.1 }
-                  \selectfont
-                  \tl_use:N \g__aid_fontsize_tl
-                  \cs_set:Npn \TGroup ####1 ####2
-                    {
-                      \par \bigskip
-                      \int_compare:nNnTF { #2 } < { 2 }
-                        {
-                          \textbf{ \larger ####1 \  \hrulefill}\par\nopagebreak[4]
-                          \begin{ aidlist }
-                            ####2
-                          \end{ aidlist }
-                        }
-                        {
-                          \setlength { \multicolsep } { 4pt } 
-                          \begin { multicols } { #2 } [ \noindent \textbf { \larger ####1 \  \hrulefill } ]
-                            \begin { aidlist }
-                              ####2
-                            \end { aidlist }
-                          \end { multicols }
-                        }
-                    }
-                  \cs_set:Npn \TItem ####1 ####2
-                    {
-                      % Check if key is active to determine box type AND text color
-                      \seq_if_in:NxTF \g__aid_active_keys_seq { \tl_to_str:n { ####1 } }
-                        {
-                           \item [ \__aid_print_checked_box: ]
-                           \group_begin:
-                           \color{ \g__aid_color_used_tl }
-                           \parbox[t]{\linewidth}{ \raggedright ####2 }
-                           \group_end:
-                        }
-                        {
-                           \item [ \__aid_print_empty_box: ]
-                           \group_begin:
-                           \color{ \g__aid_color_unused_tl }
-                           \parbox[t]{\linewidth}{ \raggedright ####2 }
-                           \group_end:
-                        }
-                    }
-                  \cs_set_eq:NN \TSubItem \TItem
-                  \tl_use:N \g__aid_taxonomy_tl
-                \group_end:
-                
-                \tl_if_empty:NF \g__aid_str_post_taxonomy_tl
-                  { \par \bigskip \noindent \tl_use:N \g__aid_str_post_taxonomy_tl }
-              }
-            { comments }
-              {
-                \tl_if_empty:NF \g__aid_comments_tl
-                  {
-                    \par \bigskip
-                    \tl_if_empty:NF \g__aid_str_pre_comments_tl
-                      { \noindent \tl_use:N \g__aid_str_pre_comments_tl \par \bigskip }
-                      
-                    \tl_use:N \g__aid_comments_tl
-                    
-                    \tl_if_empty:NF \g__aid_str_post_comments_tl
-                      { \par \bigskip \noindent \tl_use:N \g__aid_str_post_comments_tl }
-                  }
-              }
+            { preamble } { \__aid_print_preamble: }
+            { tools }    { \__aid_render_section_tools: }
+            { taxonomy } { \__aid_render_section_taxonomy:n { #2 } }
+            { comments } { \__aid_render_section_comments: }
           }
       }
   }
-
+  
+  
 % =========================================================
 % 8) BIBLIOGRAPHY HANDLING
 % =========================================================
