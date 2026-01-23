@@ -21,7 +21,7 @@
   pre_comments  = {},
   post_comments = {},
   %
-    footnote      = {Deze\ verklaring\ is\ gegenereerd\ met\ behulp\ van\ \AIDengineName{}\ en\ het\ \LaTeX-pakket\ \AIDpackageName{}},
+    footnote      = {Deze\ verklaring\ is\ gegenereerd\ met\ behulp\ van\ \AIDlatexProcessor{}\ en\ het\ \LaTeX-pakket\ \AIDpackageName{}},
   comment_label = {Aanvullende\ opmerking},
   comment_star  = {Aanvullende\ opmerking},
   title_long    = {Verklaring\ van\ Delegering\ aan\ Generatieve\ Kunstmatige\ Intelligentie},

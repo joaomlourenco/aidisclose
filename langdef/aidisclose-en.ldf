@@ -21,7 +21,7 @@
   pre_comments  = {},
   post_comments = {},
   %
-  footnote      = {This\ declaration\ was\ generated\ using\ \AIDengineName{}\ and\ the\ \LaTeX\ package\ \AIDpackageName{}},
+  footnote      = {This\ declaration\ was\ generated\ using\ \AIDlatexProcessor{}\ and\ the\ \LaTeX\ package\ \AIDpackageName{}},
   comment_label = {Additional\ comment},
   comment_star  = {Additional\ comment},
   title_long    = {Disclosure\ of\ Usage\ of\ Generative\ Artificial\ Intelligence},

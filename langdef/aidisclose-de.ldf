@@ -21,7 +21,7 @@
   pre_comments  = {},
   post_comments = {},
   %
-    footnote      = {Diese\ Erklärung\ wurde\ unter\ Verwendung\ von\ \AIDengineName{}\ und\ dem\ \LaTeX-Paket\ \AIDpackageName{}\ erstellt},
+    footnote      = {Diese\ Erklärung\ wurde\ unter\ Verwendung\ von\ \AIDlatexProcessor{}\ und\ dem\ \LaTeX-Paket\ \AIDpackageName{}\ erstellt},
   comment_label = {Zusätzlicher\ Kommentar},
   comment_star  = {Zusätzlicher\ Kommentar},
   title_long    = {Offenlegung\ der\ Delegation\ an\ generative\ künstliche\ Intelligenz},

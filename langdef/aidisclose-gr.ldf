@@ -21,7 +21,7 @@
   pre_comments  = {},
   post_comments = {},
   %
-    footnote      = {Αυτή\ η\ δήλωση\ δημιουργήθηκε\ χρησιμοποιώντας\ το\ \AIDengineName{}\ και\ το\ πακέτο\ \LaTeX\ \AIDpackageName{}},
+    footnote      = {Αυτή\ η\ δήλωση\ δημιουργήθηκε\ χρησιμοποιώντας\ το\ \AIDlatexProcessor{}\ και\ το\ πακέτο\ \LaTeX\ \AIDpackageName{}},
   comment_label = {Πρόσθετο\ σχόλιο},
   comment_star  = {Πρόσθετο\ σχόλιο},
   title_long    = {Δήλωση\ Ανάθεσης\ σε\ Παραγωγική\ Τεχνητή\ Νοημοσύνη},

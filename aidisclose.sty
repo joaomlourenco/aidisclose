@@ -250,6 +250,19 @@
 % 7) INTERNAL UTILITIES
 % =========================================================
 
+% Detect the Engine Name (LuaLaTeX, XeLaTeX, pdfLaTeX)
+\NewDocumentCommand \AIDlatexProcessor {}
+  {
+    \sys_if_engine_luatex:TF { Lua\LaTeX }
+      {
+        \sys_if_engine_xetex:TF { Xe\LaTeX }
+          {
+            \sys_if_engine_pdftex:TF { pdf\LaTeX } { \LaTeX }
+          }
+      }
+      \CiteLaTeX
+  }
+  
 \NewDocumentCommand \AIDpackageName {}
   {
     \group_begin:

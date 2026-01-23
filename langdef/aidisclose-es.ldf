@@ -21,7 +21,7 @@
   pre_comments  = {},
   post_comments = {},
   %
-  footnote      = {Esta\ declaración\ se\ generó\ utilizando\ \AIDengineName{}\ y\ el\ paquete\ \LaTeX\ \AIDpackageName{}},
+  footnote      = {Esta\ declaración\ se\ generó\ utilizando\ \AIDlatexProcessor{}\ y\ el\ paquete\ \LaTeX\ \AIDpackageName{}},
   comment_label = {Comentario\ adicional},
   comment_star  = {Comentario\ adicional},
   title_long    = {Declaración\ de\ Delegación\ a\ Inteligencia\ Artificial\ Generativa},
