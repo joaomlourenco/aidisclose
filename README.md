@@ -1,16 +1,16 @@
 # aidisclose — Generative AI disclosure checklist and statements
 
 [![CTAN](https://img.shields.io/ctan/v/aidisclose)](https://ctan.org/pkg/aidisclose)
-[![Version](https://img.shields.io/badge/version-1.8.1-blue)](https://github.com/joaomlourenco/aidisclose)
-[![Date](https://img.shields.io/badge/date-2026--01--20-orange)](https://github.com/joaomlourenco/aidisclose)
+[![Version](https://img.shields.io/badge/version-1.12.0-blue)](https://github.com/joaomlourenco/aidisclose)
+[![Date](https://img.shields.io/badge/date-2026--01--23-orange)](https://github.com/joaomlourenco/aidisclose)
 [![License: LPPL 1.3c](https://img.shields.io/badge/license-LPPL%201.3c-blue)](https://www.latex-project.org/lppl/lppl-1-3c/)
 [![LaTeX](https://img.shields.io/badge/LaTeX-LaTeX2e%202020%2F10%2F01%2B-brightgreen)](https://www.latex-project.org/)
 
 **aidisclose** is a LaTeX package that provides a standardized and transparent mechanism for declaring the use of **Generative Artificial Intelligence (AID)** tools in academic, technical, and professional documents.
 
-The package implements an extension of the **AIDDeT (Generative AI Delegation Taxonomy)** and automates the creation of disclosure statements and task-based checklists, aligned with emerging publisher and institutional requirements.
+The package implements an extension of the **GAIDeT (Generative AI Delegation Taxonomy)** and automates the creation of disclosure statements and task-based checklists, aligned with emerging publisher and institutional requirements.
 
-For the complete manual, full taxonomy, and visual examples, see **[aidisclose-doc.pdf](aidisclose-doc.pdf)**.
+For the complete manual, full taxonomy, and visual examples, see **[aidisclose-doc.pdf](https://mirrors.ctan.org/macros/latex/contrib/aidisclose/aidisclose-doc.pdf)**.
 
 ---
 
@@ -18,7 +18,7 @@ For the complete manual, full taxonomy, and visual examples, see **[aidisclose-d
 
 The package allows authors to:
 
-- Select specific tasks delegated to Generative AI from the AIDDeT taxonomy
+- Select specific tasks delegated to Generative AI from the GAIDeT taxonomy
 - Declare the Generative AI tools used (or explicitly state that none were used)
 - Add optional explanatory comments (numbered or unnumbered)
 - Automatically generate a formatted *Disclosure of Delegation to Generative AI* section or chapter
@@ -33,8 +33,7 @@ The package is supported by the companion website **[aidisclose.org](https://aid
 The website provides an interactive interface where authors can:
 
 - **Fill in authors** and (optionally) the AID tools used
-- **Browse the AIDDeT taxonomy** visually and **Select delegated tasks**.
-- **Select delegated tasks** from the AIDDeT taxonomy
+- **Browse the GAIDeT taxonomy** visually and **Select delegated tasks**
 - Add multiple comments (numbered or unnumbered), reorder them by drag-and-drop, and preview numbering
 - Generate either a **full minimal LaTeX document** or just a **configuration snippet**
 - Copy the generated code to the clipboard
@@ -43,26 +42,116 @@ If you generate a full document, the website also points you to download `aidisc
 
 ---
 
-## Package loading and options
+## Package Loading and Options
 
 Load the package in the document preamble:
 
 ```tex
 \usepackage[<options>]{aidisclose}
+
 ```
 
 ### Options
 
 * **`autobib = true | false`** (default: `true`)
+When enabled, the package automatically:
+1. Writes an `aidisclose.bib` file containing references for the GAIDeT taxonomy and this package.
+2. Loads this bibliography resource (compatible with `biblatex` and standard BibTeX).
 
-When enabled, the package will automatically:
-
-1. Writes an `aidisclose.bib` file containing references for the AIDDeT taxonomy and this package
-2. Loads this bibliography resource (compatible with `biblatex` and standard BibTeX)
 
 Set this option to `false` if you prefer to manage citations manually.
+* **`nocite = true | false`** (default: `false`)
+This option controls the visible citations in the disclosure statement footnote.
+* If `false` (default), the package adds visible citations to the GAIDeT taxonomy paper and the package manual in the footnote.
+* If `true`, citations are suppressed in the output (though references are still needed).
 
-**NOTE:** if you use the package, please give credit to both the author of this package and the authors of the DAIDeT taxonomy.
+
+
+---
+
+## Configuration
+
+You can configure the package using the new unified interface (recommended) or individual commands.
+
+### Unified Interface
+
+You can set options and configuration dynamically using key-value lists.
+
+```tex
+% 1. Set Package Options
+\AIDset{
+  autobib = true, 
+  nocite = false
+}
+
+% 2. Configure Content and Visuals
+\AIDconfig{
+  tools     = {ChatGPT, Gemini},
+  checkmark = {\ding{51}},    % Requires pifont package
+  color_used = blue!70!black,
+  order     = {preamble, taxonomy, tools, comments}
+}
+
+```
+
+### Taxonomy Categories
+
+The taxonomy is organized into 9 phases. Use the corresponding keys (e.g., `c:idea`) with `\AIDactivate{}`.
+
+* **1. Conceptualization** (`c:*`)
+* **2. Literature Review** (`l:*`)
+* **3. Methodology** (`m:*`)
+* **4. Software Development and Automation** (`s:*`)
+* **5. Data Management and Analysis** (`d:*`)
+* **6. Visuals and Multimedia** (`v:*`)
+* **7. Writing and Editing** (`w:*`)
+* **8. Ethics Review** (`e:*`)
+* **9. Quality Assurance** (`sup:*`)
+
+### List of Commands
+
+| Command | Description |
+| --- | --- |
+| `\AIDactivate{<key>}` | Activates a specific task in the taxonomy (e.g., `w:draft`). |
+| `\AIDtoolsUsed{<list>}` | Defines the list of AI tools used. |
+| `\AIDset{<key=val>}` | Sets package boolean options (`autobib`, `nocite`). |
+| `\AIDconfig{<key=val>}` | Sets visual and content configuration (colors, order, etc.). |
+| `\AIDdiscloseTitle{<title>}` | Customizes the section title. |
+| `\AIDorder{<list>}` | Reorders sections (`preamble`, `tools`, `taxonomy`, `comments`). |
+| `\AIDrenderDeclaration` | Prints the full disclosure statement. |
+| `\AIDloadLanguage{<code>}` | Manually forces a specific language (e.g., `pt`, `fr`). |
+| `\AIDpackageName` | Prints the package name with a link to CTAN. |
+| `\AIDGetString{<key>}` | Returns the localized string for a specific internal key. |
+| `\aidversion` | Prints the current version number. |
+
+---
+
+## Minimal Example
+
+```tex
+\documentclass{article}
+\usepackage{aidisclose}
+
+\AIDactivate{c:idea}
+\AIDactivate{l:sum}
+\AIDactivate{w:poly}
+
+\AIDtoolsUsed{ChatGPT-4o, GitHub Copilot}
+
+\begin{AIDcomment}
+AI was used for refining code structure in Section 4.
+\end{AIDcomment}
+
+\begin{document}
+
+\section{Conclusion}
+...
+
+\AIDrenderDeclaration[2]{Mary Doe, John Doe}
+
+\end{document}
+
+```
 
 ---
 
@@ -70,224 +159,18 @@ Set this option to `false` if you prefer to manage citations manually.
 
 The package automatically detects the document language via `babel` or `polyglossia` and loads the appropriate translation file.
 
-### Supported languages (v1.8.1)
+### Supported Languages
 
-English **(default)**, Catalan, Czech, Danish, Dutch, French, German, Greek, Italian, Polish, Portuguese, Slovak, Spanish, and Ukrainian (*there were automatic translations, please contribute with fixes*).
+English (default), Catalan, Czech, Danish, Dutch, French, German, Greek, Italian, Polish, Portuguese, Slovak, Spanish, and Ukrainian.
 
 If the detected language is not supported, the package falls back to English.
 
 ---
 
-## Taxonomy overview
+## Utilities
 
-Tasks are activated using short identifiers derived from the AIDDeT taxonomy, grouped into the following categories:
+For advanced users:
 
-* Conceptualization
-* Literature Review
-* Methodology
-* Software Development and Automation
-* Data Management
-* Visuals and Multimedia
-* Writing and Editing
-* Ethics Review
-* Quality Assurance
-
-The complete list of keys and descriptions is provided in **[aidisclose-doc.pdf](https://www.google.com/search?q=aidisclose-doc.pdf)**.
-
----
-
-## Usage
-
-The disclosure process consists of two steps:
-
-1. **Configuration** — defining what was done
-2. **Rendering** — printing the declaration
-
-### Activating taxonomy items
-
-Use `\AIDactivate{}` to mark specific tasks as delegated to Generative AI. The keys use colons (:) to separate the category from the task.
-
-```tex
-\AIDactivate{c:idea}
-\AIDactivate{s:opt}
-```
-
-### Specifying tools
-
-Use `\AIDtoolsUsed{}` to list the Generative AI tools employed.
-
-```tex
-% No tools used
-\AIDtoolsUsed{}
-
-% Multiple tools
-\AIDtoolsUsed{ChatGPT-4, Gemini Advanced, Claude 3}
-```
-
-### Adding comments
-
-Use the `AIDcomment` (numbered) and `AIDcomment*` (unnumbered) environments.
-
-```tex
-\begin{AIDcomment}
-The AI was used primarily for refining the code in Section 3.
-\end{AIDcomment}
-
-\begin{AIDcomment*}
-No AID tools were used for data analysis.
-\end{AIDcomment*}
-```
-
-### Customizing the title
-
-Change the default title and sectioning level:
-
-```tex
-\AIDdiscloseTitle[Short Title]{Full Title}[section]
-```
-
-To retrieve these values later, you can use `\AIDdiscloseTitleLong` and `\AIDdiscloseTitleShort`.
-
-### Visual customization
-   
-* Checkmark symbol:
- ```tex
- \AIDcheckmarkSymbol{\texttimes}
-
- ```
-
-* Checklist font size:
-
- ```tex
- \AIDchecklistFontSize{\small}
-
- ```
-
-* Colors:
-
- ```tex
- \AIDusedColor{black}         % Active items text color
- \AIDboxUsedColor{black}      % Box outline color
- \AIDunusedColor{black!50}    % Inactive items text color
- \AIDboxUnusedColor{black!50} % Box outline color
- \AIDcheckmarkColor{black}    % Checkmark symbol color
-
- ```
- 
-
----
-
-## Advanced Customization (New in v1.8.1)
-
-### Layout Ordering
-
-You can customize the order in which the disclosure components appear using `\AIDorder`. The valid components are `preamble`, `tools`, `taxonomy`, and `comments`.
-
-```tex
-% Default order
-\AIDorder{preamble, tools, taxonomy, comments}
-```
-
-### Inserting Text
-
-You can inject custom text before or after specific sections:
-
-```tex
-\AIDpreTools{Text before the tools list.}
-\AIDpostTools{Text after the tools list.}
-
-\AIDpreTaxonomy{Text before the checklist.}
-\AIDpostTaxonomy{Text after the checklist.}
-
-\AIDpreComments{Text before comments.}
-\AIDpostComments{Text after comments.}
-```
-
-### Custom Strings and Preamble
-
-To modify specific strings or the main preamble text:
-
-```tex
-% Modify internal strings
-\AIDstrings{
-  tools_used = {AI Tools employed:},
-  none_used  = {No AI tools used.}
-}
-
-% Set the main preamble (using placeholders <AUTHOR>, <DECLARES>, <ACKNOWLEDGES>)
-\AIDpreamble{The authors (<AUTHOR>) <DECLARES> the use of...}
-```
-
----
-
-## Rendering the declaration
-
-Place the rendering command where you want the disclosure to appear:
-
-```tex
-\AIDrenderDeclaration[<columns>]{<authors>}
-\AIDrenderDeclaration*[<columns>]{<authors>}
-```
-
-* Starred form omits the section heading
-* `<columns>` defaults to `3`
-* `<authors>` is a comma-separated list of authors
-
----
-
-## Minimal example
-
-```tex
-\AIDactivate{c:idea}
-\AIDactivate{c:rq}
-\AIDactivate{l:srch}
-\AIDactivate{l:sum}
-\AIDactivate{s:auto}
-\AIDactivate{d:anl}
-\AIDactivate{w:sum}
-\AIDactivate{w:poly}
-
-\AIDtoolsUsed{ChatGPT-4o, Gemini 1.5 Pro, GitHub Copilot}
-
-\begin{AIDcomment}
-AI was used for refining code structure in Section 4.
-\end{AIDcomment}
-
-\AIDrenderDeclaration[2]{Mary Doe, John Doe, Jane Doe}
-```
-
----
-
-## Example output (summary)
-
-The rendered declaration includes:
-
-* A responsibility statement naming the authors
-* A checklist of delegated tasks organized by taxonomy category
-* A declaration of Generative AI tools used (or an explicit statement that none were declared)
-* Optional additional comments
-
-See **[aidisclose-doc.pdf](https://www.google.com/search?q=aidisclose-doc.pdf)** for the full rendered example.
-
-<img height="400" alt="example-pg-1" src=".resources/example-pg1.svg" />
-<img height="400" alt="example-pg-1" src=".resources/example-pg2.svg" />
-
----
-
-## Documentation
-
-* **[aidisclose-doc.pdf](https://mirrors.ctan.org/macros/latex/contrib/stocksize/stocksize-doc.pdf)** — complete documentation and examples
-* [`aidisclose-doc.tex`](https://mirrors.ctan.org/macros/latex/contrib/stocksize/stocksize-doc.tex) — documentation source
-* https://ctan.org/pkg/aidisclose
-
----
-
-## License
-
-This package is distributed under the **LaTeX Project Public License (LPPL) 1.3c** or later.
-
----
-
-Copyright © 2025-26 João M. Lourenço.
-
-Crafted with 🧡 for reproducible scientific writing.
+* **`\AIDloadLanguage{<code>}`**: Manually forces the loading of a language file (e.g., `\AIDloadLanguage{pt}`), overriding auto-detection.
+* **`\AIDGetString{<key>}`**: Returns the localized string for a specific internal key.
+* **`\AIDpackageName`**: Typesets the package name with a hyperref link.

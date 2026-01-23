@@ -2,18 +2,21 @@
 \AIDstrings{
   tools_used    = {Generative\ AI\ tools\ used:},
   none_used     = {No\ Generative\ AI\ tools\ were\ declared.},
+  author        = {The\ author},
+  authors       = {The\ authors},
   declares      = {declares},
   declare       = {declare},
   acknowledges  = {acknowledges},
   acknowledge   = {acknowledge},
+  accepts       = {accepts},
+  accept        = {accept},
   and           = {and},
-  preamble      = {The\ author,\ <AUTHOR>,\ <ACKNOWLEDGES>\ the\ use\ of\ the\ following\ generative\ artificial\ intelligence\ tools\ in\ the\ development\ of\ this\ thesis.\ These\ technologies\ were\ utilized\ under\ strict\ supervision,\ and\ all\ AI-generated\ outputs\ were\ critically\ reviewed\ and\ verified\ for\ accuracy.\ The\ author\ accepts\ full\ responsibility\ for\ the\ validity\ and\ originality\ of\ the\ content,\ confirming\ that\ the\ use\ of\ these\ tools\ aligns\ with\ all\ institutional\ policies\ and\ standards\ of\ academic\ integrity.
-  },
+  preamble      = {<author>,\ <AUTHOR~LIST>,\ <acknowledges>\ the\ use\ of\ the\ following\ generative\ artificial\ intelligence\ tools\ in\ the\ development\ of\ this\ thesis.\ These\ technologies\ were\ utilized\ under\ strict\ supervision,\ and\ all\ AI-generated\ outputs\ were\ critically\ reviewed\ and\ verified\ for\ accuracy.\ <author>\ <accept>\ full\ responsibility\ for\ the\ validity\ and\ originality\ of\ the\ content,\ confirming\ that\ the\ use\ of\ these\ tools\ aligns\ with\ all\ institutional\ policies\ and\ standards\ of\ academic\ integrity.},
   %
   % Pre/Post Parts
   pre_tools     = {},
   post_tools    = {},
-  pre_taxonomy  = {\noindent\bfseries Activities\ supported\ by\ Generative\ Artificial\ Intelligence\ Tools:\footnote{This\ list\ extends\ the\ AIDDeT\ taxonomy\CiteAIDDeT}},
+  pre_taxonomy  = {\noindent\bfseries Activities\ supported\ by\ Generative\ Artificial\ Intelligence\ Tools:\footnote{This\ list\ extends\ the\ GAIDeT\ taxonomy\CiteGAIDeT.}},
   post_taxonomy = {},
   pre_comments  = {},
   post_comments = {},
@@ -21,8 +24,8 @@
   footnote      = {This\ declaration\ was\ generated\ using\ \AIDengineName{}\ and\ the\ \LaTeX\ package\ \AIDpackageName{}},
   comment_label = {Additional\ comment},
   comment_star  = {Additional\ comment},
-  title_long    = {Disclosure\ of\ Delegation\ to\ Generative\ Artificial\ Intelligence},
-  title_short   = {Disclosure\ of\ Delegation\ to\ Generative\ AI},
+  title_long    = {Disclosure\ of\ Usage\ of\ Generative\ Artificial\ Intelligence},
+  title_short   = {Disclosure\ of\ Usage\ of\ Generative\ AI},
 % 0 — Groups
   grp_conc      = {Conceptualization},
   grp_lit       = {Literature\ Review},

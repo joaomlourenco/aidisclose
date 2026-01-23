@@ -2,21 +2,25 @@
 \AIDstrings{
   tools_used    = {Herramientas\ de\ IA\ generativa\ utilizadas:},
   none_used     = {No\ se\ declararon\ herramientas\ de\ IA\ generativa.},
+  author        = {El\ autor},
+  authors       = {Los\ autores},
   declares      = {declara},
   declare       = {declaran},
   acknowledges  = {reconoce},
   acknowledge   = {reconocen},
+  accepts       = {asume},
+  accept        = {asumen},
   and           = {y},
-  preamble      = {El\ autor,\ <AUTHOR>,\ <ACKNOWLEDGES>\ el\ uso\ de\ las\ siguientes\ herramientas\ de\ inteligencia\ artificial\ generativa\ en\ el\ desarrollo\ de\ esta\ tesis.\ Estas\ tecnologías\ se\ utilizaron\ bajo\ estricta\ supervisión,\ y\ todos\ los\ resultados\ generados\ por\ IA\ fueron\ revisados\ críticamente\ y\ verificados\ en\ cuanto\ a\ su\ exactitud.\ El\ autor\ asume\ plena\ responsabilidad\ por\ la\ validez\ y\ originalidad\ del\ contenido,\ confirmando\ que\ el\ uso\ de\ estas\ herramientas\ se\ alinea\ con\ todas\ las\ políticas\ institucionales\ y\ estándares\ de\ integridad\ académica.},
-  
+  preamble      = {<author>,\ <AUTHOR~LIST>,\ <acknowledges>\ el\ uso\ de\ las\ siguientes\ herramientas\ de\ inteligencia\ artificial\ generativa\ en\ el\ desarrollo\ de\ esta\ tesis.\ Estas\ tecnologias\ se\ utilizaron\ bajo\ estricta\ supervisión,\ y\ todos\ los\ resultados\ generados\ por\ IA\ fueron\ revisados\ críticamente\ y\ verificados\ en\ cuanto\ a\ su\ exactitud.\ <author>\ <accept>\ plena\ responsabilidad\ por\ la\ validez\ y\ originalidad\ del\ contenido,\ confirmando\ que\ el\ uso\ de\ estas\ herramientas\ se\ alinea\ con\ todas\ las\ políticas\ institucionales\ y\ estándares\ de\ integridad\ académica.},
+  %
   % Pre/Post Parts
   pre_tools     = {},
   post_tools    = {},
-  pre_taxonomy  = {\noindent\bfseries Actividades\ apoyadas\ por\ Herramientas\ de\ Inteligencia\ Artificial\ Generativa:\footnote{Esta\ lista\ amplía\ la\ taxonomía\ AIDDeT\CiteAIDDeT}},
+  pre_taxonomy  = {\noindent\bfseries Actividades\ apoyadas\ por\ Herramientas\ de\ Inteligencia\ Artificial\ Generativa:\footnote{Esta\ lista\ amplía\ la\ taxonomía\ GAIDeT\CiteGAIDeT.}},
   post_taxonomy = {},
   pre_comments  = {},
   post_comments = {},
-  
+  %
   footnote      = {Esta\ declaración\ se\ generó\ utilizando\ \AIDengineName{}\ y\ el\ paquete\ \LaTeX\ \AIDpackageName{}},
   comment_label = {Comentario\ adicional},
   comment_star  = {Comentario\ adicional},
