@@ -11,7 +11,7 @@
   accepts       = {přebírá},
   accept        = {přebírají},
   and           = {a},
-  preamble      = {<author>,\ <AUTHOR~LIST>,\ <acknowledges>\ použití\ následujících\ nástrojů\ generativní\ umělé\ inteligence\ při\ vypracování\ této\ práce.\ Tyto\ technologie\ byly\ využity\ pod\ přísným\ dohledem\ a\ všechny\ výstupy\ generované\ AI\ byly\ kriticky\ přezkoumány\ a\ ověřeny\ z\ hlediska\ přesnosti.\ <author>\ <accept>\ plnou\ odpovědnost\ za\ platnost\ a\ originalitu\ obsahu\ a\ potvrzuje,\ že\ použití\ těchto\ nástrojů\ je\ v\ souladu\ se\ všemi\ institucionálními\ zásadami\ a\ standardy\ akademické\ integrity.},
+  preamble      = {<author>,\ <AUTHOR-LIST>,\ <acknowledges>\ použití\ následujících\ nástrojů\ generativní\ umělé\ inteligence\ při\ vypracování\ této\ práce.\ Tyto\ technologie\ byly\ využity\ pod\ přísným\ dohledem\ a\ všechny\ výstupy\ generované\ AI\ byly\ kriticky\ přezkoumány\ a\ ověřeny\ z\ hlediska\ přesnosti.\ <author>\ <accept>\ plnou\ odpovědnost\ za\ platnost\ a\ originalitu\ obsahu\ a\ potvrzuje,\ že\ použití\ těchto\ nástrojů\ je\ v\ souladu\ se\ všemi\ institucionálními\ zásadami\ a\ standardy\ akademické\ integrity.},
   %
   % Pre/Post Parts
   pre_tools     = {},
@@ -36,7 +36,7 @@
   grp_write     = {Psaní\ a\ úpravy},
   grp_eth       = {Etické\ posouzení},
   grp_sup       = {Zajištění\ kvality},
-% 1 — Conceptualization  
+% 1 — Conceptualization
   c_idea        = {Generování\ nápadů},
   c_obj         = {Definování\ výzkumného\ cíle},
   c_rq          = {Formulace\ výzkumných\ otázek\ a\ hypotéz},

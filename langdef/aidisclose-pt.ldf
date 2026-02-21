@@ -11,7 +11,7 @@
   accepts       = {assume},
   accept        = {assumem},
   and           = {e},
-  preamble      = {<author>,\ <AUTHOR~LIST>,\ <acknowledges>\ a\ utilização\ das\ seguintes\ ferramentas\ de\ inteligência\ artificial\ generativa\ no\ desenvolvimento\ desta\ tese.\ Estas\ tecnologias\ foram\ utilizadas\ sob\ rigorosa\ supervisão,\ e\ todos\ os\ resultados\ gerados\ por\ IA\ foram\ criticamente\ revistos\ e\ verificados\ quanto\ à\ sua\ exatidão.\ <author>\ <accept>\ total\ responsabilidade\ pela\ validade\ e\ originalidade\ do\ conteúdo,\ confirmando\ que\ a\ utilização\ destas\ ferramentas\ está\ em\ conformidade\ com\ todas\ as\ políticas\ institucionais\ e\ normas\ de\ integridade\ académica.},
+  preamble      = {<author>,\ <AUTHOR-LIST>,\ <acknowledges>\ a\ utilização\ das\ seguintes\ ferramentas\ de\ inteligência\ artificial\ generativa\ no\ desenvolvimento\ desta\ tese.\ Estas\ tecnologias\ foram\ utilizadas\ sob\ rigorosa\ supervisão,\ e\ todos\ os\ resultados\ gerados\ por\ IA\ foram\ criticamente\ revistos\ e\ verificados\ quanto\ à\ sua\ exatidão.\ <author>\ <accept>\ total\ responsabilidade\ pela\ validade\ e\ originalidade\ do\ conteúdo,\ confirmando\ que\ a\ utilização\ destas\ ferramentas\ está\ em\ conformidade\ com\ todas\ as\ políticas\ institucionais\ e\ normas\ de\ integridade\ académica.},
   %
   % Pre/Post Parts
   pre_tools     = {},
@@ -36,7 +36,7 @@
   grp_write     = {Escrita\ e\ Edição},
   grp_eth       = {Revisão\ Ética},
   grp_sup       = {Garantia\ de\ Qualidade},
-% 1 — Conceptualization  
+% 1 — Conceptualization
   c_idea        = {Geração\ de\ ideias},
   c_obj         = {Definição\ do\ objetivo\ de\ investigação},
   c_rq          = {Formulação\ de\ questões\ de\ investigação\ e\ hipóteses},

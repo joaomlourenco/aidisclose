@@ -11,7 +11,7 @@
   accepts       = {accepta},
   accept        = {accepten},
   and           = {i},
-  preamble      = {<author>,\ <AUTHOR~LIST>,\ <acknowledges>\ l'ús\ de\ les\ següents\ eines\ d'intel·ligència\ artificial\ generativa\ en\ el\ desenvolupament\ d'aquesta\ tesi.\ Aquestes\ tecnologies\ es\ van\ utilitzar\ sota\ una\ estricta\ supervisió,\ i\ tots\ els\ resultats\ generats\ per\ IA\ van\ ser\ revisats\ críticament\ i\ verificats\ quant\ a\ la\ seva\ exactitud.\ <author>\ <accept>\ la\ plena\ responsabilitat\ de\ la\ validesa\ i\ l'originalitat\ del\ contingut,\ confirmant\ que\ l'ús\ d'aquestes\ eines\ s'alinea\ amb\ totes\ les\ polítiques\ institucionals\ i\ estàndards\ d'integritat\ acadèmica.},
+  preamble      = {<author>,\ <AUTHOR-LIST>,\ <acknowledges>\ l'ús\ de\ les\ següents\ eines\ d'intel·ligència\ artificial\ generativa\ en\ el\ desenvolupament\ d'aquesta\ tesi.\ Aquestes\ tecnologies\ es\ van\ utilitzar\ sota\ una\ estricta\ supervisió,\ i\ tots\ els\ resultats\ generats\ per\ IA\ van\ ser\ revisats\ críticament\ i\ verificats\ quant\ a\ la\ seva\ exactitud.\ <author>\ <accept>\ la\ plena\ responsabilitat\ de\ la\ validesa\ i\ l'originalitat\ del\ contingut,\ confirmant\ que\ l'ús\ d'aquestes\ eines\ s'alinea\ amb\ totes\ les\ polítiques\ institucionals\ i\ estàndards\ d'integritat\ acadèmica.},
   %
   % Pre/Post Parts
   pre_tools     = {},
@@ -36,7 +36,7 @@
   grp_write     = {Escriptura\ i\ Edició},
   grp_eth       = {Revisió\ Ètica},
   grp_sup       = {Garantia\ de\ Qualitat},
-% 1 — Conceptualization  
+% 1 — Conceptualization
   c_idea        = {Generació\ d'idees},
   c_obj         = {Definició\ de\ l'objectiu\ de\ recerca},
   c_rq          = {Formulació\ de\ preguntes\ i\ hipòtesis\ de\ recerca},

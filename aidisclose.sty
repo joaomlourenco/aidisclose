@@ -1,15 +1,15 @@
 % aidisclose.sty
-% 
+%
 % Copyright (C) 2025-26 by João M. Lourenço <joao.lourenco@fct.unl.pt>
 % Modified based on user requirements.
 %
 % This file may be distributed and/or modified under the conditions of
 % the LaTeX Project Public License, either version 1.3c of this license
 % or (at your option) any later version.
-\def\aidversion{1.11.0}
+\def\aidversion{1.12.0}
 %
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesExplPackage {aidisclose} {2026/01/22} {\aidversion} 
+\ProvidesExplPackage {aidisclose} {2026/02/21} {\aidversion}
   {Utilities for Generative AI disclosure checklist and statements}
 
 % =========================================================
@@ -85,8 +85,8 @@
   {
     \keys_define:nn { aidisclose / strings }
       {
-        #1 .code:n = 
-          { 
+        #1 .code:n =
+          {
             \tl_if_exist:cF { g__aid_str_ \g__aid_target_lang_tl _ #1 _tl }
               { \tl_new:c { g__aid_str_ \g__aid_target_lang_tl _ #1 _tl } }
             \tl_gset:cn { g__aid_str_ \g__aid_target_lang_tl _ #1 _tl } { ##1 }
@@ -138,9 +138,9 @@
     \seq_set_split:Nnn \l_tmpa_seq { : } { #1 }
     \tl_set:Nx \l_tmpa_tl { \seq_item:Nn \l_tmpa_seq { 1 } }
     \tl_set:Nx \l_tmpb_tl { \seq_item:Nn \l_tmpa_seq { 2 } }
-    \use:x 
-      { 
-        \__aid_define_entry:nnn { \l_tmpa_tl } { \l_tmpb_tl } { \exp_not:n { #2 } } 
+    \use:x
+      {
+        \__aid_define_entry:nnn { \l_tmpa_tl } { \l_tmpb_tl } { \exp_not:n { #2 } }
       }
   }
 
@@ -151,9 +151,9 @@
 \clist_const:Nn \c__aid_std_strings_clist
   {
     tools_used, none_used, declares, declare, acknowledges, acknowledge,
-    accepts, accept, and, preamble, footnote, comment_label, 
+    accepts, accept, and, preamble, footnote, comment_label,
     comment_star, title_long, title_short,
-    pre_tools, post_tools, pre_taxonomy, post_taxonomy, 
+    pre_tools, post_tools, pre_taxonomy, post_taxonomy,
     pre_comments, post_comments,
     author, authors
   }
@@ -179,7 +179,7 @@
       {
         \file_if_exist:nTF { langdef/aidisclose-#1.ldf }
           { \file_input:n { langdef/aidisclose-#1.ldf } }
-          { 
+          {
              \msg_warning:nnn { aidisclose } { lang-not-found } { #1 }
           }
       }
@@ -195,11 +195,13 @@
       { \tl_set_eq:NN \l__aid_iso_code_tl \l_tmpa_tl }
       { \tl_set:Nx \l__aid_iso_code_tl { #1 } }
 
+    % ALWAYS update the target language so user overrides apply correctly
+    \tl_gset:Nx \g__aid_target_lang_tl { \l__aid_iso_code_tl }
+
     \bool_if_exist:cTF { g__aid_loaded_ \l__aid_iso_code_tl _bool }
       { }
       {
          \group_begin:
-           \tl_gset:Nx \g__aid_target_lang_tl { \l__aid_iso_code_tl }
            \__aid_find_file:n { \l__aid_iso_code_tl }
          \group_end:
          \bool_new:c { g__aid_loaded_ \l__aid_iso_code_tl _bool }
@@ -238,7 +240,7 @@
 
 % 1. Set defaults first (prevents overwriting the LDF later)
 \AIDstrings{
-    pre_tools={}, post_tools={}, 
+    pre_tools={}, post_tools={},
     pre_taxonomy={}, post_taxonomy={},
     pre_comments={}, post_comments={}
 }
@@ -262,7 +264,7 @@
       }
       \CiteLaTeX
   }
-  
+
 \NewDocumentCommand \AIDpackageName {}
   {
     \group_begin:
@@ -280,9 +282,9 @@
     \group_begin:
     \dim_set:Nn \fboxsep { \l__aid_fboxsep_dim }
     \color{ \g__aid_color_box_used_tl }
-    \fbox { 
+    \fbox {
       \color{ \g__aid_color_checkmark_tl }
-      \tl_use:N \g__aid_checkmark_symbol_tl 
+      \tl_use:N \g__aid_checkmark_symbol_tl
     }
     \group_end:
   }
@@ -308,7 +310,7 @@
   {
     \tl_if_exist:cTF { g__aid_str_ \l__aid_render_lang_tl _ #1 _tl }
       { \tl_set_eq:Nc #2 { g__aid_str_ \l__aid_render_lang_tl _ #1 _tl } }
-      { 
+      {
         \tl_if_exist:cTF { g__aid_str_en_ #1 _tl }
           { \tl_set_eq:Nc #2 { g__aid_str_en_ #1 _tl } }
           { \tl_set:Nn #2 { ??? } }
@@ -327,7 +329,7 @@
     \bool_if:NF \g__aid_nocite_bool
       {
         \footnote{
-          \AIDGetString { footnote } 
+          \AIDGetString { footnote }
           \nobreakspace \cite{Lourenco:2025:aidisclose}.
         }
       }
@@ -372,7 +374,7 @@
   {
     \endlist
   }
-  
+
 % =========================================================
 % 8) USER CONFIGURATION COMMANDS
 % =========================================================
@@ -432,29 +434,17 @@
     \seq_gput_right:No \g__aid_active_keys_seq { \l__aid_temp_tl }
   }
 
+
+\seq_new:N \g__aid_tools_seq
+
 \NewDocumentCommand \AIDtoolsUsed { m }
   {
     \tl_if_blank:nTF { #1 }
-      { 
-         \__aid_fetch_string:nN { none_used } \l_tmpa_tl
-         \tl_gset_eq:NN \g__aid_tools_sentence_tl \l_tmpa_tl
-      }
+      { \seq_gclear:N \g__aid_tools_seq }
       {
-        \seq_set_split:Nnn \l__aid_tools_seq { , } { #1 }
-        \seq_set_map:NNn \l__aid_tools_seq \l__aid_tools_seq { \tl_trim_spaces:n {##1} }
-        \seq_remove_all:Nn \l__aid_tools_seq { }
-        
-        \__aid_fetch_string:nN { and } \l_tmpa_tl
-        
-        % FIX: Use \tl_gset:Nx and \exp_not:V to bake the value of "and"
-        % into the sentence immediately, preventing variable collision later.
-        \tl_gset:Nx \g__aid_tools_sentence_tl
-          {
-            \exp_not:N \seq_use:Nnnn \exp_not:N \l__aid_tools_seq 
-              { \ \exp_not:V \l_tmpa_tl \  } 
-              { ,\  } 
-              { ,\ \exp_not:V \l_tmpa_tl \  } .
-          }
+        \seq_gset_split:Nnn \g__aid_tools_seq { , } { #1 }
+        \seq_gset_map:NNn \g__aid_tools_seq \g__aid_tools_seq { \tl_trim_spaces:n {##1} }
+        \seq_gremove_all:Nn \g__aid_tools_seq { }
       }
   }
 
@@ -475,7 +465,13 @@
       }
       { \tl_gset:Nn \g__aid_section_cmd_tl { #3 } }
   }
-  
+
+\NewDocumentCommand \AIDdiscloseTitleLong { }
+  { \tl_use:N \g__aid_title_long_tl }
+
+\NewDocumentCommand \AIDdiscloseTitleShort { }
+  { \tl_use:N \g__aid_title_short_tl }
+
 \NewDocumentCommand \AIDpreamble { m }
   { \__aid_set_string:nn { preamble } { #1 } }
 
@@ -513,13 +509,39 @@
   { \tl_gset:Nn \g__aid_section_cmd_tl { \section } }
 
 \AIDchecklistFontSize { \smaller }
-\AIDcheckmarkSymbol { \checkmark } 
+\AIDcheckmarkSymbol { \checkmark }
 \AIDorder { preamble, tools, taxonomy, comments }
 \AIDusedColor { black }
 \AIDunusedColor { black!50 }
 \AIDcheckmarkColor { black }
 \AIDboxUsedColor { black }
 \AIDboxUnusedColor { black!50 }
+\AIDtoolsUsed{ }
+
+\NewDocumentCommand \AIDset { m }
+  { \keys_set:nn { aidisclose } { #1 } }
+
+\keys_define:nn { aidisclose / config }
+  {
+    tools            .code:n = { \AIDtoolsUsed { #1 } },
+    title            .code:n = { \AIDdiscloseTitle #1 },
+    order            .code:n = { \AIDorder { #1 } },
+    checkmark        .code:n = { \AIDcheckmarkSymbol { #1 } },
+    fontsize         .code:n = { \AIDchecklistFontSize { #1 } },
+    color_used       .code:n = { \AIDusedColor { #1 } },
+    color_unused     .code:n = { \AIDunusedColor { #1 } },
+    color_box_used   .code:n = { \AIDboxUsedColor { #1 } },
+    color_box_unused .code:n = { \AIDboxUnusedColor { #1 } },
+    pre_tools        .code:n = { \AIDpreTools { #1 } },
+    post_tools       .code:n = { \AIDpostTools { #1 } },
+    pre_taxonomy     .code:n = { \AIDpreTaxonomy { #1 } },
+    post_taxonomy    .code:n = { \AIDpostTaxonomy { #1 } },
+    pre_comments     .code:n = { \AIDpreComments { #1 } },
+    post_comments    .code:n = { \AIDpostComments { #1 } },
+  }
+
+\NewDocumentCommand \AIDconfig { m }
+  { \keys_set:nn { aidisclose / config } { #1 } }
 
 % =========================================================
 % 9) COMMENT ENVIRONMENTS
@@ -531,7 +553,7 @@
         \int_gincr:N \g__aid_comment_int
         \par \bigskip \noindent
         \__aid_fetch_string:nN { comment_label } \l_tmpa_tl
-        \textbf{\tl_use:N \l_tmpa_tl \ \#\int_use:N \g__aid_comment_int :}\  #1 \par
+        \textbf{\tl_use:N \l_tmpa_tl \ \#\int_use:N \g__aid_comment_int :}\  \normalfont#1 \par
       }
   } { }
 
@@ -541,7 +563,7 @@
       {
         \par \bigskip \noindent
         \__aid_fetch_string:nN { comment_star } \l_tmpa_tl
-        \textbf{\tl_use:N \l_tmpa_tl :}\  #1 \par
+        \textbf{\tl_use:N \l_tmpa_tl :}\  \normalfont#1 \par
       }
   } { }
 
@@ -552,12 +574,12 @@
 \cs_new_protected:Nn \__aid_render_header:n
   {
     \bool_if:nF { #1 }
-      { 
-         \tl_if_empty:NTF \g__aid_title_long_tl 
-           { 
+      {
+         \tl_if_empty:NTF \g__aid_title_long_tl
+           {
              \__aid_fetch_string:nN { title_long } \l_tmpa_tl
            }
-           { 
+           {
              \tl_set_eq:NN \l_tmpa_tl \g__aid_title_long_tl
            }
          \exp_args:NV \g__aid_section_cmd_tl \l_tmpa_tl
@@ -570,21 +592,21 @@
     \int_set:Nn \g__aid_authors_int { \clist_count:N \g__aid_authors_clist }
 
     \int_compare:nNnTF { \g__aid_authors_int } = { 1 }
-      { 
+      {
         \tl_set:Nx \l__aid_author_list_tl { #1 }
         \__aid_fetch_string:nN { declares } \l__aid_declares_verb_tl
         \__aid_fetch_string:nN { acknowledges } \l__aid_acknowledges_verb_tl
         \__aid_fetch_string:nN { accepts } \l__aid_accepts_verb_tl
         \__aid_fetch_string:nN { author } \l__aid_author_noun_tl
       }
-      { 
+      {
         \__aid_fetch_string:nN { and } \l__aid_connector_tl
-        \tl_set:Nx \l__aid_author_list_tl 
-          { 
+        \tl_set:Nx \l__aid_author_list_tl
+          {
             \clist_use:Nnnn \g__aid_authors_clist
-              { \ \tl_use:N \l__aid_connector_tl \space } 
-              { ,\space} 
-              { ,\ \tl_use:N \l__aid_connector_tl \space } 
+              { \ \tl_use:N \l__aid_connector_tl \space }
+              { ,\space}
+              { ,\ \tl_use:N \l__aid_connector_tl \space }
           }
         \__aid_fetch_string:nN { declare } \l__aid_declares_verb_tl
         \__aid_fetch_string:nN { acknowledge } \l__aid_acknowledges_verb_tl
@@ -596,10 +618,10 @@
 \cs_new_protected:Nn \__aid_prepare_preamble_string:
   {
     \__aid_fetch_string:nN { preamble } \l__aid_working_preamble_tl
-    
+
     % New Placeholders
     \tl_replace_all:Nnn \l__aid_working_preamble_tl { <author> } { \l__aid_author_noun_tl }
-    \tl_replace_all:Nnn \l__aid_working_preamble_tl { <AUTHOR~LIST> } { \l__aid_author_list_tl }
+    \tl_replace_all:Nnn \l__aid_working_preamble_tl { <AUTHOR-LIST> } { \l__aid_author_list_tl }
     \tl_replace_all:Nnn \l__aid_working_preamble_tl { <declares> } { \l__aid_declares_verb_tl }
     \tl_replace_all:Nnn \l__aid_working_preamble_tl { <acknowledges> } { \l__aid_acknowledges_verb_tl }
     \tl_replace_all:Nnn \l__aid_working_preamble_tl { <accept> } { \l__aid_accepts_verb_tl }
@@ -611,10 +633,24 @@
     \__aid_fetch_string:nN { pre_tools } \l_tmpa_tl
     \tl_if_empty:NF \l_tmpa_tl
       { \noindent \tl_use:N \l_tmpa_tl \par \bigskip }
-    
+
     \__aid_fetch_string:nN { tools_used } \l_tmpa_tl
-    \noindent \textbf { \tl_use:N \l_tmpa_tl } \  \tl_use:N \g__aid_tools_sentence_tl
-    
+    \noindent \textbf { \tl_use:N \l_tmpa_tl } \
+
+    % Render the tools sentence dynamically here!
+    \seq_if_empty:NTF \g__aid_tools_seq
+      {
+         \__aid_fetch_string:nN { none_used } \l_tmpb_tl
+         \tl_use:N \l_tmpb_tl
+      }
+      {
+         \__aid_fetch_string:nN { and } \l_tmpb_tl
+         \seq_use:Nnnn \g__aid_tools_seq
+           { \ \tl_use:N \l_tmpb_tl \  }
+           { ,\  }
+           { ,\ \tl_use:N \l_tmpb_tl \  } .
+      }
+
     \__aid_fetch_string:nN { post_tools } \l_tmpa_tl
     \tl_if_empty:NF \l_tmpa_tl
       { \par \bigskip \noindent \tl_use:N \l_tmpa_tl }
@@ -626,12 +662,12 @@
     \__aid_fetch_string:nN { pre_taxonomy } \l_tmpa_tl
     \tl_if_empty:NF \l_tmpa_tl
       { \tl_use:N \l_tmpa_tl }
-    
+
     \group_begin:
       \cs_set:Npn \baselinestretch { 1.1 }
       \selectfont
       \tl_use:N \g__aid_fontsize_tl
-      
+
       \cs_set:Npn \TGroup ##1 ##2
         {
           \par \bigskip
@@ -644,7 +680,7 @@
               \end{ aidlist }
             }
             {
-              \setlength { \multicolsep } { 4pt } 
+              \setlength { \multicolsep } { 4pt }
               \begin { multicols } { #1 } [ \noindent \textbf { \larger \tl_use:N \l_tmpa_tl \  \hrulefill } ]
                 \begin { aidlist }
                   \TItems { ##2 }
@@ -652,7 +688,7 @@
               \end { multicols }
             }
         }
-        
+
       \cs_set:Npn \TItems ##1
         {
             \seq_map_inline:cn { g__aid_group_items_##1_seq }
@@ -678,12 +714,12 @@
                \group_end:
             }
         }
-      
+
       \seq_map_inline:Nn \g__aid_groups_seq
         { \TGroup { #1 } { ##1 } }
 
     \group_end:
-    
+
     \__aid_fetch_string:nN { post_taxonomy } \l_tmpa_tl
     \tl_if_empty:NF \l_tmpa_tl
       { \par \bigskip \noindent \tl_use:N \l_tmpa_tl }
@@ -697,9 +733,9 @@
         \__aid_fetch_string:nN { pre_comments } \l_tmpa_tl
         \tl_if_empty:NF \l_tmpa_tl
           { \noindent \tl_use:N \l_tmpa_tl \par \bigskip }
-          
+
         \tl_use:N \g__aid_comments_tl
-        
+
         \__aid_fetch_string:nN { post_comments } \l_tmpa_tl
         \tl_if_empty:NF \l_tmpa_tl
           { \par \bigskip \noindent \tl_use:N \l_tmpa_tl }
@@ -724,7 +760,7 @@
     \group_begin:
       % Reset defaults
       \keys_set:nn { aidisclose / render } { ncols=3, lang={}, label={} }
-      
+
       % Process options
       \IfNoValueF { #2 }
         { \keys_set:nn { aidisclose / render } { #2 } }
@@ -751,10 +787,10 @@
 
       % 3. Setup Context
       \__aid_calc_author_context:n { #3 }
-      
+
       % 4. Print Header
       \__aid_render_header:n { #1 }
-      
+
       % 5. Add Label if provided
       \tl_if_empty:NF \l__aid_render_label_tl
         { \label { \l__aid_render_label_tl } }
@@ -775,8 +811,8 @@
         }
     \group_end:
   }
-  
-  
+
+
 % =========================================================
 % 12) BIBLIOGRAPHY HANDLING
 % =========================================================
@@ -785,7 +821,7 @@
   {
     \iow_new:N \l__aidisclose_bib_iow
     \iow_open:Nn \l__aidisclose_bib_iow { #1 }
-    \iow_now:Nn \l__aidisclose_bib_iow 
+    \iow_now:Nn \l__aidisclose_bib_iow
       {
 @article{Suchikova:2025:GAIDeT,^^J
 ~~title~~~~~=~{{GAIDeT~(Generative~AI~Delegation~Taxonomy)}:~A~Taxonomy~for~Humans~to~Delegate~Tasks~to~Generative~Artificial~Intelligence~in~Scientific~Research~and~Publishing},^^J
@@ -821,13 +857,12 @@
       \__aidisclose_write_bib_file:n { \str_use:N \g__aid_bibfile_str }
       \@ifpackageloaded { biblatex }
         { \addbibresource { \str_use:N \g__aid_bibfile_str } }
-        { 
+        {
           \cs_set_eq:NN \__aidisclose_orig_bibliography:n \bibliography
           \RenewDocumentCommand \bibliography { m }
             { \__aidisclose_orig_bibliography:n { aidisclose , #1 } }
         }
     }
-    \AIDtoolsUsed { }
 }
 
 \endinput

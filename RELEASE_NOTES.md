@@ -26,5 +26,5 @@ For manual [installation from GitHub](https://github.com/joaomlourenco/aidisclos
 
   % Render
   \AIDrenderDeclaration[ncols=2]{Author Name}
-  
+
 See the `aidisclose-doc.pdf` for full documentation and examples.

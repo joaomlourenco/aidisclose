@@ -80,7 +80,7 @@ You can set options and configuration dynamically using key-value lists.
 ```tex
 % 1. Set Package Options
 \AIDset{
-  autobib = true, 
+  autobib = true,
   nocite = false
 }
 
@@ -147,7 +147,7 @@ AI was used for refining code structure in Section 4.
 \section{Conclusion}
 ...
 
-\AIDrenderDeclaration[2]{Mary Doe, John Doe}
+\AIDrenderDeclaration[ncols=2]{Mary Doe, John Doe}
 
 \end{document}
 

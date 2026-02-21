@@ -11,7 +11,7 @@
   accepts       = {accepts},
   accept        = {accept},
   and           = {and},
-  preamble      = {<author>,\ <AUTHOR~LIST>,\ <acknowledges>\ the\ use\ of\ the\ following\ generative\ artificial\ intelligence\ tools\ in\ the\ development\ of\ this\ thesis.\ These\ technologies\ were\ utilized\ under\ strict\ supervision,\ and\ all\ AI-generated\ outputs\ were\ critically\ reviewed\ and\ verified\ for\ accuracy.\ <author>\ <accept>\ full\ responsibility\ for\ the\ validity\ and\ originality\ of\ the\ content,\ confirming\ that\ the\ use\ of\ these\ tools\ aligns\ with\ all\ institutional\ policies\ and\ standards\ of\ academic\ integrity.},
+  preamble      = {<author>,\ <AUTHOR-LIST>,\ <acknowledges>\ the\ use\ of\ the\ following\ generative\ artificial\ intelligence\ tools\ in\ the\ development\ of\ this\ thesis.\ These\ technologies\ were\ utilized\ under\ strict\ supervision,\ and\ all\ AI-generated\ outputs\ were\ critically\ reviewed\ and\ verified\ for\ accuracy.\ <author>\ <accept>\ full\ responsibility\ for\ the\ validity\ and\ originality\ of\ the\ content,\ confirming\ that\ the\ use\ of\ these\ tools\ aligns\ with\ all\ institutional\ policies\ and\ standards\ of\ academic\ integrity.},
   %
   % Pre/Post Parts
   pre_tools     = {},
@@ -36,7 +36,7 @@
   grp_write     = {Writing\ and\ Editing},
   grp_eth       = {Ethics\ Review},
   grp_sup       = {Quality\ Assurance},
-% 1 — Conceptualization  
+% 1 — Conceptualization
   c_idea        = {Idea\ generation},
   c_obj         = {Defining\ the\ research\ objective},
   c_rq          = {Formulating\ research\ questions\ and\ hypotheses},
