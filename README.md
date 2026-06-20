@@ -1,6 +1,5 @@
 # aidisclose — Generative AI disclosure checklist and statements
 
-[![CTAN](https://img.shields.io/ctan/v/aidisclose)](https://ctan.org/pkg/aidisclose)
 [![Version](https://img.shields.io/badge/version-1.12.0-blue)](https://github.com/joaomlourenco/aidisclose)
 [![Date](https://img.shields.io/badge/date-2026--01--23-orange)](https://github.com/joaomlourenco/aidisclose)
 [![License: LPPL 1.3c](https://img.shields.io/badge/license-LPPL%201.3c-blue)](https://www.latex-project.org/lppl/lppl-1-3c/)
@@ -10,7 +9,7 @@
 
 The package implements an extension of the **GAIDeT (Generative AI Delegation Taxonomy)** and automates the creation of disclosure statements and task-based checklists, aligned with emerging publisher and institutional requirements.
 
-For the complete manual, full taxonomy, and visual examples, see **[aidisclose-doc.pdf](https://mirrors.ctan.org/macros/latex/contrib/aidisclose/aidisclose-doc.pdf)**.
+For the complete manual, full taxonomy, and visual examples, see **[aidisclose-doc.pdf](https://github.com/joaomlourenco/aidisclose/blob/main/aidisclose-doc.pdf)**.
 
 ---
 
@@ -120,7 +119,7 @@ The taxonomy is organized into 9 phases. Use the corresponding keys (e.g., `c:id
 | `\AIDorder{<list>}` | Reorders sections (`preamble`, `tools`, `taxonomy`, `comments`). |
 | `\AIDrenderDeclaration` | Prints the full disclosure statement. |
 | `\AIDloadLanguage{<code>}` | Manually forces a specific language (e.g., `pt`, `fr`). |
-| `\AIDpackageName` | Prints the package name with a link to CTAN. |
+| `\AIDpackageName` | Prints the package name with a link to the GitHub repository. |
 | `\AIDGetString{<key>}` | Returns the localized string for a specific internal key. |
 | `\aidversion` | Prints the current version number. |
 

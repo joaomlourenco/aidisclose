@@ -11,8 +11,7 @@ This package implements an extension of the **GAIDeT (Generative AI Delegation T
 *   **Companion Tool:** Fully compatible with the LaTeX generator at [aidisclose.org](https://aidisclose.org).
 
 ### Installation
-This package is available on CTAN and can be installed via your TeX distribution manager (TeX Live, MiKTeX).
-For manual [installation from GitHub](https://github.com/joaomlourenco/aidisclose):
+This package is not yet available on CTAN. Install it manually from [GitHub](https://github.com/joaomlourenco/aidisclose):
 1.  Download `aidisclose.sty` and the `langdef/` folder.
 2.  Place them in your project directory or local TeX tree.
 
