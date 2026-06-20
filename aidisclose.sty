@@ -8,7 +8,7 @@
 % or (at your option) any later version.
 \def\aidversion{1.12.0}
 %
-\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\NeedsTeXFormat{LaTeX2e}[2022/06/01]
 \ProvidesExplPackage {aidisclose} {2026/02/21} {\aidversion}
   {Utilities for Generative AI disclosure checklist and statements}
 
@@ -524,7 +524,7 @@
 \keys_define:nn { aidisclose / config }
   {
     tools            .code:n = { \AIDtoolsUsed { #1 } },
-    title            .code:n = { \AIDdiscloseTitle #1 },
+    title            .code:n = { \AIDdiscloseTitle {#1} },
     order            .code:n = { \AIDorder { #1 } },
     checkmark        .code:n = { \AIDcheckmarkSymbol { #1 } },
     fontsize         .code:n = { \AIDchecklistFontSize { #1 } },
@@ -622,7 +622,6 @@
     % New Placeholders
     \tl_replace_all:Nnn \l__aid_working_preamble_tl { <author> } { \l__aid_author_noun_tl }
     \tl_replace_all:Nnn \l__aid_working_preamble_tl { <AUTHOR-LIST> } { \l__aid_author_list_tl }
-    \tl_replace_all:Nnn \l__aid_working_preamble_tl { <declares> } { \l__aid_declares_verb_tl }
     \tl_replace_all:Nnn \l__aid_working_preamble_tl { <acknowledges> } { \l__aid_acknowledges_verb_tl }
     \tl_replace_all:Nnn \l__aid_working_preamble_tl { <accept> } { \l__aid_accepts_verb_tl }
   }

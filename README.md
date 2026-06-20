@@ -60,10 +60,10 @@ When enabled, the package automatically:
 
 
 Set this option to `false` if you prefer to manage citations manually.
-* **`nocite = true | false`** (default: `false`)
+* **`nocite = true | false`** (default: `true`)
 This option controls the visible citations in the disclosure statement footnote.
-* If `false` (default), the package adds visible citations to the GAIDeT taxonomy paper and the package manual in the footnote.
-* If `true`, citations are suppressed in the output (though references are still needed).
+* If `true` (default), citations are suppressed in the output (though references are still needed).
+* If `false`, the package adds visible citations to the GAIDeT taxonomy paper and the package manual in the footnote.
 
 
 
