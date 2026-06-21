@@ -16,14 +16,14 @@ This package is not yet available on CTAN. Install it manually from [GitHub](htt
 2.  Place them in your project directory or local TeX tree.
 
 ### Usage Example
-  \usepackage{aidisclose}
+    \usepackage{aidisclose}
 
-  % Configure
-  \AIDactivate{c:idea}   % Activate "Idea generation"
-  \AIDactivate{w:poly}   % Activate "Polishing and Editing"
-  \AIDtoolsUsed{ChatGPT, GitHub Copilot}
+    % Configure
+    \AIDactivate{c:idea}   % Activate "Idea generation"
+    \AIDactivate{w:poly}   % Activate "Polishing and Editing"
+    \AIDtoolsUsed{ChatGPT, GitHub Copilot}
 
-  % Render
-  \AIDrenderDeclaration[ncols=2]{Author Name}
+    % Render
+    \AIDrenderDeclaration[ncols=2]{Author Name}
 
 See the `aidisclose-doc.pdf` for full documentation and examples.
