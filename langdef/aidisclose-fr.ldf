@@ -21,7 +21,7 @@
   pre_comments  = {},
   post_comments = {},
   %
-    footnote      = {Cette\ déclaration\ a\ été\ générée\ à\'aide\ de\ \AIDlatexProcessor{}\ et\ du\ paquet\ \LaTeX\ \AIDpackageName{}},
+    footnote      = {Cette\ déclaration\ a\ été\ générée\ à\'aide\ de\ \AIDlatexProcessor{},\ du\ paquet\ \LaTeX\ \AIDpackageName{}\ et\ de\ son\ site\ compagnon\ \url{aidisclose.org}},
   comment_label = {Commentaire\ supplémentaire},
   comment_star  = {Commentaire\ supplémentaire},
   title_long    = {Déclaration\ de\ délégation\ à\ l'intelligence\ artificielle\ générative},

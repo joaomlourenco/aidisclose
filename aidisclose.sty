@@ -6,10 +6,10 @@
 % This file may be distributed and/or modified under the conditions of
 % the LaTeX Project Public License, either version 1.3c of this license
 % or (at your option) any later version.
-\def\aidversion{1.12.0}
+\def\aidversion{1.13.0}
 %
 \NeedsTeXFormat{LaTeX2e}[2022/06/01]
-\ProvidesExplPackage {aidisclose} {2026/02/21} {\aidversion}
+\ProvidesExplPackage {aidisclose} {2026/07/12} {\aidversion}
   {Utilities for Generative AI disclosure checklist and statements}
 
 % =========================================================
@@ -246,6 +246,7 @@
 }
 
 % 2. Then load the language (populates the strings)
+\tl_new:N \l__aid_iso_code_tl
 \AIDloadLanguage{en}
 
 % =========================================================
@@ -352,21 +353,21 @@
   }
 
 % CHECKLIST ENVIRONMENT
-\cs_new_protected:Nn \_aid_label:
+\cs_new_protected:Nn \__aid_label:
   {
     \hbox_to_wd:nn { 1em } { \hss \framebox[0.8em]{\vphantom{t}} \hss }
   }
 
 \NewDocumentEnvironment{aidlist} { }
   {
-    \list { \_aid_label: }
+    \list { \__aid_label: }
       {
         \setlength { \topsep }      { 0pt }
         \setlength { \partopsep }   { 0pt }
         \setlength { \itemsep }     { 0pt }
         \setlength { \parsep }      { 5pt }
         \setlength { \leftmargin }  { 1.5em }
-        \setlength { \labelwidth }  { 1em }
+        \setlength { \labelwidth }  { 1.2em }
         \setlength { \labelsep }    { 0.5em }
         \setlength { \listparindent } { 0pt }
       }
@@ -386,7 +387,6 @@
 \dim_set:Nn \l__aid_labelsep_dim { 0.9em }
 
 \seq_new:N \g__aid_active_keys_seq
-\seq_new:N \l__aid_tools_seq
 \seq_new:N \g__aid_order_seq
 
 \tl_new:N  \l__aid_temp_tl
@@ -394,14 +394,12 @@
 \tl_new:N  \g__aid_title_long_tl
 \tl_new:N  \g__aid_title_short_tl
 \tl_new:N  \g__aid_section_cmd_tl
-\tl_new:N  \g__aid_tools_sentence_tl
 \tl_new:N  \g__aid_fontsize_tl
 \tl_new:N  \g__aid_checkmark_symbol_tl
 \int_new:N   \g__aid_authors_int
 \int_new:N   \g__aid_comment_int
 \clist_new:N \g__aid_authors_clist
 
-\tl_new:N \l__aid_author_names_tl
 \tl_new:N \l__aid_declares_verb_tl
 \tl_new:N \l__aid_acknowledges_verb_tl
 \tl_new:N \l__aid_accepts_verb_tl
@@ -588,8 +586,8 @@
 
 \cs_new_protected:Nn \__aid_calc_author_context:n
   {
-    \clist_set:Nn \g__aid_authors_clist { #1 }
-    \int_set:Nn \g__aid_authors_int { \clist_count:N \g__aid_authors_clist }
+    \clist_gset:Nn \g__aid_authors_clist { #1 }
+    \int_gset:Nn \g__aid_authors_int { \clist_count:N \g__aid_authors_clist }
 
     \int_compare:nNnTF { \g__aid_authors_int } = { 1 }
       {
@@ -622,6 +620,7 @@
     % New Placeholders
     \tl_replace_all:Nnn \l__aid_working_preamble_tl { <author> } { \l__aid_author_noun_tl }
     \tl_replace_all:Nnn \l__aid_working_preamble_tl { <AUTHOR-LIST> } { \l__aid_author_list_tl }
+    \tl_replace_all:Nnn \l__aid_working_preamble_tl { <declares> } { \l__aid_declares_verb_tl }
     \tl_replace_all:Nnn \l__aid_working_preamble_tl { <acknowledges> } { \l__aid_acknowledges_verb_tl }
     \tl_replace_all:Nnn \l__aid_working_preamble_tl { <accept> } { \l__aid_accepts_verb_tl }
   }
@@ -667,7 +666,7 @@
       \selectfont
       \tl_use:N \g__aid_fontsize_tl
 
-      \cs_set:Npn \TGroup ##1 ##2
+      \cs_set_protected:Npn \TGroup ##1 ##2
         {
           \par \bigskip
           \__aid_fetch_string:nN { grp_##2 } \l_tmpa_tl
@@ -688,13 +687,13 @@
             }
         }
 
-      \cs_set:Npn \TItems ##1
+      \cs_set_protected:Npn \TItems ##1
         {
             \seq_map_inline:cn { g__aid_group_items_##1_seq }
             { \TItem { ####1 } }
         }
 
-      \cs_set:Npn \TItem ##1
+      \cs_set_protected:Npn \TItem ##1
         {
           \__aid_fetch_string:nN { ##1 } \l_tmpa_tl
           \seq_if_in:NxTF \g__aid_active_keys_seq { \tl_to_str:n { ##1 } }

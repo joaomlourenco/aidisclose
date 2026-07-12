@@ -2,6 +2,7 @@
 
 [![Version](https://img.shields.io/badge/version-1.12.0-blue)](https://github.com/joaomlourenco/aidisclose)
 [![Date](https://img.shields.io/badge/date-2026--01--23-orange)](https://github.com/joaomlourenco/aidisclose)
+[![CTAN](https://img.shields.io/ctan/v/aidisclose)](https://ctan.org/pkg/aidisclose)
 [![License: LPPL 1.3c](https://img.shields.io/badge/license-LPPL%201.3c-blue)](https://www.latex-project.org/lppl/lppl-1-3c/)
 [![LaTeX](https://img.shields.io/badge/LaTeX-LaTeX2e%202020%2F10%2F01%2B-brightgreen)](https://www.latex-project.org/)
 
@@ -38,6 +39,16 @@ The website provides an interactive interface where authors can:
 - Copy the generated code to the clipboard
 
 If you generate a full document, the website also points you to download `aidisclose.sty` and compile the resulting `.tex` file.
+
+---
+
+## Installation
+
+The package is available on CTAN at **[ctan.org/pkg/aidisclose](https://ctan.org/pkg/aidisclose)** and ships with TeX Live and MiKTeX.
+
+- **TeX Live:** `tlmgr install aidisclose`
+- **MiKTeX:** install via the MiKTeX Console / Package Manager
+- **Manual:** download `aidisclose.sty` and the `langdef/` folder from [GitHub](https://github.com/joaomlourenco/aidisclose) and place them in your project directory or local TeX tree.
 
 ---
 
@@ -173,3 +184,8 @@ For advanced users:
 * **`\AIDloadLanguage{<code>}`**: Manually forces the loading of a language file (e.g., `\AIDloadLanguage{pt}`), overriding auto-detection.
 * **`\AIDGetString{<key>}`**: Returns the localized string for a specific internal key.
 * **`\AIDpackageName`**: Typesets the package name with a hyperref link.
+
+---
+
+Copyright © 2025–26 João M. Lourenço.  
+Crafted with 💙 for reproducible scientific writing.

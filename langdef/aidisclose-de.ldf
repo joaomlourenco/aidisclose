@@ -21,7 +21,7 @@
   pre_comments  = {},
   post_comments = {},
   %
-    footnote      = {Diese\ Erklärung\ wurde\ unter\ Verwendung\ von\ \AIDlatexProcessor{}\ und\ dem\ \LaTeX-Paket\ \AIDpackageName{}\ erstellt},
+    footnote      = {Diese\ Erklärung\ wurde\ unter\ Verwendung\ von\ \AIDlatexProcessor{},\ dem\ \LaTeX-Paket\ \AIDpackageName{}\ und\ seiner\ Begleitwebsite\ \url{aidisclose.org}\ erstellt},
   comment_label = {Zusätzlicher\ Kommentar},
   comment_star  = {Zusätzlicher\ Kommentar},
   title_long    = {Offenlegung\ der\ Verwendung\ von\ generativer\ künstlicher\ Intelligenz},
@@ -36,7 +36,7 @@
   grp_write     = {Schreiben\ und\ Korrekturlesen},
   grp_eth       = {Ethikprüfung},
   grp_sup       = {Qualitätssicherung},
-% 1 — Conceptualization  
+% 1 — Conceptualization
   c_idea        = {Ideengenerierung},
   c_obj         = {Definition\ des\ Forschungsziels},
   c_rq          = {Formulierung\ von\ Forschungsfragen\ und\ Hypothesen},

@@ -21,7 +21,7 @@
   pre_comments  = {},
   post_comments = {},
   %
-    footnote      = {Цю\ декларацію\ було\ згенеровано\ за\ допомогою\ \AIDlatexProcessor{}\ та\ пакету\ \LaTeX{}\ \AIDpackageName{}},
+    footnote      = {Цю\ декларацію\ було\ згенеровано\ за\ допомогою\ \AIDlatexProcessor{},\ пакету\ \LaTeX{}\ \AIDpackageName{}\ та\ його\ супутнього\ вебсайту\ \url{aidisclose.org}},
   comment_label = {Додатковий\ коментар},
   comment_star  = {Додатковий\ коментар},
   title_long    = {Декларація\ про\ делегування\ генеративному\ штучному\ інтелекту},
