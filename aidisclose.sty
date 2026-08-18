@@ -6,10 +6,10 @@
 % This file may be distributed and/or modified under the conditions of
 % the LaTeX Project Public License, either version 1.3c of this license
 % or (at your option) any later version.
-\def\aidversion{1.13.0}
+\def\aidversion{1.13.1}
 %
 \NeedsTeXFormat{LaTeX2e}[2022/06/01]
-\ProvidesExplPackage {aidisclose} {2026/07/12} {\aidversion}
+\ProvidesExplPackage {aidisclose} {2026/08/18} {\aidversion}
   {Utilities for Generative AI disclosure checklist and statements}
 
 % =========================================================
@@ -591,7 +591,10 @@
 
     \int_compare:nNnTF { \g__aid_authors_int } = { 1 }
       {
-        \tl_set:Nx \l__aid_author_list_tl { #1 }
+        % Nn, not Nx: #1 needs no expansion here, and x-expanding a single
+        % author name breaks on the escapes a name legitimately contains
+        % (\$ exhausted the input stack; \_ gave "Missing number").
+        \tl_set:Nn \l__aid_author_list_tl { #1 }
         \__aid_fetch_string:nN { declares } \l__aid_declares_verb_tl
         \__aid_fetch_string:nN { acknowledges } \l__aid_acknowledges_verb_tl
         \__aid_fetch_string:nN { accepts } \l__aid_accepts_verb_tl

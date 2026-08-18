@@ -1,4 +1,4 @@
-## aidisclose v1.13.0 (2026-07-12)
+## aidisclose v1.13.1 (2026-08-18)
 Maintenance and refinement release. No changes to the public command interface.
 
 ### Bug Fixes
